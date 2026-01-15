@@ -1,0 +1,82 @@
+erDiagram
+    %% 1. BLOQUE DE USUARIOS Y GESTIÓN %%
+    USERS {
+        bigint id PK
+        string email UK "Login único"
+        string password "BCrypt"
+        string nickname "Nombre del viajero"
+        string role "CLIENTE | ADMIN_NEGOCIO | ADMIN_PLATAFORMA"
+        datetime created_at
+    }
+
+    %% 2. BLOQUE DE MONETIZACIÓN (SaaS) %%
+    PLANS {
+        bigint id PK
+        string name "Free, Pro, Enterprise"
+        decimal price "Precio mensual"
+        int max_stores "Límite de tiendas permitidas"
+        int max_users "Límite de clientes fidelizados"
+        boolean active "Para descatalogar planes viejos"
+    }
+
+    COMPANIES {
+        bigint id PK
+        bigint owner_id FK "Dueño de la empresa"
+        bigint plan_id FK "Plan contratado"
+        string legal_name "Razón Social"
+        string tax_id "CIF/NIF"
+        string subscription_status "ACTIVE, PAST_DUE, CANCELLED"
+        datetime next_billing_date
+    }
+
+    %% 3. BLOQUE DE NAVEGACIÓN (Tiendas) %%
+    STORES {
+        bigint id PK
+        bigint company_id FK
+        string name "Nombre comercial"
+        string category "Restaurante, Taller, Moda"
+        string address "Ubicación física"
+        string image_url "Logo para la PWA"
+        int points_ratio "Ej: 1 EUR = 10 Pts"
+        boolean is_visible "Para ocultar tienda temporalmente"
+    }
+
+    REWARDS {
+        bigint id PK
+        bigint store_id FK
+        string name "Ej: Café Gratis"
+        int cost_points "Puntos necesarios"
+        string image_url
+        boolean active
+    }
+
+    %% 4. BLOQUE CORE (Puntos y Fidelización) %%
+    LOYALTY_CARDS {
+        bigint id PK
+        bigint user_id FK
+        bigint store_id FK
+        int current_balance "Saldo actual"
+        int total_accumulated "Histórico total ganado"
+        datetime last_visit
+    }
+
+    TRANSACTIONS {
+        bigint id PK
+        bigint card_id FK
+        int amount "+100 o -50"
+        string type "EARN (Compra) | REDEEM (Canje)"
+        datetime created_at
+    }
+
+    %% RELACIONES %%
+    USERS ||--|{ COMPANIES : "posee (Dueño)"
+    USERS ||--o{ LOYALTY_CARDS : "tiene (Cliente) 1 o N"
+    
+    PLANS ||--|{ COMPANIES : "tienen un plan"
+    
+    COMPANIES ||--|{ STORES : "administra"
+    
+    STORES ||--o{ REWARDS : "ofrece"
+    STORES ||--o{ LOYALTY_CARDS : "emite 1 o N"
+    
+    LOYALTY_CARDS ||--o{ TRANSACTIONS : "registra historial"
