@@ -1,6 +1,5 @@
-package tienda.puntos.app.repository.dao;
+package tienda.puntos.app.model.dto;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.EnumType;

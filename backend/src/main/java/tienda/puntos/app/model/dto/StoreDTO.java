@@ -1,4 +1,4 @@
-package tienda.puntos.app.repository.dao;
+package tienda.puntos.app.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

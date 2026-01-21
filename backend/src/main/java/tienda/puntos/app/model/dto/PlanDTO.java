@@ -1,6 +1,7 @@
-package tienda.puntos.app.repository.dao;
+package tienda.puntos.app.model.dto;
 
 import java.math.BigDecimal;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
