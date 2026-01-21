@@ -1,8 +1,7 @@
 package tienda.puntos.app.repository.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import jakarta.persistence.CascadeType;
+import java.math.BigDecimal;
+import java.util.Set;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,6 +10,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -18,32 +18,34 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import tienda.puntos.app.utils.Plans;
 
+@Entity
+@Table(name = "plans")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "Plans")
 public class Plan {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
     @Enumerated(EnumType.STRING)
-    private Plans planName; // Nombre del plan
-    private float price; // Precio del plan
+    @Column(name = "name", nullable = false)
+    private Plans planName;
 
-    @Column(name = "max_stores")
-    private int maxStores; // Numero maximo de tiendas por plan
+    @Column(precision = 10, scale = 2, nullable = false)
+    private BigDecimal price;
 
-    @Column(name = "max_users")
-    private int maxUsers; // Numero maximo de usuarios por plan
-    private boolean active; // Plan activo o no activo
+    @Column(name = "max_stores", nullable = false)
+    private int maxStores;
 
-    // Company relacion 1 a 1
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "plan")
-    @JsonIgnore
-    private Companies company;
+    @Column(name = "max_users", nullable = false)
+    private int maxUsers;
 
+    @Column(nullable = false)
+    private boolean active;
+
+    // Relación 1 Plan -> N Companies
+    @OneToMany(mappedBy = "plan", fetch = FetchType.LAZY)
+    private Set<Company> companiesList;
 }

@@ -80,9 +80,9 @@ INSERT INTO rewards (id, store_id, name, cost_points, image_url, active) VALUES
 INSERT INTO loyalty_cards (
   id, user_id, store_id, current_balance, total_accumulated, last_visit
 ) VALUES
-(NEWID(), 2, 1, 120, 300, NOW()),
-(NEWID(), 3, 1, 50, 150, NOW()),
-(NEWID(), 2, 2, 20, 20, NOW());
+(1, 2, 1, 120, 300, NOW()),
+(2, 3, 1, 50, 150, NOW()),
+(3, 2, 2, 20, 20, NOW());
 
 
 -- -------------------------------------------- --

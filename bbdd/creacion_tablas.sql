@@ -1,3 +1,26 @@
+-- -------------------------------------- --
+-- -------------------------------------- --
+-- Crear usuario inicial de Base de datos --
+-- -------------------------------------- --
+-- -------------------------------------- --
+
+DROP USER IF EXISTS 'usuariopuntos'@'localhost';
+
+CREATE USER 'usuariopuntos'@'localhost'
+IDENTIFIED BY 'ProyectoPuntos';
+
+GRANT
+  SELECT,
+  INSERT,
+  UPDATE,
+  DELETE,
+  CREATE,
+  ALTER,
+  DROP,
+  INDEX,
+  REFERENCES
+ON ruta66market.*
+TO 'usuariopuntos'@'localhost';
 -- -------------------------------
 -- Tablas principales
 -- -------------------------------
@@ -31,7 +54,7 @@ CREATE TABLE PLANS (
 
 CREATE TABLE COMPANIES (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
-  owner_id BIGINT NOT NULL,
+  owner_id BIGINT UNIQUE NOT NULL,
   plan_id BIGINT NOT NULL,
   legal_name VARCHAR(255) NOT NULL,
   tax_id VARCHAR(100) NOT NULL,
@@ -64,7 +87,7 @@ CREATE TABLE REWARDS (
 );
 
 CREATE TABLE LOYALTY_CARDS (
-  id UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
   user_id BIGINT NOT NULL,
   store_id BIGINT NOT NULL,
   current_balance INT NOT NULL DEFAULT 0,

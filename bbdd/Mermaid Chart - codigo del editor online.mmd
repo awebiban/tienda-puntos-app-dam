@@ -21,7 +21,7 @@ erDiagram
 
     COMPANIES {
         bigint id PK
-        bigint owner_id FK "Dueño de la empresa"
+        bigint owner_id FK "Dueño de la empresa (1 a 1)"
         bigint plan_id FK "Plan contratado"
         string legal_name "Razón Social"
         string tax_id "CIF/NIF"
@@ -69,14 +69,10 @@ erDiagram
     }
 
     %% RELACIONES %%
-    USERS ||--|{ COMPANIES : "posee (Dueño)"
+    USERS ||--|| COMPANIES : "posee (Dueño)"
     USERS ||--o{ LOYALTY_CARDS : "tiene (Cliente) 1 o N"
-    
     PLANS ||--|{ COMPANIES : "tienen un plan"
-    
     COMPANIES ||--|{ STORES : "administra"
-    
     STORES ||--o{ REWARDS : "ofrece"
     STORES ||--o{ LOYALTY_CARDS : "emite 1 o N"
-    
     LOYALTY_CARDS ||--o{ TRANSACTIONS : "registra historial"
