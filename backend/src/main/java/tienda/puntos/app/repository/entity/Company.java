@@ -8,14 +8,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import tienda.puntos.app.utils.SubscriptionStatus;
 
 @Entity
 @Table(name = "companies", uniqueConstraints = {
         @UniqueConstraint(columnNames = "owner_id")
 })
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Company {

@@ -17,9 +17,9 @@ INSERT INTO users (id, email, password, nickname, role, created_at) VALUES
 -- -------------------------------------------- --
 
 INSERT INTO plans (id, name, price, max_stores, max_users, active) VALUES
-(1, 'Free', 0.00, 1, 100, true),
-(2, 'Pro', 29.99, 5, 1000, true),
-(3, 'Enterprise', 99.99, 50, 10000, true);
+(1, 'FREE', 0.00, 1, 100, true),
+(2, 'PRO', 29.99, 5, 1000, true),
+(3, 'ENTERPRISE', 99.99, 50, 10000, true);
 
 
 -- ----------------------------------------- --

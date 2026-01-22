@@ -1,0 +1,9 @@
+{
+    "properties": [
+        {
+            "name": "nombre.equipo",
+            "type": "java.lang.String",
+            "description": "Enzo Berzona e Ivan Santamaria"
+        }
+    ]
+}

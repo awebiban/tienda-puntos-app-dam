@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import tienda.puntos.app.repository.entity.User;
 import tienda.puntos.app.utils.Role;
 
@@ -19,11 +20,12 @@ public class UserDTO {
     private String email;
 
     @JsonIgnore
+    @ToString.Exclude
     private String password;
     private String nickname;
     private Role role;
     private LocalDateTime createdAt;
-    private CompanyDTO companyDTO;
+    // private CompanyDTO companyDTO;
 
     public static UserDTO convertoToDTO(User u1) {
         UserDTO u2 = new UserDTO();
@@ -33,7 +35,7 @@ public class UserDTO {
         u2.setNickname(u1.getNickname());
         u2.setRole(u1.getRole());
         u2.setCreatedAt(u1.getCreatedAt());
-        u2.setCompanyDTO(CompanyDTO.convertToDTO(u1.getCompany()));
+        // u2.setCompanyDTO(CompanyDTO.convertToDTO(u1.getCompany()));
 
         return u2;
     }
@@ -46,7 +48,7 @@ public class UserDTO {
         u2.setNickname(u1.getNickname());
         u2.setRole(u1.getRole());
         u2.setCreatedAt(u1.getCreatedAt());
-        u2.setCompany(CompanyDTO.convertToEntity(u1.getCompanyDTO()));
+        // u2.setCompany(CompanyDTO.convertToEntity(u1.getCompanyDTO()));
 
         return u2;
     }
