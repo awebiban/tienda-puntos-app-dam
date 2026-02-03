@@ -27,7 +27,7 @@ public class UserDTO {
     private LocalDateTime createdAt;
     // private CompanyDTO companyDTO;
 
-    public static UserDTO convertoToDTO(User u1) {
+    public static UserDTO convertToDTO(User u1) {
         UserDTO u2 = new UserDTO();
         u2.setId(u1.getId());
         u2.setEmail(u1.getEmail());
@@ -40,7 +40,7 @@ public class UserDTO {
         return u2;
     }
 
-    public static User convertoToEntity(UserDTO u1) {
+    public static User convertToEntity(UserDTO u1) {
         User u2 = new User();
         u2.setId(u1.getId());
         u2.setEmail(u1.getEmail());

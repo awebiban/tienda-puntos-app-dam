@@ -1,6 +1,10 @@
 package tienda.puntos.app.model.dto;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import tienda.puntos.app.repository.entity.Store;
@@ -8,44 +12,66 @@ import tienda.puntos.app.repository.entity.Store;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class StoreDTO {
 
     private Long id;
     private CompanyDTO companyDTO;
-    private String name; // Nombre comercial
-    private String category; // Que tipo negocio es
-    private String address; // Direccion fisica del local
-    private String imageUrl; // Nombre de la imagen de la tarjeta - fondo de tienda y logo PWA
-    private int pointsRatio; // Cantidad de puntos otorgados por 1 euro euro gastado (Ej. 1 EUR = 10 puntos)
-    private boolean isVisible; // Para ocultar tienda temporalmente
+    private String name;
+    private String category;
+    private String address;
+    private String imageUrl;
+    private int pointsRatio;
+    private boolean isVisible;
 
-    public static StoreDTO convertToDTO(Store s1) {
+    // Incluimos las recompensas para que el cliente sepa qué puede canjear
+    private Set<RewardDTO> rewardsList;
 
-        StoreDTO s2 = new StoreDTO();
-        s2.setId(s1.getId());
-        s2.setCompanyDTO(CompanyDTO.convertToDTO(s1.getCompany()));
-        s2.setName(s1.getName());
-        s2.setCategory(s1.getCategory());
-        s2.setAddress(s1.getAddress());
-        s2.setImageUrl(s1.getImageUrl());
-        s2.setPointsRatio(s1.getPointsRatio());
-        s2.setVisible(s1.isVisible());
+    /**
+     * Convierte la Entidad a DTO
+     */
+    public static StoreDTO convertToDTO(Store entity) {
+        if (entity == null)
+            return null;
 
-        return s2;
+        return StoreDTO.builder()
+                .id(entity.getId())
+                .companyDTO(CompanyDTO.convertToDTO(entity.getCompany()))
+                .name(entity.getName())
+                .category(entity.getCategory())
+                .address(entity.getAddress())
+                .imageUrl(entity.getImageUrl())
+                .pointsRatio(entity.getPointsRatio())
+                .isVisible(entity.isVisible())
+                .rewardsList(entity.getRewardsList() != null ? entity.getRewardsList().stream()
+                        .map(RewardDTO::convertToDTO)
+                        .collect(Collectors.toSet()) : null)
+                .build();
     }
 
-    public static Store convertToEntity(StoreDTO s1) {
+    /**
+     * Convierte el DTO a Entidad
+     */
+    public static Store convertToEntity(StoreDTO dto) {
+        if (dto == null)
+            return null;
 
-        Store s2 = new Store();
-        s2.setId(s1.getId());
-        s2.setCompany(CompanyDTO.convertToEntity(s1.getCompanyDTO()));
-        s2.setName(s1.getName());
-        s2.setCategory(s1.getCategory());
-        s2.setAddress(s1.getAddress());
-        s2.setImageUrl(s1.getImageUrl());
-        s2.setPointsRatio(s1.getPointsRatio());
-        s2.setVisible(s1.isVisible());
+        Store entity = new Store();
+        entity.setId(dto.getId());
+        entity.setCompany(CompanyDTO.convertToEntity(dto.getCompanyDTO()));
+        entity.setName(dto.getName());
+        entity.setCategory(dto.getCategory());
+        entity.setAddress(dto.getAddress());
+        entity.setImageUrl(dto.getImageUrl());
+        entity.setPointsRatio(dto.getPointsRatio());
+        entity.setVisible(dto.isVisible());
 
-        return s2;
+        if (dto.getRewardsList() != null) {
+            entity.setRewardsList(dto.getRewardsList().stream()
+                    .map(RewardDTO::convertToEntity)
+                    .collect(Collectors.toSet()));
+        }
+
+        return entity;
     }
 }

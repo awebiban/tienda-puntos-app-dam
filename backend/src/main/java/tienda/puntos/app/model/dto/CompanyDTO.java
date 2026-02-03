@@ -2,9 +2,8 @@ package tienda.puntos.app.model.dto;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import tienda.puntos.app.repository.entity.Company;
@@ -13,44 +12,47 @@ import tienda.puntos.app.utils.SubscriptionStatus;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder // Util para crear objetos rapidamente
 public class CompanyDTO {
 
     private Long id;
-    private UserDTO ownerDTO; // Usuario dueño de compañia
+    private UserDTO ownerDTO;
     private PlanDTO planDTO;
-    private String legalName; // Razón Social
-    private String cif; // CIF o NIF
+    private String legalName;
+    private String cif;
+    private SubscriptionStatus subscriptionStatus;
+    private LocalDateTime nextBillingDate;
 
-    @Enumerated(EnumType.STRING)
-    private SubscriptionStatus SubscriptionStatus; // ACTIVE, PAST_DUE, CANCELLED;
-    private LocalDateTime nextBillingDate; // En principio se actualiza en bbdd
+    public static CompanyDTO convertToDTO(Company entity) {
+        if (entity == null)
+            return null;
 
-    public static CompanyDTO convertToDTO(Company c1) {
-
-        CompanyDTO c2 = new CompanyDTO();
-        c2.setId(c1.getId());
-        c2.setOwnerDTO(UserDTO.convertoToDTO(c1.getOwner()));
-        c2.setPlanDTO(PlanDTO.convertToDTO(c1.getPlan()));
-        c2.setLegalName(c1.getLegalName());
-        c2.setCif(c1.getCif());
-        c2.setSubscriptionStatus(c1.getSubscriptionStatus());
-        c2.setNextBillingDate(c1.getNextBillingDate());
-
-        return c2;
+        return CompanyDTO.builder()
+                .id(entity.getId())
+                .ownerDTO(UserDTO.convertToDTO(entity.getOwner()))
+                .planDTO(PlanDTO.convertToDTO(entity.getPlan()))
+                .legalName(entity.getLegalName())
+                .cif(entity.getCif())
+                .subscriptionStatus(entity.getSubscriptionStatus())
+                .nextBillingDate(entity.getNextBillingDate())
+                .build();
     }
 
-    public static Company convertToEntity(CompanyDTO c1) {
+    public static Company convertToEntity(CompanyDTO dto) {
+        if (dto == null)
+            return null;
 
-        Company c2 = new Company();
-        c2.setId(c1.getId());
-        c2.setOwner(UserDTO.convertoToEntity(c1.getOwnerDTO()));
-        c2.setPlan(PlanDTO.convertToEntity(c1.getPlanDTO()));
-        c2.setLegalName(c1.getLegalName());
-        c2.setCif(c1.getCif());
-        c2.setSubscriptionStatus(c1.getSubscriptionStatus());
-        c2.setNextBillingDate(c1.getNextBillingDate());
+        Company entity = new Company();
+        entity.setId(dto.getId());
+        entity.setOwner(UserDTO.convertToEntity(dto.getOwnerDTO()));
+        entity.setPlan(PlanDTO.convertToEntity(dto.getPlanDTO()));
+        entity.setLegalName(dto.getLegalName());
+        entity.setCif(dto.getCif());
+        entity.setSubscriptionStatus(dto.getSubscriptionStatus());
+        entity.setNextBillingDate(dto.getNextBillingDate());
 
-        return c2;
+        // Nota: El Set<Store> no se suele pasar en el DTO de creación para evitar
+        // ciclos
+        return entity;
     }
-
 }
