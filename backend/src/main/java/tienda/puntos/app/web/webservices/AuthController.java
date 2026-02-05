@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import tienda.puntos.app.model.dto.UserDTO;
 import tienda.puntos.app.repository.entity.User;
 import tienda.puntos.app.services.User.UserService;
 import tienda.puntos.app.services.auth.JwtService;
@@ -28,6 +30,9 @@ public class AuthController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private JwtService jwtService;
@@ -96,21 +101,21 @@ public class AuthController {
             return ResponseEntity.badRequest().body(Map.of("error", "Usuario ya existe"));
         }
 
-        User user = new User();
-        user.setEmail(email);
-        user.setNickname(name);
-        user.setRole(Role.CLIENTE);
-        user.setPassword(password);
+        UserDTO userDTO = new UserDTO();
+        userDTO.setEmail(email);
+        userDTO.setNickname(name);
+        userDTO.setRole(Role.CLIENTE);
+        userDTO.setPassword(this.passwordEncoder.encode(password));
 
-        userService.save(user);
+        userService.save(userDTO);
 
         String token = jwtService.generateToken(email);
 
         return ResponseEntity.ok(Map.of(
                 "token", token,
-                "email", user.getEmail(),
-                "nickname", user.getNickname(),
-                "role", user.getRole().name()));
+                "email", userDTO.getEmail(),
+                "nickname", userDTO.getNickname(),
+                "role", userDTO.getRole().name()));
     }
 
     /**
@@ -127,7 +132,7 @@ public class AuthController {
     @GetMapping("/validate")
     public ResponseEntity<?> getCurrentUser(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
-            return ResponseEntity.status(401).body(Map.of("error", "No autenticado"));
+            return ResponseEntity.status(401).body(Map.of("error", "No autenticado o expirado"));
         }
 
         return ResponseEntity.ok(Map.of(

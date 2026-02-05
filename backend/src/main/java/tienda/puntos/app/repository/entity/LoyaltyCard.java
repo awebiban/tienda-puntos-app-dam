@@ -44,7 +44,7 @@ public class LoyaltyCard {
     @Column(name = "total_accumulated")
     private int totalAccumulated; // Total earned historically
 
-    @Column(name = "last_visited")
+    @Column(name = "last_visit")
     private LocalDateTime lastVisited;
 
     @OneToMany(mappedBy = "loyaltyCard", fetch = FetchType.LAZY)
