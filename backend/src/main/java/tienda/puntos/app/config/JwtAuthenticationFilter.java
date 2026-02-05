@@ -14,6 +14,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import tienda.puntos.app.services.auth.JwtService;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {

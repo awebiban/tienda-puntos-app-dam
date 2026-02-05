@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import tienda.puntos.app.config.JwtService;
 import tienda.puntos.app.repository.entity.User;
 import tienda.puntos.app.services.User.UserService;
+import tienda.puntos.app.services.auth.JwtService;
 import tienda.puntos.app.utils.Role;
 
 @RestController

@@ -1,4 +1,4 @@
-package tienda.puntos.app.config;
+package tienda.puntos.app.services.auth;
 
 import java.security.Key;
 import java.util.Date;
