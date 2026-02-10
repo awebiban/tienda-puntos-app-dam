@@ -16,4 +16,7 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     @Query(value = "SELECT * FROM companies WHERE owner_id = ?1", nativeQuery = true)
     Optional<Company> findCompanyFromUserID(Long userId);
 
+    @Query(value = "SELECT * FROM companies WHERE tax_id = ?1", nativeQuery = true)
+    Optional<Company> findCompanyByCIF(String cif);
+
 }

@@ -1,4 +1,4 @@
-package tienda.puntos.app.services.Company;
+package tienda.puntos.app.services.company;
 
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import tienda.puntos.app.model.dto.CompanyDTO;
+import tienda.puntos.app.model.dto.PlanDTO;
 import tienda.puntos.app.repository.dao.CompanyRepository;
 import tienda.puntos.app.repository.dao.PlanRepository;
 import tienda.puntos.app.repository.dao.UserRepository;
@@ -28,12 +29,22 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public @Nullable CompanyDTO findCompanyByID(Long id) {
-        return CompanyDTO.convertToDTO(this.companyRepository.findById(id).orElse(null));
+        return CompanyDTO.convertToDTO(this.companyRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Error: La compañía no existe")));
     }
 
     @Override
     public @Nullable CompanyDTO findCompanyFromUserID(Long userId) {
-        Company company = this.companyRepository.findCompanyFromUserID(userId).orElse(null);
+        Company company = this.companyRepository.findCompanyFromUserID(userId)
+                .orElseThrow(() -> new RuntimeException("Error: La compañía del usuario no existe"));
+
+        return CompanyDTO.convertToDTO(company);
+    }
+
+    @Override
+    public CompanyDTO findCompanyByCIF(String cif) {
+        Company company = this.companyRepository.findCompanyByCIF(cif)
+                .orElseThrow(() -> new RuntimeException("Error: La compañía con CIF " + cif + " no existe"));
 
         return CompanyDTO.convertToDTO(company);
     }
@@ -65,6 +76,22 @@ public class CompanyServiceImpl implements CompanyService {
         Company savedCompany = companyRepository.save(companyToSave);
 
         return CompanyDTO.convertToDTO(savedCompany);
+    }
+
+    @Override
+    public CompanyDTO update(Long companyId, CompanyDTO companyDTO) {
+        Company companyToUpdate = this.companyRepository.findById(companyId)
+                .orElseThrow(() -> new RuntimeException("Error la compañia no existe"));
+
+        // Solo se pueden actualizar estos campos (no el owner)
+        companyToUpdate.setPlan(PlanDTO.convertToEntity(companyDTO.getPlanDTO()));
+        companyToUpdate.setLegalName(companyDTO.getLegalName());
+        companyToUpdate.setCif(companyDTO.getCif());
+        companyToUpdate.setSubscriptionStatus(companyDTO.getSubscriptionStatus());
+        companyToUpdate.setNextBillingDate(companyDTO.getNextBillingDate());
+
+        Company updatedCompany = this.companyRepository.save(companyToUpdate);
+        return CompanyDTO.convertToDTO(updatedCompany);
     }
 
 }

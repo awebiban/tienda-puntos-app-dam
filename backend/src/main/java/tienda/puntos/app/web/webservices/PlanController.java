@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import tienda.puntos.app.model.dto.PlanDTO;
-import tienda.puntos.app.services.Plan.PlanService;
+import tienda.puntos.app.services.plan.PlanService;
 
 @RestController
 @RequestMapping("/api/plans")

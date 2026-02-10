@@ -4,6 +4,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import tienda.puntos.app.model.dto.UserDTO;
-import tienda.puntos.app.services.User.UserService;
+import tienda.puntos.app.services.user.UserService;
 
 @RestController
 @RequestMapping("/api/user")
@@ -20,6 +22,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserDTO> findById(@PathVariable Long userId) {
+        return ResponseEntity.ok(this.userService.findById(userId));
+    }
+
     @PostMapping("/email")
     public ResponseEntity<UserDTO> findByEmail(@RequestBody Map<String, String> payload) {
         // Extraemos el valor asociado a la clave "email" del JSON
@@ -27,7 +34,7 @@ public class UserController {
 
         // Si el email es nulo en el JSON, lanzamos un error controlado
         if (email == null) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.unprocessableContent().build();
         }
 
         return ResponseEntity.ok(this.userService.findByEmail(email));

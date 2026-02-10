@@ -1,4 +1,4 @@
-package tienda.puntos.app.services.User;
+package tienda.puntos.app.services.user;
 
 import tienda.puntos.app.model.dto.UserDTO;
 
@@ -9,5 +9,7 @@ public interface UserService {
     UserDTO save(UserDTO user);
 
     UserDTO update(UserDTO user);
+
+    UserDTO findById(Long userId);
 
 }

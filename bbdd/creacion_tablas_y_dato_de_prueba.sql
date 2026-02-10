@@ -17,9 +17,11 @@ USE `ruta66market`;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
---
--- Table structure for table `companies`
---
+-- ----------------------------------------- --
+-- ----------------------------------------- --
+-- Datos iniciales de la tabla de companyias --	EMPRESA DEL USUARIO ADMINISTRADOR DE LA PLATAFORMA
+-- ----------------------------------------- --
+-- ----------------------------------------- --
 
 DROP TABLE IF EXISTS `companies`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -50,9 +52,11 @@ INSERT INTO `companies` VALUES (1,1,2,'Café Central S.L.','B12345678','ACTIVE',
 /*!40000 ALTER TABLE `companies` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `loyalty_cards`
---
+-- ---------------------------------------------------- --
+-- ---------------------------------------------------- --	DIFERENTES CARTAS DE FIDELIDAD CON LAS TIENDAS QUE
+-- Datos iniciales de la tabla de tarjetas de fidelidad --	QUE TIENEN LOS USUARIOS
+-- ---------------------------------------------------- -- 	
+-- ---------------------------------------------------- --
 
 DROP TABLE IF EXISTS `loyalty_cards`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -100,9 +104,11 @@ CREATE TABLE `plans` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `plans`
---
+-- -------------------------------------------- --
+-- -------------------------------------------- --
+-- Datos iniciales de la tabla de planes (SAAS) --
+-- -------------------------------------------- --
+-- -------------------------------------------- --
 
 LOCK TABLES `plans` WRITE;
 /*!40000 ALTER TABLE `plans` DISABLE KEYS */;
@@ -110,9 +116,16 @@ INSERT INTO `plans` VALUES (1,'FREE',0.00,1,100,1),(2,'PRO',29.99,5,1000,1),(3,'
 /*!40000 ALTER TABLE `plans` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `rewards`
---
+-- ------------------------------------------ --
+-- ------------------------------------------ --	RECOMPENSAS RECLAMABLES POR LOS USUARIOS
+-- Datos iniciales de la tabla de recompensas --	DE SUS TIENDAS FAVORITAS.
+-- ------------------------------------------ -- 	Ver notas:
+-- ------------------------------------------ --
+
+-- NOTAS:	image_url 	 -> Quiero formar el nombre de la imagen, para que sea única
+-- 						 -> con los campos "company + _ + id_company + _ + company_name + _ + nombre_del_archivo_origial
+-- 						 -> (Ej. company_1_cafe_central_cafe_gratis.png)
+-- -------------------------------------------------------------------------------------------------------
 
 DROP TABLE IF EXISTS `rewards`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -197,9 +210,18 @@ LOCK TABLES `spring_session_attributes` WRITE;
 /*!40000 ALTER TABLE `spring_session_attributes` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `stores`
---
+-- -------------------------------------- --
+-- -------------------------------------- --		TIENDAS QUE VERÁN LOS USUARIOS DE LA PLATAFORMA
+-- Datos iniciales de la tabla de tiendas --		2 TIENDAS CORRESPONDIENTES A LA COMPANYIA (Café Central) DEL 
+-- -------------------------------------- -- 	USUARIO ADMIN DE LA PLATAFORMA
+-- -------------------------------------- --
+
+-- NOTAS:	company_id 	 -> relación con la tabla companyias
+-- 			category 	 -> Cadena de texto que describe tipo de comercio
+-- 			image_url	 -> Imagen principal de la tienda
+-- 			points_ratio -> Cuantos puntos otorga la tienda x € euro gastado. (Ej. 10 puntos x € euro gastado)
+-- 	 		is_visible	 -> Es o no, la tienda visible, para ocultarla temporalmente
+-- -----------------------------------------------------------------------------------------------------------
 
 DROP TABLE IF EXISTS `stores`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -229,9 +251,11 @@ INSERT INTO `stores` VALUES (1,1,'Café Central','Restaurante','Calle Mayor 10',
 /*!40000 ALTER TABLE `stores` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `transactions`
---
+-- -------------------------------------------- --
+-- -------------------------------------------- --	
+-- Datos iniciales de la tabla de transacciones --	
+-- -------------------------------------------- -- 	
+-- -------------------------------------------- --
 
 DROP TABLE IF EXISTS `transactions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -258,9 +282,11 @@ INSERT INTO `transactions` VALUES (1,1,100,'EARN','2026-01-22 18:32:23'),(2,1,-5
 /*!40000 ALTER TABLE `transactions` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `users`
---
+-- --------------------------------------- --
+-- --------------------------------------- --
+-- Datos iniciales de la tabla de usuarios --
+-- --------------------------------------- --
+-- --------------------------------------- --
 
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

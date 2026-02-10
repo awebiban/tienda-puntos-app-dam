@@ -7,15 +7,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-
-import tienda.puntos.app.model.dto.StoreDTO;
-import tienda.puntos.app.services.Store.StoreService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
+import tienda.puntos.app.model.dto.StoreDTO;
+import tienda.puntos.app.services.store.StoreService;
+import tienda.puntos.app.web.webservices.StoreController;
+
 @Controller
-public class StoreController {
+public class StoreModelAndViewController {
 
     private static final Logger log = LoggerFactory.getLogger(StoreController.class);
 

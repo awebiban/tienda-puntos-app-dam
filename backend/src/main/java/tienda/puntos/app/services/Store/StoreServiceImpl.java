@@ -1,4 +1,4 @@
-package tienda.puntos.app.services.Store;
+package tienda.puntos.app.services.store;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,8 +43,61 @@ public class StoreServiceImpl implements StoreService {
                 + " - findStoreByID() - Obtenemos datos de BBDD y transformamos en DTO para enviar a la vista");
 
         Store store = this.storeRepository.findById(id).get();
-        System.out.println(store);
         return StoreDTO.convertToDTO(store);
+    }
+
+    @Override
+    public List<StoreDTO> findAllByCompanyId(Long companyId) {
+        return this.storeRepository.findAllByCompanyId(companyId)
+                .stream()
+                .map(StoreDTO::convertToDTO)
+                .toList();
+    }
+
+    @Override
+    public void disable(Long storeId) {
+        this.storeRepository.disable(storeId);
+    }
+
+    @Override
+    public void activate(Long storeId) {
+        this.storeRepository.activate(storeId);
+    }
+
+    @Override
+    public StoreDTO save(StoreDTO storeDTO) {
+        Store s = StoreDTO.convertToEntity(storeDTO);
+        s.setVisible(true);
+        s.setImageUrl(createImageFileName(s.getId(), s.getName(), s.getImageUrl()));
+
+        Store savedStore = this.storeRepository.save(s);
+        return StoreDTO.convertToDTO(savedStore);
+    }
+
+    @Override
+    public StoreDTO update(Long storeId, StoreDTO storeDTO) {
+        Store existingStore = this.storeRepository.findById(storeId).orElse(null);
+        if (existingStore == null) {
+            throw new IllegalArgumentException("Store not found with ID: " + storeId);
+        }
+
+        Store updatedStore = StoreDTO.convertToEntity(storeDTO);
+        updatedStore.setId(storeId);
+        updatedStore.setName(storeDTO.getName() != null ? storeDTO.getName() : existingStore.getName());
+        updatedStore.setCategory(storeDTO.getCategory() != null ? storeDTO.getCategory() : existingStore.getCategory());
+        updatedStore.setAddress(storeDTO.getAddress() != null ? storeDTO.getAddress() : existingStore.getAddress());
+        updatedStore.setPointsRatio(
+                storeDTO.getPointsRatio() != 0 ? storeDTO.getPointsRatio() : existingStore.getPointsRatio());
+        updatedStore.setVisible(existingStore.isVisible());
+        updatedStore.setImageUrl(createImageFileName(storeId, updatedStore.getName(), updatedStore.getImageUrl()));
+
+        Store savedUpdatedStore = this.storeRepository.save(updatedStore);
+        return StoreDTO.convertToDTO(savedUpdatedStore);
+    }
+
+    private String createImageFileName(Long storeId, String storeName, String originalFileName) {
+        String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
+        return "store_" + storeId + "_" + storeName.replaceAll("\\s+", "_") + extension;
     }
 
 }

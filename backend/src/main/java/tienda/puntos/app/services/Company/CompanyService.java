@@ -1,18 +1,17 @@
-package tienda.puntos.app.services.Company;
-
-import org.jspecify.annotations.Nullable;
+package tienda.puntos.app.services.company;
 
 import tienda.puntos.app.model.dto.CompanyDTO;
 
 public interface CompanyService {
 
-    @Nullable
     CompanyDTO findCompanyByID(Long id);
 
-    @Nullable
     CompanyDTO findCompanyFromUserID(Long userId);
 
-    @Nullable
+    CompanyDTO findCompanyByCIF(String string);
+
     CompanyDTO save(CompanyDTO company);
+
+    CompanyDTO update(Long companyId, CompanyDTO companyDTO);
 
 }

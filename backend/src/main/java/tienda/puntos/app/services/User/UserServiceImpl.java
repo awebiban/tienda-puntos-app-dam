@@ -1,4 +1,4 @@
-package tienda.puntos.app.services.User;
+package tienda.puntos.app.services.user;
 
 import java.time.LocalDateTime;
 
@@ -27,6 +27,14 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email)
                 .map(UserDTO::convertToDTO)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con email: " + email));
+    }
+
+    @Override
+    public UserDTO findById(Long userId) {
+        // En lugar de .get(), usamos .map() y manejamos el error si no existe
+        return userRepository.findById(userId)
+                .map(UserDTO::convertToDTO)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + userId));
     }
 
     @Override
