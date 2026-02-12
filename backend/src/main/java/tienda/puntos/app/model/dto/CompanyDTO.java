@@ -2,12 +2,15 @@ package tienda.puntos.app.model.dto;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import tienda.puntos.app.repository.entity.Company;
 import tienda.puntos.app.utils.SubscriptionStatus;
+import tienda.puntos.app.utils.Views;
 
 @Data
 @AllArgsConstructor
@@ -15,12 +18,25 @@ import tienda.puntos.app.utils.SubscriptionStatus;
 @Builder // Util para crear objetos rapidamente
 public class CompanyDTO {
 
+    @JsonView(Views.Detalle.class)
     private Long id;
+
+    @JsonView(Views.Detalle.class)
     private UserDTO ownerDTO;
+
+    @JsonView(Views.Detalle.class)
     private PlanDTO planDTO;
+
+    @JsonView(Views.Resumen.class)
     private String legalName;
+
+    @JsonView(Views.Resumen.class)
     private String cif;
+
+    @JsonView(Views.Detalle.class)
     private SubscriptionStatus subscriptionStatus;
+
+    @JsonView(Views.Detalle.class)
     private LocalDateTime nextBillingDate;
 
     public static CompanyDTO convertToDTO(Company entity) {

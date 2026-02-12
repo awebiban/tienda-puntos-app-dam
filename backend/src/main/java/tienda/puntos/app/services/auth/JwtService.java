@@ -69,9 +69,14 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    // <--- ESTE ES EL MÉTODO QUE TE FALTA
+    // Asegúrate de que este método esté así en JwtService.java
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractEmail(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        try {
+            final String username = extractEmail(token);
+            // Comparamos el email del token con el del UserDetails y verificamos fecha
+            return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

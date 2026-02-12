@@ -3,11 +3,16 @@ package tienda.puntos.app.model.dto;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import tienda.puntos.app.repository.entity.Store;
+import tienda.puntos.app.utils.Views;
 
 @Data
 @AllArgsConstructor
@@ -15,16 +20,34 @@ import tienda.puntos.app.repository.entity.Store;
 @Builder
 public class StoreDTO {
 
+    @JsonView(Views.Resumen.class)
     private Long id;
+
+    @JsonIgnoreProperties({ "id", "ownerDTO", "planDTO", "subscriptionStatus", "nextBillingDate" })
+    @JsonView(Views.Detalle.class)
     private CompanyDTO companyDTO;
+
+    @JsonView(Views.Resumen.class)
     private String name;
+
+    @JsonView(Views.Resumen.class)
     private String category;
+
+    @JsonView(Views.Resumen.class)
     private String address;
+
+    @JsonView(Views.Resumen.class)
     private String imageUrl;
+
+    @JsonView(Views.Resumen.class)
     private int pointsRatio;
+
+    @JsonView(Views.Resumen.class)
     private boolean isVisible;
 
     // Incluimos las recompensas para que el cliente sepa qué puede canjear
+    @JsonView(Views.Detalle.class)
+    @JsonIgnore
     private Set<RewardDTO> rewardsList;
 
     /**

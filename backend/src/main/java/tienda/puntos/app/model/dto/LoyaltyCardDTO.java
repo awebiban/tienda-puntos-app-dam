@@ -4,11 +4,16 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import tienda.puntos.app.repository.entity.LoyaltyCard;
+import tienda.puntos.app.utils.Views;
 
 @Data
 @AllArgsConstructor
@@ -16,14 +21,26 @@ import tienda.puntos.app.repository.entity.LoyaltyCard;
 @Builder
 public class LoyaltyCardDTO {
 
+    @JsonView(Views.Resumen.class)
     private Long id;
+    @JsonIgnore
     private UserDTO userDTO;
+
+    @JsonView(Views.Resumen.class)
+    @JsonIgnoreProperties({ "companyDTO", "rewardsList", "visible", "transactionList" })
     private StoreDTO storeDTO;
+
+    @JsonView(Views.Resumen.class)
     private int currentBalance;
+
+    @JsonView(Views.Resumen.class)
     private int totalAccumulated;
+
+    @JsonView(Views.Resumen.class)
     private LocalDateTime lastVisited;
 
-    // Lista de DTOs para evitar exponer la entidad Transaction directamente
+    @JsonView(Views.Detalle.class)
+    @JsonIgnoreProperties({ "transactionList" })
     private Set<TransactionDTO> transactionList;
 
     /**

@@ -2,12 +2,15 @@ package tienda.puntos.app.model.dto;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import tienda.puntos.app.repository.entity.Transaction;
 import tienda.puntos.app.utils.TransactionType;
+import tienda.puntos.app.utils.Views;
 
 @Data
 @AllArgsConstructor
@@ -15,10 +18,19 @@ import tienda.puntos.app.utils.TransactionType;
 @Builder
 public class TransactionDTO {
 
+    @JsonView(Views.Detalle.class)
     private Long id;
+
+    @JsonView(Views.Detalle.class)
     private Long loyaltyCardId; // Usamos ID para evitar bucles infinitos en el JSON
+
+    @JsonView(Views.Detalle.class)
     private int amount;
+
+    @JsonView(Views.Detalle.class)
     private TransactionType type;
+
+    @JsonView(Views.Detalle.class)
     private LocalDateTime createdAt;
 
     /**

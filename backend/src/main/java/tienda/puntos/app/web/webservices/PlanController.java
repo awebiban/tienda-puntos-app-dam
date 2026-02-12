@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import tienda.puntos.app.model.dto.PlanDTO;
 import tienda.puntos.app.services.plan.PlanService;
+import tienda.puntos.app.utils.Views;
 
 @RestController
 @RequestMapping("/api/plans")
@@ -23,22 +26,27 @@ public class PlanController {
     private PlanService planService;
 
     @GetMapping("")
+    @JsonView(Views.Detalle.class)
     public ResponseEntity<List<PlanDTO>> findAll() {
         return ResponseEntity.ok(this.planService.findAll());
     }
 
+    @PreAuthorize("hasRole('ADMIN_PLATAFORMA')")
+    @JsonView(Views.Detalle.class)
     @PostMapping("")
     public ResponseEntity<PlanDTO> save(@RequestBody PlanDTO plan) {
         return ResponseEntity.ok(this.planService.save(plan));
     }
 
     @PreAuthorize("hasRole('ADMIN_PLATAFORMA')")
+    @JsonView(Views.Detalle.class)
     @GetMapping("/disable/{planId}")
     public void disable(@PathVariable int planId) {
         this.planService.disable(planId);
     }
 
     @PreAuthorize("hasRole('ADMIN_PLATAFORMA')")
+    @JsonView(Views.Detalle.class)
     @GetMapping("/active/{planId}")
     public void active(@PathVariable int planId) {
         this.planService.active(planId);
