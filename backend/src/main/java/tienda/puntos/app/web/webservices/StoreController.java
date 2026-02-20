@@ -26,7 +26,6 @@ public class StoreController {
     @Autowired
     private StoreService storeService;
 
-    @PreAuthorize("hasRole('ADMIN_PLATAFORMA')")
     @JsonView(Views.Detalle.class)
     @GetMapping("")
     public ResponseEntity<List<StoreDTO>> findAll() {
@@ -35,43 +34,43 @@ public class StoreController {
 
     @GetMapping("/{storeId}")
     @JsonView(Views.Detalle.class)
-    public ResponseEntity<StoreDTO> findById(@PathVariable Long storeId) {
-        return ResponseEntity.ok(this.storeService.findStoreByID(storeId));
+    public ResponseEntity<StoreDTO> findById(@PathVariable("storeId") Long s) {
+        return ResponseEntity.ok(this.storeService.findStoreByID(s));
     }
 
     @GetMapping("/company/{companyId}")
     @JsonView(Views.Detalle.class)
-    public ResponseEntity<List<StoreDTO>> findAllByCompanyId(@PathVariable Long companyId) {
+    public ResponseEntity<List<StoreDTO>> findAllByCompanyId(@PathVariable("companyId") Long c) {
         // Utilizaremos company ID como representante del owner
 
-        return ResponseEntity.ok(this.storeService.findAllByCompanyId(companyId));
+        return ResponseEntity.ok(this.storeService.findAllByCompanyId(c));
     }
 
     @PostMapping("/create")
     @JsonView(Views.Detalle.class)
 
-    public ResponseEntity<StoreDTO> save(@RequestBody StoreDTO storeDTO) {
-        return ResponseEntity.ok(this.storeService.save(storeDTO));
+    public ResponseEntity<StoreDTO> save(@RequestBody StoreDTO s) {
+        return ResponseEntity.ok(this.storeService.save(s));
     }
 
     @PutMapping("/update/{storeId}")
     @JsonView(Views.Detalle.class)
-    public ResponseEntity<StoreDTO> update(@PathVariable Long storeId, @RequestBody StoreDTO storeDTO) {
-        return ResponseEntity.ok(this.storeService.update(storeId, storeDTO));
+    public ResponseEntity<StoreDTO> update(@PathVariable("storeId") Long s, @RequestBody StoreDTO storeDTO) {
+        return ResponseEntity.ok(this.storeService.update(s, storeDTO));
     }
 
     @PreAuthorize("hasRole('ADMIN_PLATAFORMA') or hasRole('ADMIN_NEGOCIO')")
     @GetMapping("/disable/{storeId}")
     @JsonView(Views.Detalle.class)
-    public void disable(@PathVariable Long storeId) {
-        this.storeService.disable(storeId);
+    public void disable(@PathVariable("storeId") Long s) {
+        this.storeService.disable(s);
     }
 
     @PreAuthorize("hasRole('ADMIN_PLATAFORMA') or hasRole('ADMIN_NEGOCIO')")
     @GetMapping("/activate/{storeId}")
     @JsonView(Views.Detalle.class)
-    public void activate(@PathVariable Long storeId) {
-        this.storeService.activate(storeId);
+    public void activate(@PathVariable("storeId") Long s) {
+        this.storeService.activate(s);
     }
 
 }

@@ -17,8 +17,8 @@ public interface PlanService {
     @Nullable
     PlanDTO save(PlanDTO plan);
 
-    void disable(int planId);
+    void disable(Long planId);
 
-    void active(int planId);
+    void active(Long planId);
 
 }

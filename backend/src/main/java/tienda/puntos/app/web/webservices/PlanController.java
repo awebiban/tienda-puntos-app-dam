@@ -41,15 +41,15 @@ public class PlanController {
     @PreAuthorize("hasRole('ADMIN_PLATAFORMA')")
     @JsonView(Views.Detalle.class)
     @GetMapping("/disable/{planId}")
-    public void disable(@PathVariable int planId) {
-        this.planService.disable(planId);
+    public void disable(@PathVariable("planId") Long pid) {
+        this.planService.disable(pid);
     }
 
     @PreAuthorize("hasRole('ADMIN_PLATAFORMA')")
     @JsonView(Views.Detalle.class)
     @GetMapping("/active/{planId}")
-    public void active(@PathVariable int planId) {
-        this.planService.active(planId);
+    public void active(@PathVariable("planId") Long pid) {
+        this.planService.active(pid);
     }
 
 }

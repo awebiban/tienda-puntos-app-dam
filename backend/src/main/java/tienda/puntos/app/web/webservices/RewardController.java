@@ -35,28 +35,28 @@ public class RewardController {
 
     @GetMapping("/{rewardId}")
     @JsonView(Views.Resumen.class)
-    public ResponseEntity<RewardDTO> findById(@PathVariable Long rewardId) {
-        return ResponseEntity.ok(this.rewardService.findRewardById(rewardId));
+    public ResponseEntity<RewardDTO> findById(@PathVariable("rewardId") Long rid) {
+        return ResponseEntity.ok(this.rewardService.findRewardById(rid));
     }
 
     @GetMapping("/store/{storeId}")
     @JsonView(Views.Resumen.class)
-    public ResponseEntity<List<RewardDTO>> findByStore(@PathVariable Long storeId) {
-        return ResponseEntity.ok(this.rewardService.findRewardsByStore(storeId));
+    public ResponseEntity<List<RewardDTO>> findByStore(@PathVariable("storeId") Long sid) {
+        return ResponseEntity.ok(this.rewardService.findRewardsByStore(sid));
     }
 
     @PreAuthorize("hasRole('ADMIN_PLATAFORMA') or hasRole('ADMIN_NEGOCIO')")
     @GetMapping("/active/{rewardId}")
     @JsonView(Views.Detalle.class)
-    public void findActiveById(@PathVariable Long rewardId) {
-        this.rewardService.activeReward(rewardId);
+    public void findActiveById(@PathVariable("rewardId") Long rid) {
+        this.rewardService.activeReward(rid);
     }
 
     @PreAuthorize("hasRole('ADMIN_PLATAFORMA') or hasRole('ADMIN_NEGOCIO')")
     @GetMapping("/disable/{rewardId}")
     @JsonView(Views.Detalle.class)
-    public void disableReward(@PathVariable Long rewardId) {
-        this.rewardService.disableReward(rewardId);
+    public void disableReward(@PathVariable("rewardId") Long rid) {
+        this.rewardService.disableReward(rid);
     }
 
     @PostMapping("/create")
@@ -67,8 +67,8 @@ public class RewardController {
 
     @PutMapping("/update/{id}")
     @JsonView(Views.Detalle.class)
-    public ResponseEntity<RewardDTO> update(@PathVariable Long id, @RequestBody RewardDTO rewardDTO) {
-        return ResponseEntity.ok(this.rewardService.updateReward(id, rewardDTO));
+    public ResponseEntity<RewardDTO> update(@PathVariable("id") Long i, @RequestBody RewardDTO rewardDTO) {
+        return ResponseEntity.ok(this.rewardService.updateReward(i, rewardDTO));
     }
 
 }

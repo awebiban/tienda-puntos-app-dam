@@ -27,8 +27,8 @@ public class UserController {
 
     @GetMapping("/{userId}")
     @JsonView(Views.Detalle.class)
-    public ResponseEntity<UserDTO> findById(@PathVariable Long userId) {
-        return ResponseEntity.ok(this.userService.findById(userId));
+    public ResponseEntity<UserDTO> findById(@PathVariable("userId") Long uid) {
+        return ResponseEntity.ok(this.userService.findById(uid));
     }
 
     @PostMapping("/email")

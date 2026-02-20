@@ -29,14 +29,14 @@ public class LoyaltyController {
 
     @GetMapping("/user/{userId}")
     @JsonView(Views.Resumen.class)
-    public ResponseEntity<List<LoyaltyCardDTO>> getMyCards(@PathVariable Long userId) {
-        return ResponseEntity.ok(loyaltyService.getCardsByUser(userId));
+    public ResponseEntity<List<LoyaltyCardDTO>> getMyCards(@PathVariable("userId") Long uid) {
+        return ResponseEntity.ok(loyaltyService.getCardsByUser(uid));
     }
 
     @GetMapping("/history/{cardId}")
     @JsonView(Views.Detalle.class)
-    public ResponseEntity<List<TransactionDTO>> getHistory(@PathVariable Long cardId) {
-        return ResponseEntity.ok(loyaltyService.getHistory(cardId));
+    public ResponseEntity<List<TransactionDTO>> getHistory(@PathVariable("cardId") Long cid) {
+        return ResponseEntity.ok(loyaltyService.getHistory(cid));
     }
 
     @PostMapping("/add-points")

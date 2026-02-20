@@ -27,8 +27,8 @@ public class CompanyController {
 
     @GetMapping("/{id}")
     @JsonView(Views.Detalle.class)
-    public ResponseEntity<CompanyDTO> findCompanyByID(@PathVariable Long id) {
-        return ResponseEntity.ok(companyService.findCompanyByID(id));
+    public ResponseEntity<CompanyDTO> findCompanyByID(@PathVariable("id") Long i) {
+        return ResponseEntity.ok(companyService.findCompanyByID(i));
     }
 
     @PostMapping("/cif")
@@ -52,8 +52,8 @@ public class CompanyController {
 
     @PutMapping("/update/{companyId}")
     @JsonView(Views.Detalle.class)
-    public ResponseEntity<CompanyDTO> update(@PathVariable Long companyId, @RequestBody CompanyDTO companyDTO) {
-        return ResponseEntity.ok(companyService.update(companyId, companyDTO));
+    public ResponseEntity<CompanyDTO> update(@PathVariable("companyId") Long cid, @RequestBody CompanyDTO companyDTO) {
+        return ResponseEntity.ok(companyService.update(cid, companyDTO));
     }
 
 }

@@ -38,12 +38,12 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public void disable(int planId) {
+    public void disable(Long planId) {
         this.planRepository.disable(planId);
     }
 
     @Override
-    public void active(int planId) {
+    public void active(Long planId) {
         this.planRepository.active(planId);
     }
 
