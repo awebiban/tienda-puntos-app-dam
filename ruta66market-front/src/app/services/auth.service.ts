@@ -10,7 +10,7 @@ import { development, production } from '../models/environments/environment';
 export class AuthService {
 
   private dev = development.url;
-  private prod = production.url;
+  private __prod = production.url;
 
   constructor(
     private http: HttpClient,

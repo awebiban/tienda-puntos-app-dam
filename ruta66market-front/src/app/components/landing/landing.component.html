@@ -1,0 +1,72 @@
+<div class="min-h-screen bg-gray-50 p-0 md:p-8 lg:p-12">
+
+    <div class="max-w-6xl mx-auto bg-white shadow-xl rounded-none md:rounded-3xl overflow-hidden min-h-[90vh]">
+
+        <header class="p-6 md:p-10 bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
+            @if (user) {
+            <h1 class="text-3xl font-bold">¡Hola de nuevo, {{ user.nickname }}!</h1>
+            <p class="opacity-90">Tienes puntos acumulados en {{ loyaltyCards.length }} tiendas.</p>
+            } @else {
+            <h1 class="text-3xl font-bold">Bienvenido a LoyaltyApp</h1>
+            <p class="opacity-90">Gestiona tus puntos y recompensas en un solo lugar.</p>
+            <button class="mt-4 px-6 py-2 bg-white text-blue-600 rounded-full font-semibold text-sm">
+                Iniciar Sesión
+            </button>
+            }
+        </header>
+
+        <main class="p-6 space-y-10">
+
+            <section>
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-gray-800">Tus Tarjetas de Puntos</h2>
+                    <div class="hidden md:flex space-x-2">
+                        <button (click)="scrollCards(-1)"
+                            class="p-2 bg-gray-100 rounded-full hover:bg-gray-200">←</button>
+                        <button (click)="scrollCards(1)"
+                            class="p-2 bg-gray-100 rounded-full hover:bg-gray-200">→</button>
+                    </div>
+                </div>
+
+                <div #cardContainer class="flex gap-4 overflow-x-auto snap-x scroll-smooth no-scrollbar pb-4">
+                    @for (card of loyaltyCards; track card.id) {
+                    <div
+                        class="min-w-[280px] md:min-w-[calc(25%-12px)] bg-indigo-600 text-white p-5 rounded-2xl snap-start shadow-md relative overflow-hidden">
+                        <div class="relative z-10">
+                            <p class="text-xs uppercase opacity-70">{{ card.storeDTO.name }}</p>
+                            <p class="text-2xl font-mono mt-2">{{ card.currentBalance }} pts</p>
+                        </div>
+                        <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-white/10 rounded-full"></div>
+                    </div>
+                    } @empty {
+                    <p class="text-gray-500 italic">Aún no tienes tarjetas. ¡Visita una tienda para empezar!</p>
+                    }
+                </div>
+            </section>
+
+            <hr class="border-gray-100">
+
+            <section>
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Tiendas Recomendadas</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    @for (store of stores; track store.id) {
+                    <div
+                        class="flex items-center p-4 border border-gray-100 rounded-xl hover:shadow-lg transition-shadow bg-white">
+                        <img [src]="'assets/images/stores/' + store.imageUrl" [alt]="store.name"
+                            class="w-16 h-16 rounded-lg object-cover bg-gray-100">
+                        <!-- REVISAR RUTA DE IMÁGENES // CREAR SERVICIO DE IMAGENES -->
+                        <!--  VER SI SE PUEDE HACER CON Firebase / Supabase -->
+                        <div class="ml-4">
+                            <h3 class="font-bold text-gray-900">{{ store.name }}</h3>
+                            <p class="text-sm text-gray-500">{{ store.category }}</p>
+                            <span class="text-xs text-blue-600 font-medium">Gana {{ store.pointsRatio }} pts /
+                                1€</span>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </section>
+
+        </main>
+    </div>
+</div>

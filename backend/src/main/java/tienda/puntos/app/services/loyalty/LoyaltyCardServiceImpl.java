@@ -63,7 +63,7 @@ public class LoyaltyCardServiceImpl implements LoyaltyCardService {
                     return newCard;
                 });
 
-        int pointsToAdd = amountSpent * store.getPointsRatio();
+        int pointsToAdd = amountSpent <= 1 ? 0 : Math.round(amountSpent / (float) store.getPointsRatio());
 
         card.setCurrentBalance(card.getCurrentBalance() + pointsToAdd);
         card.setTotalAccumulated(card.getTotalAccumulated() + pointsToAdd);
