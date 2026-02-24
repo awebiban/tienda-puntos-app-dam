@@ -1,14 +1,17 @@
 package tienda.puntos.app.services.loyalty;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import tienda.puntos.app.model.dto.LoyaltyCardDTO;
 import tienda.puntos.app.repository.dao.LoyaltyCardRepository;
-import tienda.puntos.app.repository.dao.UserRepository;
 import tienda.puntos.app.repository.dao.StoreRepository;
+import tienda.puntos.app.repository.dao.UserRepository;
 import tienda.puntos.app.repository.entity.LoyaltyCard;
 
 @Service
@@ -20,6 +23,13 @@ public class LoyaltyCardServiceImpl implements LoyaltyCardService {
     private UserRepository userRepository;
     @Autowired
     private StoreRepository storeRepository;
+
+    @Override
+    public LoyaltyCardDTO getCardById(Long cid) {
+        return loyaltyCardRepository.findById(cid)
+                .map(LoyaltyCardDTO::convertToDTO)
+                .orElseThrow(() -> new RuntimeException("Tarjeta no encontrada"));
+    }
 
     @Override
     public List<LoyaltyCardDTO> getCardsByStore(Long storeId) {
@@ -53,8 +63,33 @@ public class LoyaltyCardServiceImpl implements LoyaltyCardService {
                 });
     }
 
-    @Override public List<LoyaltyCardDTO> getCardsByUser(Long userId) { return loyaltyCardRepository.findByUserId(userId).stream().map(LoyaltyCardDTO::convertToDTO).collect(Collectors.toList()); }
-    @Override public LoyaltyCardDTO addPoints(Long u, Long s, int a) { return null; } // Obsoleto por addPointsToCard
-    @Override public List<tienda.puntos.app.model.dto.TransactionDTO> getHistory(Long c) { return List.of(); }
-    @Override public LoyaltyCardDTO redeemReward(Long u, Long s, Long r) { return null; }
+    @Override
+    public List<LoyaltyCardDTO> getCardsByUser(Long userId) {
+        return loyaltyCardRepository.findByUserId(userId).stream().map(LoyaltyCardDTO::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Deprecated
+    public LoyaltyCardDTO addPoints(Long u, Long s, int a) {
+        return null;
+    } // Obsoleto por addPointsToCard
+
+    @Override
+    public List<tienda.puntos.app.model.dto.TransactionDTO> getHistory(Long c) {
+        return List.of();
+    }
+
+    @Override
+    public LoyaltyCardDTO redeemReward(Long u, Long s, Long r) {
+        return null;
+    }
+
+    @Override
+    public void updateLastAccess(Long cardId) {
+        System.out.println("Updating last access for card: " + cardId);
+        Date dateTime = new Date();
+        loyaltyCardRepository.updateLastAccess(cardId, dateTime);
+    }
+
 }

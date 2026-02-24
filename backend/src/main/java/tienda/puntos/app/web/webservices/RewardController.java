@@ -40,7 +40,7 @@ public class RewardController {
     }
 
     @GetMapping("/store/{storeId}")
-    @JsonView(Views.Resumen.class)
+    @JsonView(Views.Detalle.class)
     public ResponseEntity<List<RewardDTO>> findByStore(@PathVariable("storeId") Long sid) {
         return ResponseEntity.ok(this.rewardService.findRewardsByStore(sid));
     }

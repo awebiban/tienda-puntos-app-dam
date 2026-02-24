@@ -5,11 +5,11 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,6 +29,11 @@ public class LoyaltyController {
     @Autowired
     private LoyaltyCardService loyaltyService;
 
+    @GetMapping("/{cardId}")
+    public ResponseEntity<LoyaltyCardDTO> getCardById(@PathVariable("cardId") Long cid) {
+        return ResponseEntity.ok(loyaltyService.getCardById(cid));
+    }
+
     /**
      * Devuelve las tarjetas de un cliente específico.
      */
@@ -39,7 +44,8 @@ public class LoyaltyController {
     }
 
     /**
-     * NUEVO: Devuelve todas las tarjetas de una tienda (para el panel del vendedor).
+     * NUEVO: Devuelve todas las tarjetas de una tienda (para el panel del
+     * vendedor).
      */
     @GetMapping("/store/{storeId}")
     @JsonView(Views.Resumen.class)
@@ -48,14 +54,14 @@ public class LoyaltyController {
     }
 
     /**
-     * NUEVO: Crea una tarjeta de fidelidad cuando un usuario se une desde la landing.
+     * NUEVO: Crea una tarjeta de fidelidad cuando un usuario se une desde la
+     * landing.
      */
     @PostMapping("/join")
     public ResponseEntity<LoyaltyCardDTO> joinStore(@RequestBody Map<String, Long> payload) {
         return ResponseEntity.ok(loyaltyService.createCard(
                 payload.get("userId"),
-                payload.get("storeId")
-        ));
+                payload.get("storeId")));
     }
 
     @GetMapping("/history/{cardId}")
@@ -71,7 +77,8 @@ public class LoyaltyController {
     @PostMapping("/add-points")
     @JsonView(Views.Detalle.class)
     public ResponseEntity<LoyaltyCardDTO> addPoints(@RequestBody Map<String, Object> payload) {
-        // Si el frontend envía cardId directamente (más fácil para el Merchant Dashboard)
+        // Si el frontend envía cardId directamente (más fácil para el Merchant
+        // Dashboard)
         if (payload.containsKey("cardId")) {
             Long cardId = Long.valueOf(payload.get("cardId").toString());
             int points = Integer.parseInt(payload.get("points").toString());
@@ -92,5 +99,10 @@ public class LoyaltyController {
                 payload.get("userId"),
                 payload.get("storeId"),
                 payload.get("rewardId")));
+    }
+
+    @PutMapping("/update-last-access/{cardId}")
+    public void updateLastAccess(@PathVariable Long cardId, @RequestBody String entity) {
+        loyaltyService.updateLastAccess(cardId);
     }
 }

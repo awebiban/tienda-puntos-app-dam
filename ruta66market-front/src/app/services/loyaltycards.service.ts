@@ -8,9 +8,14 @@ import { LoyaltyCard } from '../models/LoyaltyCard';
   providedIn: 'root'
 })
 export class LoyaltycardsService {
+
   private dev = development.url;
 
   constructor(private http: HttpClient) { }
+
+  findByCardId(cardId: number) {
+    return this.http.get<LoyaltyCard>(`${this.dev}/loyalty/${cardId}`);
+  }
 
   getAllLoyaltyCardsByUserId(userId: number): Observable<LoyaltyCard[]> {
     console.log(`%c[Request] %cSolicitando tarjetas para User ID: ${userId}`, 'color: #f59e0b; font-weight: bold', 'color: #94a3b8');
@@ -32,5 +37,9 @@ export class LoyaltycardsService {
     const payload = { userId, storeId };
     console.log(`%c[POST] %cUniendo usuario ${userId} a tienda ${storeId}`, 'color: #f59e0b; font-weight: bold', 'color: gray');
     return this.http.post<any>(`${this.dev}/loyalty/join`, payload);
+  }
+
+  updateLastAccess(cardId: number) {
+    return this.http.put<any>(`${this.dev}/loyalty/update-last-access/${cardId}`, {});
   }
 }

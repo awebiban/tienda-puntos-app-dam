@@ -1,9 +1,10 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { LoyaltycardsService } from '../../../services/loyaltycards.service';
-import { AuthService } from '../../../services/auth.service';
 import { LoyaltyCard } from '../../../models/LoyaltyCard';
+import { Store } from '../../../models/Store';
+import { AuthService } from '../../../services/auth.service';
+import { LoyaltycardsService } from '../../../services/loyaltycards.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,10 +14,12 @@ import { LoyaltyCard } from '../../../models/LoyaltyCard';
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit {
+
   loyaltyCards: LoyaltyCard[] = [];
   isLoading: boolean = true;
 
   userName: string = 'Cliente';
+  userRole: string = '';
   currentUserId: number = 0;
 
   constructor(
@@ -24,19 +27,19 @@ export class DashboardComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private cdr: ChangeDetectorRef // 👈 La herramienta para forzar el redibujado
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    // 1. Recuperamos tus datos reales del inicio de sesión
     const storedId = localStorage.getItem('userId');
     const storedName = localStorage.getItem('userName');
+    const storedRole = localStorage.getItem('userRole');
 
     if (storedId) {
       this.currentUserId = Number(storedId);
       this.userName = storedName || 'Cliente';
+      this.userRole = storedRole || '';
       this.loadMyCards();
     } else {
-      // Si por lo que sea no hay ID, te mandamos al login por seguridad
       this.logout();
     }
   }
@@ -60,8 +63,13 @@ export class DashboardComponent implements OnInit {
   }
 
   logout(): void {
-    localStorage.clear(); // Limpiamos la memoria al salir
+    localStorage.clear();
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  goToStore(store: Store | null, card: LoyaltyCard) {
+    let trimedName = store?.name?.trim().toLowerCase().replace(/\s+/g, '-');
+    this.router.navigate(['/customer/store', trimedName], { queryParams: { cardId: card.id } });
   }
 }

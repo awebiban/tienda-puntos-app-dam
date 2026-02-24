@@ -26,6 +26,10 @@ export const routes: Routes = [
                 loadComponent: () => import('./components/customer/dashboard/dashboard.component').then(m => m.DashboardComponent),
             },
             {
+                path: 'store/:storeName',
+                loadComponent: () => import('./components/customer/store-detail/store-detail').then(m => m.StoreDetail),
+            },
+            {
                 path: 'my-points',
                 loadComponent: () => import('./components/customer/points-history/points-history.component').then(m => m.PointsHistoryComponent),
             },

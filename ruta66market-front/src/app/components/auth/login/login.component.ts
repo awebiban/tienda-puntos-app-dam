@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
@@ -27,7 +27,7 @@ export class LoginComponent {
     });
   }
 
-onSubmit(): void {
+  onSubmit(): void {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
@@ -38,19 +38,20 @@ onSubmit(): void {
 
     const { email, password } = this.loginForm.value;
 
-this.authService.login(email, password).subscribe({
+    this.authService.login(email, password).subscribe({
       next: (res) => {
         localStorage.setItem('token', res.token);
         localStorage.setItem('userId', res.id);
         localStorage.setItem('userName', res.nickname);
         localStorage.setItem('userRole', res.role);
 
-        // Redirección directa según el rol en USA-dos [cite: 2026-02-20]
-        if (res.role === 'ADMIN_NEGOCIO') {
-          this.router.navigate(['/business/dashboard']);
-        } else {
-          this.router.navigate(['/customer/dashboard']);
-        }
+        // Dependiendo del rol, te mandamos a un sitio u otro. Por ahora, TODO AL DASHBOARD GENERAL
+        // if (res.role === 'ADMIN_NEGOCIO') {
+        //   this.router.navigate(['/business/dashboard']);
+        // } else {
+        //   this.router.navigate(['/customer/dashboard']);
+        // }
+        this.router.navigate(['/customer/dashboard']);
       },
       error: (err) => {
         this.isLoading = false;

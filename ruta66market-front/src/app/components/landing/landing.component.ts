@@ -1,10 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { RouterLink, Router } from '@angular/router';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { LoyaltyCard } from '../../models/LoyaltyCard';
 import { Store } from '../../models/Store';
+import { AuthService } from '../../services/auth.service';
 import { LoyaltycardsService } from '../../services/loyaltycards.service';
 import { StoresService } from '../../services/stores.service';
-import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-landing',
@@ -17,6 +17,8 @@ export class LandingComponent implements OnInit {
 
   @ViewChild('cardContainer') cardContainer!: ElementRef;
 
+  isLoadingStores: boolean = true;
+
   userName: string | null = null;
   currentUserId: number | null = null;
 
@@ -27,7 +29,8 @@ export class LandingComponent implements OnInit {
     private loyaltyCardService: LoyaltycardsService,
     private storesService: StoresService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -47,11 +50,19 @@ export class LandingComponent implements OnInit {
   }
 
   loadStores(): void {
+    console.log('1. Iniciando carga de tiendas...');
+    this.isLoadingStores = true;
+
     this.storesService.getAllStores().subscribe({
       next: (data: any[]) => {
-        this.stores = data.filter(store => store.isVisible);
+        this.stores = data; // Prueba sin filtrar primero
+        this.isLoadingStores = false;
+        this.cdr.detectChanges(); // <--- Esto fuerza a la vista a refrescarse
       },
-      error: (error) => console.error('Error al cargar las tiendas:', error)
+      error: (error) => {
+        console.error('ERROR CRÍTICO:', error);
+        this.isLoadingStores = false; // Si falla, también debemos quitar el skeleton
+      }
     });
   }
 

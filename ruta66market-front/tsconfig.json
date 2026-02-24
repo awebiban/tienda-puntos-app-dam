@@ -13,7 +13,9 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "ES2022",
-    "module": "preserve"
+    "module": "ESNext", // 1. Cambia 'preserve' por 'ESNext'
+    "moduleResolution": "Bundler", // 2. Asegúrate de que use 'Bundler' o 'Node'
+    "esModuleInterop": true // 3. Añade esta línea si no está
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
