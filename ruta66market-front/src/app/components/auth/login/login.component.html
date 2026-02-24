@@ -1,1 +1,86 @@
-<p>login works!</p>
+<div class="min-h-screen w-full flex items-center justify-center p-6 relative overflow-hidden bg-slate-900">
+    <div class="absolute top-0 left-0 w-[800px] h-[800px] bg-blue-600/30 rounded-full blur-[150px] -translate-x-1/2 -translate-y-1/2 animate-pulse"></div>
+    <div class="absolute bottom-0 right-0 w-[600px] h-[600px] bg-violet-600/20 rounded-full blur-[150px] translate-x-1/4 translate-y-1/4 animate-pulse" style="animation-delay: 2s"></div>
+
+    <div class="w-full max-w-[450px] glass-panel-dark rounded-[2.5rem] p-10 relative z-10 animate-fade-in-up shadow-2xl border-white/5">
+
+        <div class="text-center mb-12">
+            <div class="w-20 h-20 bg-gradient-to-tr from-blue-500 to-violet-600 rounded-2xl mx-auto mb-6 shadow-lg shadow-indigo-500/30 flex items-center justify-center rotate-12 hover:rotate-0 transition-all duration-500">
+                <i class="bi bi-wallet2 text-4xl text-white"></i>
+            </div>
+            <h2 class="text-4xl font-extrabold text-white tracking-tight drop-shadow-sm mb-3">¡Hola de nuevo!</h2>
+            <p class="text-lg text-slate-300 font-light leading-relaxed">Tu próxima recompensa está a solo un clic de distancia.</p>
+        </div>
+
+        @if (errorMessage) {
+            <div class="mb-8 bg-red-500/20 backdrop-blur-md text-red-200 p-4 rounded-2xl text-sm text-center border border-red-500/30 flex items-center justify-center gap-3 animate-pulse">
+                <i class="bi bi-exclamation-circle-fill text-xl"></i>
+                {{ errorMessage }}
+            </div>
+        }
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
+            <div class="group">
+                <label for="email" class="block text-sm font-bold text-slate-300 mb-2 ml-2 group-focus-within:text-indigo-400 transition-colors">Correo Electrónico</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-slate-400">
+                        <i class="bi bi-envelope text-lg"></i>
+                    </div>
+                    <input type="email" id="email" formControlName="email"
+                           class="input-modern pl-14 bg-white/5 border-white/10 text-white placeholder-slate-500 focus:bg-white/10 focus:border-indigo-500/50"
+                           [class.!border-red-400/50]="emailControl?.invalid && emailControl?.touched"
+                           placeholder="nombre@ejemplo.com">
+                </div>
+
+                @if (emailControl?.invalid && emailControl?.touched) {
+                    <div class="text-red-300 text-xs font-bold mt-2 ml-2 flex items-center gap-2 animate-fade-in-up">
+                        <i class="bi bi-x-circle-fill"></i>
+                        @if (emailControl?.errors?.['required']) { <span>El correo es obligatorio.</span> }
+                        @if (emailControl?.errors?.['email']) { <span>Formato inválido.</span> }
+                    </div>
+                }
+            </div>
+
+            <div class="group">
+                <label for="password" class="block text-sm font-bold text-slate-300 mb-2 ml-2 group-focus-within:text-indigo-400 transition-colors">Contraseña</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-slate-400">
+                        <i class="bi bi-lock text-lg"></i>
+                    </div>
+                    <input type="password" id="password" formControlName="password"
+                           class="input-modern pl-14 bg-white/5 border-white/10 text-white placeholder-slate-500 focus:bg-white/10 focus:border-indigo-500/50"
+                           [class.!border-red-400/50]="passwordControl?.invalid && passwordControl?.touched"
+                           placeholder="••••••••">
+                </div>
+
+                @if (passwordControl?.invalid && passwordControl?.touched) {
+                    <div class="text-red-300 text-xs font-bold mt-2 ml-2 flex items-center gap-2 animate-fade-in-up">
+                        <i class="bi bi-x-circle-fill"></i>
+                        @if (passwordControl?.errors?.['required']) { <span>La contraseña es obligatoria.</span> }
+                        @if (passwordControl?.errors?.['minlength']) { <span>Mínimo 6 caracteres.</span> }
+                    </div>
+                }
+            </div>
+
+            <button type="submit" [disabled]="loginForm.invalid || isLoading" class="btn-primary-glow w-full text-lg shadow-indigo-500/30 mt-8">
+                @if (isLoading) {
+                    <svg class="animate-spin -ml-1 h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Validando...
+                } @else {
+                    <i class="bi bi-box-arrow-in-right text-xl"></i>
+                    Iniciar Sesión
+                }
+            </button>
+        </form>
+
+        <div class="mt-10 text-center text-slate-400">
+            <p class="text-sm">
+                ¿Aún no tienes cuenta?
+                <a routerLink="/register" class="text-indigo-300 font-bold hover:text-white transition-colors underline decoration-2 decoration-indigo-500/30 underline-offset-4 hover:decoration-indigo-400">Regístrate gratis</a>
+            </p>
+        </div>
+    </div>
+</div>

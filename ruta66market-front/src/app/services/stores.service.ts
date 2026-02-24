@@ -1,50 +1,34 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { development, production } from '../models/environments/environment';
-import { Store } from '../models/Store';
-import { AuthService } from './auth.service';
+import { Observable, tap } from 'rxjs';
+import { development } from '../models/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StoresService {
-
   private dev = development.url;
-  private __prod = production.url;
 
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    private authService: AuthService,
-  ) { }
+  constructor(private http: HttpClient) { }
 
-  getAllStores(): Observable<Store[]> {
-    return this.http.get<Store[]>(`${this.dev}/store/`);
+  // Obtener todas las tiendas (Para la Landing Page)
+  getAllStores(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.dev}/stores`).pipe(
+      tap(data => console.log('%c[GET] /stores %cEstructura recibida:', 'color: #0ea5e9; font-weight: bold', 'color: gray', data))
+    );
   }
 
-  getStoreById(id: string): Observable<Store> {
-    return this.http.get<Store>(`${this.dev}/store/${id}`);
+  // Obtener tienda por ID del dueño/empresa
+  getStoreByOwnerId(ownerId: number): Observable<any> {
+    return this.http.get<any>(`${this.dev}/stores/owner/${ownerId}`).pipe(
+      tap(data => console.log(`%c[GET] /stores/owner/${ownerId} %cDatos:`, 'color: #0ea5e9; font-weight: bold', 'color: gray', data))
+    );
   }
 
-  getStoresByCompanyId(companyId: number): Observable<Store[]> {
-    return this.http.get<Store[]>(`${this.dev}/store/company/${companyId}`);
-  }
-
-  createStore(storeData: Store): Observable<Store> {
-    return this.http.post<Store>(`${this.dev}/store/create`, storeData);
-  }
-
-  updateStore(id: number, storeData: Store): Observable<Store> {
-    return this.http.put<Store>(`${this.dev}/store/update/${id}`, storeData);
-  }
-
-  setVisibilityOff(id: number): Observable<Store> {
-    return this.http.get<Store>(`${this.dev}/store/disable/${id}`)
-  }
-
-  setVisibilityOn(id: number): Observable<Store> {
-    return this.http.get<Store>(`${this.dev}/store/activate/${id}`)
+  // Crear o actualizar una tienda (Para el StoreConfigComponent)
+  saveStore(storeData: any): Observable<any> {
+    return this.http.post<any>(`${this.dev}/stores`, storeData).pipe(
+      tap(data => console.log('%c[POST] /stores %cRespuesta del servidor:', 'color: #10b981; font-weight: bold', 'color: gray', data))
+    );
   }
 }

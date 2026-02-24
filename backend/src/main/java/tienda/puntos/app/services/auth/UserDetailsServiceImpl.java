@@ -17,15 +17,23 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        // Buscamos al usuario por email en la base de datos
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con email: " + email));
+        System.out.println("====== INTENTO DE LOGIN ======");
+        System.out.println("1. Buscando email: " + email);
 
-        // Retornamos un objeto UserDetails que Spring Security entiende
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> {
+                    System.out.println("❌ ERROR: El email no existe en la BBDD.");
+                    return new UsernameNotFoundException("Usuario no encontrado con email: " + email);
+                });
+
+        System.out.println("2. ¡Usuario encontrado!: " + user.getNickname());
+        System.out.println("3. Hash guardado en BBDD: " + user.getPassword());
+        System.out.println("==============================");
+
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getEmail())
                 .password(user.getPassword())
-                .roles(user.getRole().name()) // Asegúrate de que Role sea un Enum o String
+                .roles(user.getRole().name())
                 .build();
     }
 }

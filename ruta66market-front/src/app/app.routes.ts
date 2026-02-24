@@ -37,6 +37,11 @@ export const routes: Routes = [
         path: 'business',
         children: [
             {
+                // NUEVA RUTA: Panel principal para sumar puntos
+                path: 'dashboard',
+                loadComponent: () => import('./components/business/merchant-dashboard/merchant-dashboard').then(m => m.MerchantDashboardComponent),
+            },
+            {
                 path: 'setup-store',
                 loadComponent: () => import('./components/business/store-config/store-config.component').then(m => m.StoreConfigComponent),
             },

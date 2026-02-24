@@ -1,2 +1,60 @@
-@import "bootstrap/scss/bootstrap";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import "bootstrap-icons/font/bootstrap-icons.css";
+
+// Fondo global moderno para toda la aplicación
+body {
+  @apply bg-slate-50 text-slate-800 overflow-x-hidden font-sans;
+  // Un sutil degradado de fondo que da profundidad sin distraer
+  background-image:
+    radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.15) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(56, 189, 248, 0.1) 0px, transparent 50%);
+  background-attachment: fixed;
+}
+
+@layer utilities {
+  // UTILIDAD DE EFECTO CRISTAL (Glassmorphism)
+  .glass-panel {
+    @apply bg-white/80 backdrop-blur-xl border border-white/50 shadow-[0_8px_30px_rgb(0,0,0,0.12)];
+  }
+
+  .glass-panel-dark {
+    @apply bg-slate-900/80 backdrop-blur-xl border border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.3)];
+  }
+
+  // TARJETA INTERACTIVA PREMIUM
+  .card-premium-hover {
+    @apply transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.2)] cursor-pointer border border-transparent hover:border-indigo-100;
+  }
+
+  // TARJETA DE FIDELIDAD SUPREMA
+  .loyalty-card-supreme {
+    // Un degradado complejo y profundo
+    background: conic-gradient(at top left, #312e81, #4f46e5, #7c3aed, #312e81);
+    @apply relative overflow-hidden transition-all duration-500 hover:scale-[1.02] hover:rotate-1 hover:shadow-[0_30px_60px_-15px_rgba(79,70,229,0.8)];
+    border: 1px solid rgba(255,255,255,0.1);
+
+    // Efecto de brillo satinado al pasar el ratón
+    &::before {
+        content: '';
+        @apply absolute inset-0 bg-gradient-to-tr from-white/0 via-white/30 to-white/0 opacity-0 transition-opacity duration-500;
+    }
+    &:hover::before {
+        @apply opacity-100;
+    }
+  }
+
+  // BOTÓN PRIMARIO MEJORADO
+  .btn-primary-glow {
+    @apply bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 text-white font-bold py-4 px-8 rounded-2xl transition-all duration-500 hover:scale-105 hover:shadow-[0_10px_40px_-10px_rgba(79,70,229,0.6)] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none flex justify-center items-center gap-3 tracking-wide;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  }
+
+  // INPUTS MODERNOS
+  .input-modern {
+    @apply w-full px-5 py-4 bg-white/70 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all duration-300 backdrop-blur-sm text-slate-700 placeholder-slate-400 shadow-sm focus:shadow-md;
+  }
+}

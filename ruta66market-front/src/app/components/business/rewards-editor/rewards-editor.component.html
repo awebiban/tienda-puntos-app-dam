@@ -1,1 +1,84 @@
-<p>rewards-editor works!</p>
+<div class="min-h-screen bg-slate-50 pb-20 relative">
+    <nav class="glass-panel sticky top-4 mx-4 lg:mx-auto max-w-7xl rounded-2xl z-50 my-4 px-6 py-4 flex justify-between items-center shadow-lg bg-white/90">
+        <div class="flex items-center gap-4">
+            <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-500/30">
+                <i class="bi bi-gift-fill"></i>
+            </div>
+            <h1 class="text-xl font-extrabold text-slate-900">Editor de Recompensas</h1>
+        </div>
+        <button routerLink="/business/setup-store" class="text-sm font-bold text-slate-500 hover:text-indigo-600 transition-all flex items-center gap-2">
+            <i class="bi bi-gear"></i> Ajustes Tienda
+        </button>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 mt-12 grid grid-cols-1 lg:grid-cols-12 gap-10 animate-fade-in-up">
+
+        <div class="lg:col-span-5 space-y-8">
+            <div class="glass-panel p-8 rounded-[2.5rem] bg-white shadow-sm border border-slate-100">
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-6">Nueva Recompensa</h2>
+
+                <form [formGroup]="rewardForm" (ngSubmit)="addReward()" class="space-y-5">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Título del Premio</label>
+                        <input type="text" formControlName="title" class="input-modern bg-slate-50" placeholder="Ej. 10% de Descuento">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-2">Coste (Puntos)</label>
+                            <input type="number" formControlName="pointsCost" class="input-modern bg-slate-50 font-mono font-bold text-indigo-600">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-2">Categoría</label>
+                            <select formControlName="category" class="input-modern bg-slate-50">
+                                <option value="Descuento">Descuento</option>
+                                <option value="Producto">Producto</option>
+                                <option value="Servicio">Servicio</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Descripción</label>
+                        <textarea formControlName="description" rows="3" class="input-modern bg-slate-50" placeholder="Detalles del canje..."></textarea>
+                    </div>
+
+                    <button type="submit" [disabled]="rewardForm.invalid" class="btn-primary-glow w-full mt-4">
+                        <i class="bi bi-plus-circle"></i> Crear Recompensa
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="lg:col-span-7 space-y-6">
+            <h2 class="text-2xl font-extrabold text-slate-900 mb-6 flex items-center gap-3">
+                Premios Activos <span class="text-sm font-medium bg-slate-200 px-3 py-1 rounded-full text-slate-600">{{ rewards.length }}</span>
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                @for (reward of rewards; track reward.id) {
+                    <div class="glass-panel p-6 rounded-3xl border border-slate-100 relative group overflow-hidden hover:shadow-xl transition-all card-premium-hover bg-white">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="px-3 py-1 bg-indigo-50 text-indigo-600 text-[10px] font-black uppercase tracking-widest rounded-full">{{ reward.category }}</span>
+                            <button (click)="deleteReward(reward.id)" class="text-slate-300 hover:text-red-500 transition-colors">
+                                <i class="bi bi-trash3-fill"></i>
+                            </button>
+                        </div>
+                        <h3 class="text-xl font-extrabold text-slate-900 mb-2 leading-tight">{{ reward.title }}</h3>
+                        <p class="text-xs text-slate-500 mb-6 line-clamp-2">{{ reward.description }}</p>
+
+                        <div class="flex justify-between items-center pt-4 border-t border-slate-50">
+                            <div class="flex flex-col">
+                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">Coste</span>
+                                <span class="text-2xl font-mono font-black text-indigo-600">{{ reward.pointsCost }} <span class="text-xs font-sans">pts</span></span>
+                            </div>
+                            <div class="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-white shadow-lg">
+                                <i class="bi bi-qr-code"></i>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </main>
+</div>

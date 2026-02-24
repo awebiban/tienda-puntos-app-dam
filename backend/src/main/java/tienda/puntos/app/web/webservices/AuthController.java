@@ -9,7 +9,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,20 +18,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import tienda.puntos.app.model.dto.UserDTO;
 import tienda.puntos.app.services.auth.JwtService;
-import tienda.puntos.app.services.user.UserService;
+import tienda.puntos.app.services.User.UserService;
 import tienda.puntos.app.utils.Role;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = { "http://localhost:4200",
-        "https://ruta66.synology.me" })
+@CrossOrigin(origins = { "http://localhost:4200", "https://ruta66.synology.me" })
 public class AuthController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private JwtService jwtService;
@@ -42,17 +37,6 @@ public class AuthController {
 
     /**
      * Hace login un usuario en el sistema.
-     *
-     * @param loginRequest JSON que contiene la información básica del
-     *                     usuario:<br>
-     *                     - email (String): Correo electrónico único del
-     *                     usuario.<br>
-     *                     - password (String): Contraseña en texto plano que
-     *                     será encriptada antes de comprobar.
-     *
-     * @return ResponseEntity con:<br>
-     *         - 200 (Ok) y inicia sesión.<br>
-     *         - 401 (Unautorized) si las credenciales son erroneas.<br>
      */
     @PostMapping("/log-in")
     public ResponseEntity<?> login(@RequestBody Map<String, String> loginRequest) {
@@ -63,20 +47,18 @@ public class AuthController {
             Authentication auth = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(email, password));
 
-            // CORRECCIÓN: Usamos UserDetails para evitar el ClassCastException con tu
-            // entidad User personalizada.
             UserDetails springUser = (UserDetails) auth.getPrincipal();
-
-            // Recuperamos tu DTO real desde el servicio usando el username (email)
             UserDTO userDTO = userService.findByEmail(springUser.getUsername());
-
             String token = jwtService.generateToken(email);
 
+            // Devolvemos todos los datos, incluyendo el ID convertido a String
             return ResponseEntity.ok(Map.of(
                     "token", token,
+                    "id", userDTO.getId().toString(),
                     "email", userDTO.getEmail(),
                     "nickname", userDTO.getNickname(),
                     "role", userDTO.getRole().name()));
+
         } catch (AuthenticationException e) {
             return ResponseEntity.status(401).body(Map.of("error", "Credenciales inválidas"));
         }
@@ -84,56 +66,41 @@ public class AuthController {
 
     /**
      * Registra un nuevo usuario en el sistema.
-     *
-     * @param registerRequest JSON que contiene la información básica del
-     *                        usuario:<br>
-     *                        - email (String): Correo electrónico único del
-     *                        usuario.<br>
-     *                        - name (String): Nombre del usuario.<br>
-     *                        - password (String): Contraseña en texto plano que
-     *                        será encriptada antes de guardar.
-     *
-     * @return ResponseEntity con:<br>
-     *         - 200 (Ok) y los datos del usuario si se registra correctamente.<br>
-     *         - 400 (Bad Request) si el email ya está en uso.
      */
     @PostMapping("/sign-up")
     public ResponseEntity<?> signup(@RequestBody Map<String, String> signupRequest) {
         String email = signupRequest.get("email");
         String password = signupRequest.get("password");
-        String name = signupRequest.get("nickname");
+        String name = signupRequest.get("name"); // Leemos "name" que envía Angular
 
-        if (userService.findByEmail(email) != null) {
-            return ResponseEntity.badRequest().body(Map.of("error", "Usuario ya existe"));
+        try {
+            userService.findByEmail(email);
+            return ResponseEntity.badRequest().body(Map.of("error", "El usuario ya existe"));
+        } catch (RuntimeException e) {
+            // El email está libre
         }
 
         UserDTO userDTO = new UserDTO();
         userDTO.setEmail(email);
         userDTO.setNickname(name);
         userDTO.setRole(Role.CLIENTE);
-        userDTO.setPassword(this.passwordEncoder.encode(password));
+        userDTO.setPassword(password); // Se encripta dentro del UserServiceImpl
 
-        userService.save(userDTO);
+        // IMPORTANTE: Reasignamos el DTO para capturar el ID autogenerado por la BBDD
+        userDTO = userService.save(userDTO);
 
         String token = jwtService.generateToken(email);
 
         return ResponseEntity.ok(Map.of(
                 "token", token,
+                "id", userDTO.getId().toString(),
                 "email", userDTO.getEmail(),
                 "nickname", userDTO.getNickname(),
                 "role", userDTO.getRole().name()));
     }
 
     /**
-     * Devulve el email y el rol del usuario si el token todavia es Valido o es
-     * Correcto.
-     *
-     * @param Authentication (JSON) que contiene la información básica del usuario:
-     *                       - Bearer token: "userToken".
-     *
-     * @return ResponseEntity con:<br>
-     *         - 200 (Ok) email del usuario y su rol.<br>
-     *         - 401 (Unauthorized) si el token no es correcto o esta caducado.
+     * Devuelve el email y el rol del usuario si el token todavía es válido.
      */
     @GetMapping("/validate")
     public ResponseEntity<?> getCurrentUser(Authentication authentication) {
@@ -143,6 +110,6 @@ public class AuthController {
 
         return ResponseEntity.ok(Map.of(
                 "email", authentication.getName(),
-                "authorities", authentication.getAuthorities()));
+                "authorities", authentication.getAuthorities().toString()));
     }
 }

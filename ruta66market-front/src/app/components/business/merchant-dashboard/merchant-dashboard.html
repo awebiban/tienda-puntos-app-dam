@@ -1,0 +1,49 @@
+<div class="min-h-screen bg-slate-50 p-8">
+  <div class="max-w-5xl mx-auto">
+    <div class="bg-white rounded-[2rem] shadow-xl border p-10">
+      <div class="flex justify-between items-center mb-10">
+        <div>
+          <h1 class="text-3xl font-black text-slate-900">Panel de Vendedor</h1>
+          <p class="text-slate-500">Gestionando la fidelización de USA-dos</p>
+        </div>
+        <div class="bg-indigo-50 px-6 py-2 rounded-2xl border border-indigo-100">
+          <span class="text-indigo-600 font-bold">{{ clients.length }} Clientes totales</span>
+        </div>
+      </div>
+
+      <div class="overflow-hidden rounded-2xl border border-slate-100">
+        <table class="w-full text-left">
+          <thead class="bg-slate-50">
+            <tr class="text-slate-400 text-xs uppercase tracking-widest font-bold">
+              <th class="px-6 py-4">Cliente</th>
+              <th class="px-6 py-4 text-center">Saldo Actual</th>
+              <th class="px-6 py-4 text-right">Acciones</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-50">
+            @for (client of clients; track client.id) {
+              <tr class="hover:bg-slate-50/50 transition-colors">
+                <td class="px-6 py-6">
+                  <span class="font-bold text-slate-800">{{ client.userDTO.nickname }}</span>
+                  <p class="text-xs text-slate-400">{{ client.userDTO.email }}</p>
+                </td>
+                <td class="px-6 py-6 text-center">
+                  <span class="text-2xl font-mono font-bold text-indigo-600">{{ client.currentBalance }}</span>
+                  <span class="text-xs text-slate-400 ml-1">pts</span>
+                </td>
+                <td class="px-6 py-6">
+                  <div class="flex justify-end gap-3">
+                    <input #ptsInput type="number" value="10" class="w-20 border rounded-xl text-center font-bold">
+                    <button (click)="addPoints(client.id, ptsInput)" class="bg-indigo-600 text-white px-6 py-2 rounded-xl font-bold hover:shadow-lg hover:shadow-indigo-200 transition-all">
+                      Sumar Puntos
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

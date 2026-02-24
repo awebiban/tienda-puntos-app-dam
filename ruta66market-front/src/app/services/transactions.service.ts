@@ -1,26 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { development, production } from '../models/environments/environment';
+import { development } from '../models/environments/environment';
 import { Transaction } from '../models/Transaction';
-import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransactionsService {
-
   private dev = development.url;
-  private __prod = production.url;
 
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    private authService: AuthService,
-  ) { }
+  constructor(private http: HttpClient) { }
 
   getTransactionsByUserId(loyaltyCardId: number): Observable<Transaction[]> {
+    console.log(`%c[Request] %cSolicitando historial para Card ID: ${loyaltyCardId}`, 'color: #f59e0b; font-weight: bold', 'color: #94a3b8');
     return this.http.get<Transaction[]>(`${this.dev}/loyalty/history/${loyaltyCardId}`);
   }
 }
