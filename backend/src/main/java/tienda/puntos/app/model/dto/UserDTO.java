@@ -3,7 +3,6 @@ package tienda.puntos.app.model.dto;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,30 +10,21 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import tienda.puntos.app.repository.entity.User;
 import tienda.puntos.app.utils.Role;
-import tienda.puntos.app.utils.Views;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
 
-    @JsonView(Views.Detalle.class)
     private Long id;
-
-    @JsonView(Views.Detalle.class)
     private String email;
 
     @ToString.Exclude
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @JsonView(Views.Detalle.class)
     private String nickname;
-
-    @JsonView(Views.Detalle.class)
     private Role role;
-
-    @JsonView(Views.Detalle.class)
     private LocalDateTime createdAt;
     // private CompanyDTO companyDTO;
 

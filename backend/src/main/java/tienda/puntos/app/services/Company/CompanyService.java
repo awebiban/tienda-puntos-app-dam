@@ -1,4 +1,4 @@
-package tienda.puntos.app.services.company;
+package tienda.puntos.app.services.Company;
 
 import tienda.puntos.app.model.dto.CompanyDTO;
 

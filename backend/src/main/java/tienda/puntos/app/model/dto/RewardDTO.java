@@ -1,13 +1,10 @@
 package tienda.puntos.app.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonView;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import tienda.puntos.app.repository.entity.Reward;
-import tienda.puntos.app.utils.Views;
 
 @Data
 @AllArgsConstructor
@@ -15,25 +12,12 @@ import tienda.puntos.app.utils.Views;
 @Builder
 public class RewardDTO {
 
-    @JsonView(Views.Detalle.class)
     private Long id;
-
-    @JsonView(Views.Detalle.class)
     private Long storeId; // Usamos el ID para evitar redundancia y ciclos
-
-    @JsonView(Views.Resumen.class)
     private String name;
-
-    @JsonView(Views.Resumen.class)
     private String description;
-
-    @JsonView(Views.Resumen.class)
     private int pointsCost;
-
-    @JsonView(Views.Resumen.class)
     private String imageUrl;
-
-    @JsonView(Views.Resumen.class)
     private boolean isVisible;
 
     /**

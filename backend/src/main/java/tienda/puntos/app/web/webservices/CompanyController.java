@@ -12,11 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.annotation.JsonView;
-
 import tienda.puntos.app.model.dto.CompanyDTO;
-import tienda.puntos.app.services.company.CompanyService;
-import tienda.puntos.app.utils.Views;
+import tienda.puntos.app.services.Company.CompanyService;
 
 @RestController
 @RequestMapping("/api/company")
@@ -26,13 +23,11 @@ public class CompanyController {
     private CompanyService companyService;
 
     @GetMapping("/{id}")
-    @JsonView(Views.Detalle.class)
     public ResponseEntity<CompanyDTO> findCompanyByID(@PathVariable Long id) {
         return ResponseEntity.ok(companyService.findCompanyByID(id));
     }
 
     @PostMapping("/cif")
-    @JsonView(Views.Detalle.class)
     public ResponseEntity<CompanyDTO> findCompanyByCIF(@RequestBody Map<String, String> json) {
         return ResponseEntity.ok(companyService.findCompanyByCIF(json.get("cif")));
     }
@@ -45,13 +40,11 @@ public class CompanyController {
     // }
 
     @PostMapping("/create")
-    @JsonView(Views.Detalle.class)
     public ResponseEntity<CompanyDTO> save(@RequestBody CompanyDTO company) {
         return ResponseEntity.ok(companyService.save(company));
     }
 
     @PutMapping("/update/{companyId}")
-    @JsonView(Views.Detalle.class)
     public ResponseEntity<CompanyDTO> update(@PathVariable Long companyId, @RequestBody CompanyDTO companyDTO) {
         return ResponseEntity.ok(companyService.update(companyId, companyDTO));
     }

@@ -2,15 +2,12 @@ package tienda.puntos.app.model.dto;
 
 import java.math.BigDecimal;
 
-import com.fasterxml.jackson.annotation.JsonView;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import tienda.puntos.app.repository.entity.Plan;
 import tienda.puntos.app.utils.Plans;
-import tienda.puntos.app.utils.Views;
 
 @Data
 @AllArgsConstructor
@@ -18,22 +15,11 @@ import tienda.puntos.app.utils.Views;
 @Builder
 public class PlanDTO {
 
-    @JsonView(Views.Detalle.class)
     private Long id;
-
-    @JsonView(Views.Resumen.class)
     private Plans planName;
-
-    @JsonView(Views.Resumen.class)
     private BigDecimal price;
-
-    @JsonView(Views.Resumen.class)
     private int maxStores;
-
-    @JsonView(Views.Resumen.class)
     private int maxUsers;
-
-    @JsonView(Views.Resumen.class)
     private boolean active;
 
     /**

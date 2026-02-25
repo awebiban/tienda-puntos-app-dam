@@ -1,10 +1,9 @@
-package tienda.puntos.app.services.company;
+package tienda.puntos.app.services.Company;
 
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import tienda.puntos.app.model.dto.CompanyDTO;
 import tienda.puntos.app.model.dto.PlanDTO;
@@ -31,13 +30,13 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public @Nullable CompanyDTO findCompanyByID(Long id) {
         return CompanyDTO.convertToDTO(this.companyRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Error: La compañía no existe")));
+                .orElseThrow(() -> new RuntimeException("Error: La compañía no existe")));
     }
 
     @Override
     public @Nullable CompanyDTO findCompanyFromUserID(Long userId) {
         Company company = this.companyRepository.findCompanyFromUserID(userId)
-                .orElseThrow(() -> new EntityNotFoundException("No se encontró la compañía con ID: " + userId));
+                .orElseThrow(() -> new RuntimeException("Error: La compañía del usuario no existe"));
 
         return CompanyDTO.convertToDTO(company);
     }
@@ -45,7 +44,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CompanyDTO findCompanyByCIF(String cif) {
         Company company = this.companyRepository.findCompanyByCIF(cif)
-                .orElseThrow(() -> new EntityNotFoundException("Error: La compañía con CIF " + cif + " no existe"));
+                .orElseThrow(() -> new RuntimeException("Error: La compañía con CIF " + cif + " no existe"));
 
         return CompanyDTO.convertToDTO(company);
     }
@@ -56,7 +55,7 @@ public class CompanyServiceImpl implements CompanyService {
 
         // 1. Buscamos al usuario REAL que ya está en la BD (este tiene el password)
         User ownerEntity = userRepository.findById(companyDTO.getOwnerDTO().getId())
-                .orElseThrow(() -> new EntityNotFoundException("Error: El usuario dueño no existe en la BD"));
+                .orElseThrow(() -> new RuntimeException("Error: El usuario dueño no existe en la BD"));
 
         // 2. Solo actualizamos el campo que nos interesa (el Rol)
         // El password de 'ownerEntity' permanece intacto y seguro
@@ -65,7 +64,7 @@ public class CompanyServiceImpl implements CompanyService {
 
         // 3. Buscamos el Plan (mismo concepto: evitar transient value)
         Plan planEntity = planRepository.findById(companyDTO.getPlanDTO().getId())
-                .orElseThrow(() -> new EntityNotFoundException("Error: El plan seleccionado no existe"));
+                .orElseThrow(() -> new RuntimeException("Error: El plan seleccionado no existe"));
 
         // 4. Creamos la entidad Compañía y le pasamos las entidades que ya "viven" en
         // la BD
@@ -82,7 +81,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CompanyDTO update(Long companyId, CompanyDTO companyDTO) {
         Company companyToUpdate = this.companyRepository.findById(companyId)
-                .orElseThrow(() -> new EntityNotFoundException("Error la compañia no existe"));
+                .orElseThrow(() -> new RuntimeException("Error la compañia no existe"));
 
         // Solo se pueden actualizar estos campos (no el owner)
         companyToUpdate.setPlan(PlanDTO.convertToEntity(companyDTO.getPlanDTO()));

@@ -12,11 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.annotation.JsonView;
-
 import tienda.puntos.app.model.dto.UserDTO;
-import tienda.puntos.app.services.user.UserService;
-import tienda.puntos.app.utils.Views;
+import tienda.puntos.app.services.User.UserService;
 
 @RestController
 @RequestMapping("/api/user")
@@ -26,13 +23,11 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{userId}")
-    @JsonView(Views.Detalle.class)
     public ResponseEntity<UserDTO> findById(@PathVariable Long userId) {
         return ResponseEntity.ok(this.userService.findById(userId));
     }
 
     @PostMapping("/email")
-    @JsonView(Views.Detalle.class)
     public ResponseEntity<UserDTO> findByEmail(@RequestBody Map<String, String> payload) {
         // Extraemos el valor asociado a la clave "email" del JSON
         String email = payload.get("email");
@@ -46,13 +41,11 @@ public class UserController {
     }
 
     @PostMapping("/save")
-    @JsonView(Views.Detalle.class)
     public ResponseEntity<UserDTO> save(@RequestBody UserDTO user) {
         return ResponseEntity.ok(this.userService.save(user));
     }
 
     @PutMapping("/update")
-    @JsonView(Views.Detalle.class)
     public ResponseEntity<UserDTO> update(@RequestBody UserDTO user) { // Se pasa el id al JPA para que busque el
                                                                        // registro necesario
         // y sustituya

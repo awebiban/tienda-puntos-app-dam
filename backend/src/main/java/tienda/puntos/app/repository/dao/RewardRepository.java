@@ -13,7 +13,6 @@ import tienda.puntos.app.repository.entity.Reward;
 @Transactional
 public interface RewardRepository extends JpaRepository<Reward, Long> {
 
-    @Query(value = "SELECT * FROM rewards WHERE store_id = ?1", nativeQuery = true)
     List<Reward> findRewardsByStore(Long storeId);
 
     @Query(value = "UPDATE `ruta66market`.`rewards` SET `active` = 1 WHERE `id` = ?1", nativeQuery = true)

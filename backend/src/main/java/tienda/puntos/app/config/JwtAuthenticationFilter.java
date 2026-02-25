@@ -43,29 +43,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         try {
             username = jwtService.extractEmail(jwt);
+        } catch (io.jsonwebtoken.security.SignatureException e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\": \"Token inválido o manipulado\"}");
+            return;
         } catch (Exception e) {
-            // Si entra aquí, imprime el error en consola para saber qué pasa exactamente
-            System.out.println("Error al extraer email del token: " + e.getMessage());
-
-            // Deja que siga la cadena para que Spring Security maneje el error de forma
-            // estándar
-            filterChain.doFilter(request, response);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\": \"Token inválido\"}");
             return;
         }
-
-        // try {
-        // username = jwtService.extractEmail(jwt);
-        // } catch (io.jsonwebtoken.security.SignatureException e) {
-        // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        // response.setContentType("application/json");
-        // response.getWriter().write("{\"error\": \"Token inválido o manipulado\"}");
-        // return;
-        // } catch (Exception e) {
-        // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        // response.setContentType("application/json");
-        // response.getWriter().write("{\"error\": \"Token inválido\"}");
-        // return;
-        // }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);

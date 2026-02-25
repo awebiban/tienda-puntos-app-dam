@@ -25,20 +25,11 @@ import tienda.puntos.app.utils.TransactionType;
 @Service
 public class LoyaltyCardServiceImpl implements LoyaltyCardService {
 
-    @Autowired
-    private LoyaltyCardRepository cardRepo;
-
-    @Autowired
-    private TransactionRepository transRepo;
-
-    @Autowired
-    private StoreRepository storeRepo;
-
-    @Autowired
-    private UserRepository userRepo;
-
-    @Autowired
-    private RewardRepository rewardRepo;
+    @Autowired private LoyaltyCardRepository cardRepo;
+    @Autowired private TransactionRepository transRepo;
+    @Autowired private StoreRepository storeRepo;
+    @Autowired private UserRepository userRepo;
+    @Autowired private RewardRepository rewardRepo;
 
     @Override
     public List<LoyaltyCardDTO> getCardsByUser(Long userId) {

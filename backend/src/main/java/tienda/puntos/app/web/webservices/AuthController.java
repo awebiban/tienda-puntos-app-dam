@@ -8,7 +8,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import tienda.puntos.app.model.dto.UserDTO;
+import tienda.puntos.app.repository.entity.User;
 import tienda.puntos.app.services.auth.JwtService;
-import tienda.puntos.app.services.user.UserService;
+import tienda.puntos.app.services.User.UserService;
 import tienda.puntos.app.utils.Role;
 
 @RestController
@@ -63,20 +63,14 @@ public class AuthController {
             Authentication auth = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(email, password));
 
-            // CORRECCIÓN: Usamos UserDetails para evitar el ClassCastException con tu
-            // entidad User personalizada.
-            UserDetails springUser = (UserDetails) auth.getPrincipal();
-
-            // Recuperamos tu DTO real desde el servicio usando el username (email)
-            UserDTO userDTO = userService.findByEmail(springUser.getUsername());
-
+            User user = (User) auth.getPrincipal();
             String token = jwtService.generateToken(email);
 
             return ResponseEntity.ok(Map.of(
                     "token", token,
-                    "email", userDTO.getEmail(),
-                    "nickname", userDTO.getNickname(),
-                    "role", userDTO.getRole().name()));
+                    "email", user.getEmail(),
+                    "nickname", user.getNickname(),
+                    "role", user.getRole().name()));
         } catch (AuthenticationException e) {
             return ResponseEntity.status(401).body(Map.of("error", "Credenciales inválidas"));
         }

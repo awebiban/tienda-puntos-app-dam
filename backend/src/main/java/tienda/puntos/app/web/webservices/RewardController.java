@@ -13,11 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.annotation.JsonView;
-
 import tienda.puntos.app.model.dto.RewardDTO;
 import tienda.puntos.app.services.reward.RewardService;
-import tienda.puntos.app.utils.Views;
 
 @RestController
 @RequestMapping("/api/rewards")
@@ -27,46 +24,37 @@ public class RewardController {
     private RewardService rewardService;
 
     @PreAuthorize("hasRole('ADMIN_PLATAFORMA')")
-    @JsonView(Views.Detalle.class)
     @GetMapping("")
     public ResponseEntity<List<RewardDTO>> findAll() {
         return ResponseEntity.ok(this.rewardService.findAllRewards());
     }
 
     @GetMapping("/{rewardId}")
-    @JsonView(Views.Resumen.class)
     public ResponseEntity<RewardDTO> findById(@PathVariable Long rewardId) {
         return ResponseEntity.ok(this.rewardService.findRewardById(rewardId));
     }
 
     @GetMapping("/store/{storeId}")
-    @JsonView(Views.Resumen.class)
     public ResponseEntity<List<RewardDTO>> findByStore(@PathVariable Long storeId) {
         return ResponseEntity.ok(this.rewardService.findRewardsByStore(storeId));
     }
 
-    @PreAuthorize("hasRole('ADMIN_PLATAFORMA') or hasRole('ADMIN_NEGOCIO')")
     @GetMapping("/active/{rewardId}")
-    @JsonView(Views.Detalle.class)
     public void findActiveById(@PathVariable Long rewardId) {
         this.rewardService.activeReward(rewardId);
     }
 
-    @PreAuthorize("hasRole('ADMIN_PLATAFORMA') or hasRole('ADMIN_NEGOCIO')")
     @GetMapping("/disable/{rewardId}")
-    @JsonView(Views.Detalle.class)
     public void disableReward(@PathVariable Long rewardId) {
         this.rewardService.disableReward(rewardId);
     }
 
     @PostMapping("/create")
-    @JsonView(Views.Detalle.class)
     public ResponseEntity<RewardDTO> save(@RequestBody RewardDTO rewardDTO) {
         return ResponseEntity.ok(this.rewardService.saveReward(rewardDTO));
     }
 
     @PutMapping("/update/{id}")
-    @JsonView(Views.Detalle.class)
     public ResponseEntity<RewardDTO> update(@PathVariable Long id, @RequestBody RewardDTO rewardDTO) {
         return ResponseEntity.ok(this.rewardService.updateReward(id, rewardDTO));
     }

@@ -13,12 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.annotation.JsonView;
-
 import tienda.puntos.app.model.dto.LoyaltyCardDTO;
 import tienda.puntos.app.model.dto.TransactionDTO;
 import tienda.puntos.app.services.loyalty.LoyaltyCardService;
-import tienda.puntos.app.utils.Views;
 
 @RestController
 @RequestMapping("/api/loyalty")
@@ -28,20 +25,17 @@ public class LoyaltyController {
     private LoyaltyCardService loyaltyService;
 
     @GetMapping("/user/{userId}")
-    @JsonView(Views.Resumen.class)
     public ResponseEntity<List<LoyaltyCardDTO>> getMyCards(@PathVariable Long userId) {
         return ResponseEntity.ok(loyaltyService.getCardsByUser(userId));
     }
 
     @GetMapping("/history/{cardId}")
-    @JsonView(Views.Detalle.class)
     public ResponseEntity<List<TransactionDTO>> getHistory(@PathVariable Long cardId) {
         return ResponseEntity.ok(loyaltyService.getHistory(cardId));
     }
 
     @PostMapping("/add-points")
     @PreAuthorize("hasRole('ADMIN_NEGOCIO') or hasRole('ADMIN_PLATAFORMA')")
-    @JsonView(Views.Detalle.class)
     public ResponseEntity<LoyaltyCardDTO> addPoints(@RequestBody Map<String, Object> payload) {
         Long userId = Long.valueOf(payload.get("userId").toString());
         Long storeId = Long.valueOf(payload.get("storeId").toString());
@@ -51,7 +45,6 @@ public class LoyaltyController {
     }
 
     @PostMapping("/redeem")
-    @JsonView(Views.Detalle.class)
     public ResponseEntity<LoyaltyCardDTO> redeem(@RequestBody Map<String, Long> payload) {
         return ResponseEntity.ok(loyaltyService.redeemReward(
                 payload.get("userId"),
