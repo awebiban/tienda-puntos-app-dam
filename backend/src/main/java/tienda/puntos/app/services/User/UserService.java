@@ -1,4 +1,4 @@
-package tienda.puntos.app.services.user;
+package tienda.puntos.app.services.User;
 
 import tienda.puntos.app.model.dto.UserDTO;
 

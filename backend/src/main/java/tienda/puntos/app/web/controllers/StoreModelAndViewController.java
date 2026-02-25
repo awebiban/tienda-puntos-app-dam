@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 import tienda.puntos.app.model.dto.StoreDTO;
-import tienda.puntos.app.services.store.StoreService;
+import tienda.puntos.app.services.Store.StoreService;
 import tienda.puntos.app.web.webservices.StoreController;
 
 @Controller

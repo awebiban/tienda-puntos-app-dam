@@ -1,16 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-
-interface Transaction {
-  id: number;
-  date: string;
-  storeName: string;
-  amount: number;
-  points: number;
-  type: 'EARNED' | 'REDEEMED';
-  description: string;
-}
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { TransactionsService } from '../../../services/transactions.service';
+import { LoyaltycardsService } from '../../../services/loyaltycards.service';
+import { Transaction } from '../../../models/Transaction';
+import { LoyaltyCard } from '../../../models/LoyaltyCard';
 
 @Component({
   selector: 'app-points-history',
@@ -21,14 +15,70 @@ interface Transaction {
 })
 export class PointsHistoryComponent implements OnInit {
 
-  transactions: Transaction[] = [
-    { id: 1, date: '2026-02-20', storeName: 'USA-dos Central', amount: 45.50, points: 45, type: 'EARNED', description: 'Compra de artículos vintage' },
-    { id: 2, date: '2026-02-18', storeName: 'USA-dos Central', amount: 0, points: -100, type: 'REDEEMED', description: 'Canje de Cupón Descuento 10€' },
-    { id: 3, date: '2026-02-15', storeName: 'Ruta 66 Market', amount: 12.00, points: 12, type: 'EARNED', description: 'Compra de accesorios' },
-    { id: 4, date: '2026-02-10', storeName: 'USA-dos Central', amount: 80.00, points: 80, type: 'EARNED', description: 'Compra Chaqueta de Cuero' }
-  ];
+  transactions: Transaction[] = [];
+  loyaltyCard: LoyaltyCard | null = null;
 
-  constructor() {}
+  isLoading: boolean = true;
+  totalEarned: number = 0;
+  totalRedeemed: number = 0;
 
-  ngOnInit(): void {}
+  constructor(
+    private route: ActivatedRoute,
+    private transactionsService: TransactionsService,
+    private loyaltyCardService: LoyaltycardsService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      const cardId = Number(params['cardId']);
+      if (cardId) {
+        this.loadHistory(cardId);
+      } else {
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  loadHistory(cardId: number): void {
+    this.isLoading = true;
+
+    // Carga de info de tarjeta
+    this.loyaltyCardService.findByCardId(cardId).subscribe({
+      next: (card) => {
+        this.loyaltyCard = card;
+        this.cdr.detectChanges();
+      }
+    });
+
+    // Carga de historial
+    this.transactionsService.getTransactionsByUserId(cardId).subscribe({
+      next: (data) => {
+        this.transactions = data;
+        this.calculateTotals();
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error al cargar historial:', err);
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  calculateTotals(): void {
+    this.totalEarned = this.transactions
+      .filter(t => t.type === 'EARN')
+      .reduce((sum, t) => sum + t.amount, 0);
+
+    this.totalRedeemed = Math.abs(this.transactions
+      .filter(t => t.type === 'REDEEM')
+      .reduce((sum, t) => sum + t.amount, 0));
+  }
+
+  goBack(): void {
+    window.history.back();
+  }
 }

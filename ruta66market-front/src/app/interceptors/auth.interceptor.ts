@@ -37,6 +37,10 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
                       'color: #ef4444; font-weight: bold',
                       'color: #94a3b8',
                       err);
+                      if (err.status === 401) {
+            console.warn("Token expirado o inválido. Cerrando sesión...");
+            authService.logout();
+        }
       }
     })
   );

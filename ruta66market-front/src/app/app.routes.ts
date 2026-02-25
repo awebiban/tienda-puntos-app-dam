@@ -1,13 +1,15 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './guards/auth.guard';
+import { roleGuard } from './guards/role.guard';
 
 export const routes: Routes = [
-    // 1. Ruta de Bienvenida / Landing / Listado de Tiendas
+    // 1. Ruta de Bienvenida / Landing / Listado de Tiendas (PÚBLICA)
     {
         path: '',
         loadComponent: () => import('./components/landing/landing.component').then(m => m.LandingComponent),
     },
 
-    // 2. Rutas de Autenticación (Login/Registro separadas)
+    // 2. Rutas de Autenticación (PÚBLICAS)
     {
         path: 'login',
         loadComponent: () => import('./components/auth/login/login.component').then(m => m.LoginComponent),
@@ -17,9 +19,11 @@ export const routes: Routes = [
         loadComponent: () => import('./components/auth/register/register.component').then(m => m.RegisterComponent),
     },
 
-    // 3. Área del CLIENTE (Perfil y Puntos)
+    // 3. Área del CLIENTE (PROTEGIDA)
     {
         path: 'customer',
+        canActivate: [authGuard, roleGuard], // <-- Aplicamos los vigilantes
+        data: { expectedRole: 'CLIENTE' },   // <-- Exigimos rol de Cliente
         children: [
             {
                 path: 'dashboard',
@@ -36,9 +40,11 @@ export const routes: Routes = [
         ]
     },
 
-    // 4. Área de la EMPRESA (Gestión de Tienda)
+    // 4. Área de la EMPRESA (PROTEGIDA)
     {
         path: 'business',
+        canActivate: [authGuard, roleGuard],    // <-- Aplicamos los vigilantes
+        data: { expectedRole: 'ADMIN_NEGOCIO' }, // <-- Exigimos rol de Negocio
         children: [
             {
                 // NUEVA RUTA: Panel principal para sumar puntos

@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { Observable, switchMap, tap } from 'rxjs';
 import { development } from '../models/environments/environment';
 import { Store } from '../models/Store';
+import { Company } from '../models/Company';
 
 @Injectable({
   providedIn: 'root'
@@ -13,31 +14,31 @@ export class StoresService {
 
   constructor(private http: HttpClient) { }
 
-  // Obtener todas las tiendas (Para la Landing Page)
-  getAllStores(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.dev}/store`).pipe(
-      tap(data => console.log('%c[GET] /store %cEstructura recibida:', 'color: #0ea5e9; font-weight: bold', 'color: gray', data))
-    );
+  getAllStores(): Observable<Store[]> {
+    return this.http.get<Store[]>(`${this.dev}/store`);
   }
 
-  // Obtener tienda por ID
   getStoreById(storeId: number): Observable<Store> {
-    return this.http.get<Store>(`${this.dev}/store/${storeId}`).pipe(
-      tap(data => console.log('%c[GET] /store/%d %cDatos:', 'color: #0ea5e9; font-weight: bold', 'color: gray', storeId, data))
+    return this.http.get<Store>(`${this.dev}/store/${storeId}`);
+  }
+
+  getStoreByOwnerId(ownerId: number): Observable<Store> {
+    return this.http.get<Company>(`${this.dev}/company/from-user/${ownerId}`).pipe(
+      switchMap((company: Company) => {
+        return this.http.get<Store[]>(`${this.dev}/store/company/${company.id}`).pipe(
+          tap((stores: Store[]) => console.log('%c[StoresService] %cTiendas:', 'color: #0ea5e9', 'color: gray', stores)),
+          switchMap((stores: Store[]) => new Observable<Store>(obs => obs.next(stores[0])))
+        );
+      })
     );
   }
 
-  // Obtener tienda por ID del dueño/empresa
-  getStoreByOwnerId(ownerId: number): Observable<any> {
-    return this.http.get<any>(`${this.dev}/store/owner/${ownerId}`).pipe(
-      tap(data => console.log(`%c[GET] /store/owner/${ownerId} %cDatos:`, 'color: #0ea5e9; font-weight: bold', 'color: gray', data))
-    );
+  // MÉTODO AÑADIDO: Para actualizar la tienda en el backend
+  updateStore(id: number, store: Store): Observable<Store> {
+    return this.http.put<Store>(`${this.dev}/store/update/${id}`, store);
   }
 
-  // Crear o actualizar una tienda (Para el StoreConfigComponent)
-  saveStore(storeData: any): Observable<any> {
-    return this.http.post<any>(`${this.dev}/store`, storeData).pipe(
-      tap(data => console.log('%c[POST] /store %cRespuesta del servidor:', 'color: #10b981; font-weight: bold', 'color: gray', data))
-    );
+  saveStore(storeData: Store): Observable<Store> {
+    return this.http.post<Store>(`${this.dev}/store/create`, storeData);
   }
 }

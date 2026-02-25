@@ -18,8 +18,13 @@ export class AuthService {
   ) { }
 
   signup(email: String, name: String, password: String) {
-    return this.http.post<any>(`${this.dev}/auth/sign-up`, { "email": email, "name": name, "password": password });
-  }
+  // Cambiamos "name" por "nickname" para que coincida con el DTO de Java
+  return this.http.post<any>(`${this.dev}/auth/sign-up`, {
+    "email": email,
+    "nickname": name,
+    "password": password
+  });
+}
 
   login(email: String, password: String) {
     return this.http.post<any>(`${this.dev}/auth/log-in`, { "email": email, "password": password });

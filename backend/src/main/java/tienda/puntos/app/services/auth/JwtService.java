@@ -3,12 +3,9 @@ package tienda.puntos.app.services.auth;
 import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
-
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -16,9 +13,8 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
 
-    private static final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 hora
+    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24; // 24h
     private static final String SECRET = "KKw8Ng41uf1DtA6V8fRhA1KKN9KJ77Znb";
-
     private final Key key = Keys.hmacShaKeyFor(SECRET.getBytes());
 
     public String generateToken(String email) {
@@ -30,53 +26,29 @@ public class JwtService {
                 .compact();
     }
 
-    public boolean validateToken(String token) {
-        try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-            return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
-        }
-    }
-
     public String extractEmail(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+        return extractClaim(token, Claims::getSubject);
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
-    }
-
-    private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder()
+        final Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+        return claimsResolver.apply(claims);
     }
 
-    public boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
-    }
-
-    private Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
-    }
-
-    // Asegúrate de que este método esté así en JwtService.java
     public boolean isTokenValid(String token, UserDetails userDetails) {
         try {
-            final String username = extractEmail(token);
-            // Comparamos el email del token con el del UserDetails y verificamos fecha
-            return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+            final String email = extractEmail(token);
+            return (email.equals(userDetails.getUsername()) && !isTokenExpired(token));
         } catch (Exception e) {
             return false;
         }
+    }
+
+    private boolean isTokenExpired(String token) {
+        return extractClaim(token, Claims::getExpiration).before(new Date());
     }
 }
