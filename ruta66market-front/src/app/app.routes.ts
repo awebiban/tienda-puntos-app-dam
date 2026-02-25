@@ -37,6 +37,10 @@ export const routes: Routes = [
                 path: 'my-points',
                 loadComponent: () => import('./components/customer/points-history/points-history.component').then(m => m.PointsHistoryComponent),
             },
+            {
+                path: 'register-business',
+                loadComponent: () => import('./components/customer/register-business/register-business.component').then(m => m.RegisterBusinessComponent),
+            },
         ]
     },
 

@@ -5,9 +5,9 @@ export interface Company {
     id?: number;
     legalName: string;
     cif: string;
-    owner: User;
-    plan: Plan;
+    ownerDTO: User;
+    planDTO: Plan;
     subscriptionStatus?: string;
-    nextBillingDate?: Date;
+    nextBillingDate?: string;
 
 }

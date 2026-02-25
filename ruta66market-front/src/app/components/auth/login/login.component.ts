@@ -48,6 +48,7 @@ export class LoginComponent {
         localStorage.setItem('token', res.token || '');
         localStorage.setItem('userId', String(res.id || ''));
         localStorage.setItem('userName', res.nickname || '');
+        //localStorage.setItem('userMail', res.email || '');
         localStorage.setItem('userRole', res.role || '');
 
         // 2. Apagar loader y forzar UI

@@ -1,0 +1,130 @@
+<div
+    class="min-h-screen w-full flex items-center justify-center p-6 relative overflow-hidden bg-[#0B1120] font-sans selection:bg-violet-500 selection:text-white">
+
+    <div class="absolute inset-0 z-0 pointer-events-none">
+        <div
+            class="absolute top-0 right-1/4 w-[600px] h-[600px] bg-violet-600/20 rounded-full blur-[120px] mix-blend-screen animate-pulse">
+        </div>
+        <div class="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[120px] mix-blend-screen animate-pulse"
+            style="animation-delay: 2s"></div>
+        <div class="absolute inset-0 opacity-[0.03]"
+            style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');">
+        </div>
+    </div>
+
+    <div class="w-full max-w-[450px] relative z-10 animate-fade-in-up mt-12 mb-12">
+
+        <div
+            class="absolute -top-12 left-1/2 -translate-x-1/2 w-24 h-24 bg-gradient-to-br from-violet-500 to-indigo-600 rounded-[2rem] p-[2px] shadow-2xl shadow-violet-500/40 -rotate-12 hover:rotate-0 transition-transform duration-500 group z-20">
+            <div
+                class="w-full h-full bg-[#0B1120]/80 backdrop-blur-xl rounded-[1.8rem] flex items-center justify-center">
+                <i [class]="isSuccess ? 'bi bi-check-all text-4xl text-green-400' : 'bi bi-briefcase-fill text-3xl text-white'"
+                    class="transition-all duration-500"></i>
+            </div>
+        </div>
+
+        <div
+            class="bg-white/5 backdrop-blur-2xl rounded-[3rem] p-8 md:p-10 pt-16 border border-white/10 shadow-[0_0_80px_-20px_rgba(139,92,246,0.15)] relative overflow-hidden">
+
+            <div
+                class="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-violet-400/50 to-transparent">
+            </div>
+
+            @if (!isSuccess) {
+            <div class="text-center mb-10">
+                <h2
+                    class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400 tracking-tight mb-2">
+                    Registro de Empresa</h2>
+                <p class="text-sm text-slate-400 font-medium">Configura tu perfil comercial para empezar.</p>
+            </div>
+
+            @if (errorMessage) {
+            <div
+                class="mb-8 bg-rose-500/10 backdrop-blur-md text-rose-300 p-4 rounded-2xl text-[11px] uppercase tracking-widest font-black text-center border border-rose-500/20 flex items-center justify-center gap-3 animate-pulse">
+                <i class="bi bi-exclamation-triangle-fill text-rose-500 text-lg"></i>
+                {{ errorMessage }}
+            </div>
+            }
+
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-5">
+                <div class="space-y-2 group">
+                    <label for="legalName"
+                        class="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-2 group-focus-within:text-violet-400 transition-colors">Razón
+                        Social</label>
+                    <div class="relative">
+                        <div
+                            class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-slate-500 group-focus-within:text-violet-400">
+                            <i class="bi bi-building text-lg"></i>
+                        </div>
+                        <input type="text" id="legalName" formControlName="legalName"
+                            class="w-full h-14 pl-14 pr-5 bg-[#0B1120]/50 border border-white/10 rounded-2xl text-white text-sm font-medium focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all shadow-inner"
+                            [class.!border-rose-500/50]="legalNameControl?.invalid && legalNameControl?.touched"
+                            placeholder="Nombre legal de la empresa">
+                    </div>
+                </div>
+
+                <div class="space-y-2 group">
+                    <label for="cif"
+                        class="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-2 group-focus-within:text-violet-400">CIF
+                        / NIF</label>
+                    <div class="relative">
+                        <div
+                            class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-slate-500 group-focus-within:text-violet-400">
+                            <i class="bi bi-card-checklist text-lg"></i>
+                        </div>
+                        <input type="text" id="cif" formControlName="cif"
+                            class="w-full h-14 pl-14 pr-5 bg-[#0B1120]/50 border border-white/10 rounded-2xl text-white text-sm font-medium focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all shadow-inner"
+                            [class.!border-rose-500/50]="cifControl?.invalid && cifControl?.touched"
+                            placeholder="12345678A">
+                    </div>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-indigo-500/5 border border-indigo-500/20">
+                    <div class="flex items-center gap-3">
+                        <i class="bi bi-star-fill text-indigo-400"></i>
+                        <div>
+                            <p class="text-[10px] font-black uppercase tracking-widest text-indigo-300">Plan
+                                Seleccionado</p>
+                            <p class="text-xs text-slate-400 font-medium">Suscripción Inicial: <span
+                                    class="text-white">FREE</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" [disabled]="registerForm.invalid || isLoading || !currentUserData"
+                    class="w-full h-14 mt-6 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-black uppercase tracking-widest text-xs rounded-2xl transition-all shadow-[0_0_30px_rgba(139,92,246,0.3)] disabled:opacity-50 flex items-center justify-center gap-3 relative overflow-hidden group">
+
+                    @if (isLoading) {
+                    <div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    <span>Procesando...</span>
+                    } @else {
+                    <span>Confirmar Registro</span>
+                    <i class="bi bi-arrow-right-short text-2xl group-hover:translate-x-1 transition-transform"></i>
+                    }
+                </button>
+            </form>
+            } @else {
+            <div class="text-center animate-fade-in-up">
+                <h2 class="text-2xl font-black text-white mb-4">¡Empresa Creada!</h2>
+                <p class="text-sm text-slate-400 mb-8 leading-relaxed">
+                    Tu perfil comercial ha sido configurado con éxito. Para activar tus permisos de <span
+                        class="text-violet-400 font-bold">Admin</span>, necesitamos que reinicies tu sesión.
+                </p>
+
+                <button (click)="goToLogin()"
+                    class="w-full h-14 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white font-black uppercase tracking-widest text-[10px] rounded-2xl transition-all shadow-[0_0_30px_rgba(34,197,94,0.2)] flex items-center justify-center gap-3 group">
+                    <span>Ir al Login ahora</span>
+                    <i class="bi bi-box-arrow-in-right text-lg group-hover:translate-x-1 transition-transform"></i>
+                </button>
+            </div>
+            }
+        </div>
+
+        <div class="mt-8 text-center">
+            <a routerLink="/customer/dashboard"
+                class="text-xs font-bold text-slate-500 hover:text-white transition-colors flex items-center justify-center gap-2">
+                <i class="bi bi-arrow-left"></i> Volver al panel de cliente
+            </a>
+        </div>
+    </div>
+</div>

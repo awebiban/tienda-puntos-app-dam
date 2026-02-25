@@ -21,7 +21,7 @@ import tienda.puntos.app.utils.Views;
 
 @RestController
 @RequestMapping("/api/company")
-@CrossOrigin(origins = "*") // Para evitar problemas de CORS en desarrollo
+@CrossOrigin(origins = { "http://localhost:4200", "https://ruta66.synology.me" })
 public class CompanyController {
 
     @Autowired
