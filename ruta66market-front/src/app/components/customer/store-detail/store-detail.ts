@@ -1,12 +1,12 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { StoresService } from '../../../services/stores.service';
+import { LoyaltyCard } from '../../../models/LoyaltyCard';
+import { Reward } from '../../../models/Reward';
+import { Store } from '../../../models/Store';
 import { LoyaltycardsService } from '../../../services/loyaltycards.service';
 import { RewardsService } from '../../../services/rewards.service';
-import { Store } from '../../../models/Store';
-import { Reward } from '../../../models/Reward';
-import { LoyaltyCard } from '../../../models/LoyaltyCard';
+import { StoresService } from '../../../services/stores.service';
 
 @Component({
   selector: 'app-store-detail',
@@ -23,6 +23,7 @@ export class StoreDetail implements OnInit {
   cardId: number | null = null;
   isLoading: boolean = true;
   currentUserId: number | null = null;
+  isLoadingRewards: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -57,8 +58,13 @@ export class StoreDetail implements OnInit {
       next: (card) => {
         this.loyaltyCard = card;
         this.store = card.storeDTO;
-        this.rewards = this.store?.rewardsList || [];
         this.isLoading = false;
+
+        // Una vez tenemos la store, cargamos sus recompensas frescas
+        if (this.store?.id) {
+          this.loadRewards(this.store.id);
+        }
+
         this.cdr.detectChanges();
       },
       error: (err) => {
@@ -76,10 +82,31 @@ export class StoreDetail implements OnInit {
         this.store = stores.find(s =>
           s.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') === name
         ) || null;
-        if (this.store) {
-          this.rewards = this.store.rewardsList || [];
-        }
+
         this.isLoading = false;
+
+        // Si encontramos la tienda, cargamos sus recompensas
+        if (this.store?.id) {
+          this.loadRewards(this.store.id);
+        }
+
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  // MÉTODO NUEVO: Carga independiente de recompensas
+  loadRewards(storeId: number): void {
+    this.isLoadingRewards = true;
+    this.rewardsService.getRewardsByStoreId(storeId).subscribe({
+      next: (data) => {
+        this.rewards = data;
+        this.isLoadingRewards = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error al cargar recompensas de la tienda', err);
+        this.isLoadingRewards = false;
         this.cdr.detectChanges();
       }
     });

@@ -1,4 +1,4 @@
-package tienda.puntos.app.services.User;
+package tienda.puntos.app.services.user;
 
 import java.time.LocalDateTime;
 

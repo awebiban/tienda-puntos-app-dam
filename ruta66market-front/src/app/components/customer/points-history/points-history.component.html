@@ -1,19 +1,28 @@
-<div class="min-h-screen bg-[#f8fafc] pb-24 relative overflow-hidden font-sans selection:bg-indigo-500 selection:text-white">
-    <div class="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-indigo-50/80 via-slate-50/50 to-transparent -z-10"></div>
-    <div class="absolute -top-40 -left-40 w-[500px] h-[500px] bg-indigo-200/40 rounded-full blur-[100px] -z-10 animate-pulse"></div>
+<div
+    class="min-h-screen bg-[#f8fafc] pb-24 relative overflow-hidden font-sans selection:bg-indigo-500 selection:text-white">
+    <div
+        class="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-indigo-50/80 via-slate-50/50 to-transparent -z-10">
+    </div>
+    <div
+        class="absolute -top-40 -left-40 w-[500px] h-[500px] bg-indigo-200/40 rounded-full blur-[100px] -z-10 animate-pulse">
+    </div>
 
-    <nav class="sticky top-6 mx-4 lg:mx-auto max-w-7xl rounded-2xl z-50 px-6 py-4 flex justify-between items-center bg-white/70 backdrop-blur-xl border border-white/80 shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all">
+    <nav
+        class="sticky top-6 mx-4 lg:mx-auto max-w-7xl rounded-2xl z-50 px-6 py-4 flex justify-between items-center bg-white/70 backdrop-blur-xl border border-white/80 shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all">
         <div class="flex items-center gap-4">
-            <button (click)="goBack()" class="group w-10 h-10 flex items-center justify-center bg-slate-100 rounded-xl text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 transition-colors cursor-pointer shadow-inner">
+            <button (click)="goBack()"
+                class="group w-10 h-10 flex items-center justify-center bg-slate-100 rounded-xl text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 transition-colors cursor-pointer shadow-inner">
                 <i class="bi bi-arrow-left text-lg group-hover:-translate-x-1 transition-transform"></i>
             </button>
             <div>
                 <h1 class="text-xl font-black text-slate-900 tracking-tight leading-none">Movimientos</h1>
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{{ loyaltyCard?.storeDTO?.name || 'Cargando...' }}</p>
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{{
+                    loyaltyCard?.storeDTO?.name || 'Cargando...' }}</p>
             </div>
         </div>
 
-        <div class="flex items-center gap-3 px-4 py-2 bg-indigo-50 rounded-xl border border-indigo-100/50 hidden md:flex">
+        <div
+            class="flex items-center gap-3 px-4 py-2 bg-indigo-50 rounded-xl border border-indigo-100/50 hidden md:flex">
             <i class="bi bi-clock-history text-indigo-500"></i>
             <span class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-600">Historial Activo</span>
         </div>
@@ -22,144 +31,173 @@
     <main class="max-w-7xl mx-auto px-6 mt-10 animate-fade-in-up">
 
         @if (isLoading) {
-            <div class="flex flex-col justify-center items-center py-40 gap-6">
-                <div class="relative w-20 h-20">
-                    <div class="absolute inset-0 border-4 border-indigo-100 rounded-full"></div>
-                    <div class="absolute inset-0 border-4 border-indigo-600 rounded-full border-t-transparent animate-spin"></div>
+        <div class="flex flex-col justify-center items-center py-40 gap-6">
+            <div class="relative w-20 h-20">
+                <div class="absolute inset-0 border-4 border-indigo-100 rounded-full"></div>
+                <div class="absolute inset-0 border-4 border-indigo-600 rounded-full border-t-transparent animate-spin">
                 </div>
-                <p class="text-indigo-400 font-black animate-pulse uppercase tracking-[0.3em] text-xs">Cargando Extracto...</p>
             </div>
+            <p class="text-indigo-400 font-black animate-pulse uppercase tracking-[0.3em] text-xs">Cargando Extracto...
+            </p>
+        </div>
         } @else {
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                <div class="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/20 flex flex-col justify-between group hover:-translate-y-1 transition-transform">
-                    <div class="flex justify-between items-start mb-6">
-                        <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-500 flex items-center justify-center">
-                            <i class="bi bi-arrow-down-left text-xl"></i>
-                        </div>
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-slate-50 px-3 py-1 rounded-lg">Entradas</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div
+                class="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/20 flex flex-col justify-between group hover:-translate-y-1 transition-transform">
+                <div class="flex justify-between items-start mb-6">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-500 flex items-center justify-center">
+                        <i class="bi bi-arrow-down-left text-xl"></i>
                     </div>
-                    <div>
-                        <p class="text-sm font-bold text-slate-500 mb-1">Total Acumulados</p>
-                        <h3 class="text-4xl font-black text-slate-900 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-emerald-400">
-                            +{{ totalEarned }} <span class="text-lg font-bold text-slate-400">pts</span>
-                        </h3>
-                    </div>
+                    <p
+                        class="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-slate-50 px-3 py-1 rounded-lg">
+                        Entradas</p>
                 </div>
-
-                <div class="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/20 flex flex-col justify-between group hover:-translate-y-1 transition-transform">
-                    <div class="flex justify-between items-start mb-6">
-                        <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center">
-                            <i class="bi bi-arrow-up-right text-xl"></i>
-                        </div>
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-slate-50 px-3 py-1 rounded-lg">Salidas</p>
-                    </div>
-                    <div>
-                        <p class="text-sm font-bold text-slate-500 mb-1">Total Canjeados</p>
-                        <h3 class="text-4xl font-black text-slate-900 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-rose-400">
-                            -{{ totalRedeemed }} <span class="text-lg font-bold text-slate-400">pts</span>
-                        </h3>
-                    </div>
-                </div>
-
-                <div class="relative bg-gradient-to-br from-slate-900 via-[#0f172a] to-slate-950 p-8 rounded-[2.5rem] border border-slate-800 shadow-2xl shadow-slate-900/20 flex flex-col justify-between overflow-hidden group hover:-translate-y-1 transition-transform">
-                    <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-indigo-500/20 rounded-full blur-[50px] group-hover:bg-indigo-500/30 transition-colors"></div>
-                    <div class="relative z-10 flex justify-between items-start mb-6">
-                        <div class="w-12 h-12 rounded-2xl bg-white/10 text-white flex items-center justify-center backdrop-blur-md border border-white/10">
-                            <i class="bi bi-wallet2 text-xl"></i>
-                        </div>
-                        <span class="relative flex h-3 w-3 mt-2 mr-2">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-3 w-3 bg-indigo-500"></span>
-                        </span>
-                    </div>
-                    <div class="relative z-10">
-                        <p class="text-sm font-bold text-slate-400 mb-1">Saldo Disponible</p>
-                        <h3 class="text-4xl font-black text-white tracking-tighter">
-                            {{ loyaltyCard?.currentBalance || 0 }} <span class="text-lg font-bold text-indigo-400">pts</span>
-                        </h3>
-                    </div>
+                <div>
+                    <p class="text-sm font-bold text-slate-500 mb-1">Total Acumulados</p>
+                    <h3
+                        class="text-4xl font-black text-slate-900 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-emerald-400">
+                        +{{ totalEarned }} <span class="text-lg font-bold text-slate-400">pts</span>
+                    </h3>
                 </div>
             </div>
 
-            <div class="bg-white rounded-[3rem] overflow-hidden shadow-2xl shadow-slate-200/40 border border-slate-100">
-
-                <div class="p-8 md:px-10 border-b border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4 bg-slate-50/50">
-                    <div>
-                        <h2 class="text-2xl font-black text-slate-900 tracking-tight">Registro de Operaciones</h2>
-                        <p class="text-xs font-bold text-slate-500 mt-1 uppercase tracking-widest">Orden cronológico</p>
+            <div
+                class="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/20 flex flex-col justify-between group hover:-translate-y-1 transition-transform">
+                <div class="flex justify-between items-start mb-6">
+                    <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center">
+                        <i class="bi bi-arrow-up-right text-xl"></i>
                     </div>
-
+                    <p
+                        class="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-slate-50 px-3 py-1 rounded-lg">
+                        Salidas</p>
                 </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-white text-slate-400 text-[10px] uppercase tracking-[0.2em] font-black border-b border-slate-100">
-                                <th class="px-10 py-5 whitespace-nowrap">Fecha y Hora</th>
-                                <th class="px-10 py-5">Concepto</th>
-                                <th class="px-10 py-5 text-center">Tipo</th>
-                                <th class="px-10 py-5 text-right">Importe</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-50">
-                            @for (t of transactions; track t.id) {
-                                <tr class="hover:bg-slate-50/80 transition-colors group cursor-default">
-
-                                    <td class="px-10 py-6 whitespace-nowrap">
-                                        <div class="flex items-center gap-3">
-                                            <div class="w-2 h-2 rounded-full" [ngClass]="t.type === 'EARN' ? 'bg-emerald-400' : 'bg-rose-400'"></div>
-                                            <span class="text-slate-500 font-bold text-sm">{{ t.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
-                                        </div>
-                                    </td>
-
-                                    <td class="px-10 py-6">
-                                        <div class="flex items-center gap-4">
-                                            <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
-                                                 [ngClass]="t.type === 'EARN' ? 'bg-emerald-50 text-emerald-500' : 'bg-rose-50 text-rose-500'">
-                                                <i class="bi text-lg" [ngClass]="t.type === 'EARN' ? 'bi-arrow-down-left' : 'bi-arrow-up-right'"></i>
-                                            </div>
-                                            <div>
-                                                <p class="font-black text-slate-900 text-sm tracking-tight group-hover:text-indigo-600 transition-colors">
-                                                    {{ t.type === 'EARN' ? 'Acumulación de puntos' : 'Canje de recompensa' }}
-                                                </p>
-                                                <p class="text-xs font-bold text-slate-400">{{ loyaltyCard?.storeDTO?.name }}</p>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td class="px-10 py-6 text-center">
-                                        @if (t.type === 'EARN') {
-                                            <span class="inline-block px-3 py-1 rounded-lg bg-emerald-50 border border-emerald-100 text-emerald-600 text-[10px] font-black uppercase tracking-widest shadow-sm">Ingreso</span>
-                                        } @else {
-                                            <span class="inline-block px-3 py-1 rounded-lg bg-rose-50 border border-rose-100 text-rose-600 text-[10px] font-black uppercase tracking-widest shadow-sm">Gasto</span>
-                                        }
-                                    </td>
-
-                                    <td class="px-10 py-6 text-right">
-                                        <div class="flex flex-col items-end justify-center">
-                                            <span class="text-xl font-mono font-black tracking-tighter" [ngClass]="t.type === 'EARN' ? 'text-emerald-500' : 'text-slate-900'">
-                                                {{ t.type === 'EARN' ? '+' : '-' }}{{ t.amount }}
-                                            </span>
-                                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">pts</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                            } @empty {
-                                <tr>
-                                    <td colspan="4" class="px-10 py-24 text-center bg-slate-50/50">
-                                        <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm border border-slate-100">
-                                            <i class="bi bi-receipt-cutoff text-2xl text-slate-300"></i>
-                                        </div>
-                                        <h4 class="text-lg font-black text-slate-900 mb-1 tracking-tight">Sin movimientos</h4>
-                                        <p class="text-slate-500 font-medium text-sm">Aún no hay transacciones registradas en esta tarjeta.</p>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                <div>
+                    <p class="text-sm font-bold text-slate-500 mb-1">Total Canjeados</p>
+                    <h3
+                        class="text-4xl font-black text-slate-900 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-rose-400">
+                        -{{ totalRedeemed }} <span class="text-lg font-bold text-slate-400">pts</span>
+                    </h3>
                 </div>
             </div>
+
+            <div
+                class="relative bg-gradient-to-br from-slate-900 via-[#0f172a] to-slate-950 p-8 rounded-[2.5rem] border border-slate-800 shadow-2xl shadow-slate-900/20 flex flex-col justify-between overflow-hidden group hover:-translate-y-1 transition-transform">
+                <div
+                    class="absolute -right-10 -bottom-10 w-40 h-40 bg-indigo-500/20 rounded-full blur-[50px] group-hover:bg-indigo-500/30 transition-colors">
+                </div>
+                <div class="relative z-10 flex justify-between items-start mb-6">
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-white/10 text-white flex items-center justify-center backdrop-blur-md border border-white/10">
+                        <i class="bi bi-wallet2 text-xl"></i>
+                    </div>
+                    <span class="relative flex h-3 w-3 mt-2 mr-2">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-indigo-500"></span>
+                    </span>
+                </div>
+                <div class="relative z-10">
+                    <p class="text-sm font-bold text-slate-400 mb-1">Saldo Disponible</p>
+                    <h3 class="text-4xl font-black text-white tracking-tighter">
+                        {{ loyaltyCard?.currentBalance || 0 }} <span
+                            class="text-lg font-bold text-indigo-400">pts</span>
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-[3rem] overflow-hidden shadow-2xl shadow-slate-200/40 border border-slate-100">
+
+            <div
+                class="p-8 md:px-10 border-b border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4 bg-slate-50/50">
+                <div>
+                    <h2 class="text-2xl font-black text-slate-900 tracking-tight">Registro de Operaciones</h2>
+                    <p class="text-xs font-bold text-slate-500 mt-1 uppercase tracking-widest">Orden cronológico</p>
+                </div>
+
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr
+                            class="bg-white text-slate-400 text-[10px] uppercase tracking-[0.2em] font-black border-b border-slate-100">
+                            <th class="px-10 py-5 whitespace-nowrap">Fecha y Hora</th>
+                            <th class="px-10 py-5">Concepto</th>
+                            <th class="px-10 py-5 text-center">Tipo</th>
+                            <th class="px-10 py-5 text-right">Importe</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-50">
+                        @for (t of transactions; track t.id) {
+                        <tr class="hover:bg-slate-50/80 transition-colors group cursor-default">
+
+                            <td class="px-10 py-6 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2 h-2 rounded-full"
+                                        [ngClass]="t.type === 'EARN' ? 'bg-emerald-400' : 'bg-rose-400'"></div>
+                                    <span class="text-slate-500 font-bold text-sm">{{ t.createdAt | date:'dd/MM/yyyy
+                                        HH:mm' }}</span>
+                                </div>
+                            </td>
+
+                            <td class="px-10 py-6">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
+                                        [ngClass]="t.type === 'EARN' ? 'bg-emerald-50 text-emerald-500' : 'bg-rose-50 text-rose-500'">
+                                        <i class="bi text-lg"
+                                            [ngClass]="t.type === 'EARN' ? 'bi-arrow-down-left' : 'bi-arrow-up-right'"></i>
+                                    </div>
+                                    <div>
+                                        <p
+                                            class="font-black text-slate-900 text-sm tracking-tight group-hover:text-indigo-600 transition-colors">
+                                            {{ t.type === 'EARN' ? 'Acumulación de puntos' : 'Canje de recompensa' }}
+                                        </p>
+                                        <p class="text-xs font-bold text-slate-400">{{ loyaltyCard?.storeDTO?.name }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="px-10 py-6 text-center">
+                                @if (t.type === 'EARN') {
+                                <span
+                                    class="inline-block px-3 py-1 rounded-lg bg-emerald-50 border border-emerald-100 text-emerald-600 text-[10px] font-black uppercase tracking-widest shadow-sm">Ingreso</span>
+                                } @else {
+                                <span
+                                    class="inline-block px-3 py-1 rounded-lg bg-rose-50 border border-rose-100 text-rose-600 text-[10px] font-black uppercase tracking-widest shadow-sm">Gasto</span>
+                                }
+                            </td>
+
+                            <td class="px-10 py-6 text-right">
+                                <div class="flex flex-col items-end justify-center">
+                                    <span class="text-xl font-mono font-black tracking-tighter"
+                                        [ngClass]="t.type === 'EARN' ? 'text-emerald-500' : 'text-slate-900'">
+                                        {{ t.type === 'EARN' ? '+' : '' }}{{ t.amount }}
+                                    </span>
+                                    <span
+                                        class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">pts</span>
+                                </div>
+                            </td>
+                        </tr>
+                        } @empty {
+                        <tr>
+                            <td colspan="4" class="px-10 py-24 text-center bg-slate-50/50">
+                                <div
+                                    class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm border border-slate-100">
+                                    <i class="bi bi-receipt-cutoff text-2xl text-slate-300"></i>
+                                </div>
+                                <h4 class="text-lg font-black text-slate-900 mb-1 tracking-tight">Sin movimientos</h4>
+                                <p class="text-slate-500 font-medium text-sm">Aún no hay transacciones registradas en
+                                    esta tarjeta.</p>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
         }
     </main>
 </div>

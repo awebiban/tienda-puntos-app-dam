@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +18,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -34,9 +35,6 @@ export class LoginComponent {
       this.loginForm.markAllAsTouched();
       return;
     }
-
-    // 💡 LIMPIEZA PREVIA: Borramos rastro de sesiones antiguas
-    localStorage.clear();
     this.isLoading = true;
     this.errorMessage = '';
 
@@ -44,24 +42,36 @@ export class LoginComponent {
 
     this.authService.login(email, password).subscribe({
       next: (res: any) => {
+        console.log('Login exitoso, procesando redirección...');
+
+        // 1. Guardar datos (asegurándonos de que no sean null)
+        localStorage.setItem('token', res.token || '');
+        localStorage.setItem('userId', String(res.id || ''));
+        localStorage.setItem('userName', res.nickname || '');
+        localStorage.setItem('userRole', res.role || '');
+
+        // 2. Apagar loader y forzar UI
         this.isLoading = false;
+        this.cdr.detectChanges();
 
-        // Guardamos los datos nuevos
-        localStorage.setItem('token', res.token);
-        localStorage.setItem('userId', res.id);
-        localStorage.setItem('userName', res.nickname);
-        localStorage.setItem('userRole', res.role);
+        // 3. Navegación con pequeña pausa para que el Guard vea el LocalStorage actualizado
+        setTimeout(() => {
+          const targetRoute = res.role === 'ADMIN_NEGOCIO'
+            ? '/business/dashboard'
+            : '/customer/dashboard';
 
-        // Redirección según rol
-        if (res.role === 'ADMIN_NEGOCIO') {
-          this.router.navigate(['/business/dashboard']);
-        } else {
-          this.router.navigate(['/customer/dashboard']);
-        }
+          this.router.navigate([targetRoute]).then(success => {
+            if (!success) {
+              console.error('La navegación falló. ¿Está la ruta bien definida?');
+              this.errorMessage = 'Error al redirigir al panel de control.';
+            }
+          });
+        }, 150);
       },
       error: (err) => {
         this.isLoading = false;
         this.errorMessage = 'Credenciales incorrectas o error en el servidor';
+        this.cdr.detectChanges();
         console.error('Error Login:', err);
       }
     });

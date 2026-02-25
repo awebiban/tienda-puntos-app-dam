@@ -1,42 +1,58 @@
 <div class="min-h-screen pb-20 overflow-hidden relative bg-[#0B1120]">
     <div class="absolute inset-0 z-0">
-        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-indigo-950/80 via-[#0B1120] to-[#0B1120]"></div>
-        <div class="absolute -top-[20%] -left-[10%] w-[70%] h-[70%] rounded-full bg-indigo-600/10 blur-[150px] animate-pulse"></div>
-        <div class="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-violet-600/10 blur-[150px] animate-pulse" style="animation-delay: 2s"></div>
-        <div class="absolute inset-0 opacity-[0.02]" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+        <div
+            class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-indigo-950/80 via-[#0B1120] to-[#0B1120]">
+        </div>
+        <div
+            class="absolute -top-[20%] -left-[10%] w-[70%] h-[70%] rounded-full bg-indigo-600/10 blur-[150px] animate-pulse">
+        </div>
+        <div class="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-violet-600/10 blur-[150px] animate-pulse"
+            style="animation-delay: 2s"></div>
+        <div class="absolute inset-0 opacity-[0.02]"
+            style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');">
+        </div>
     </div>
 
     <header class="relative pt-24 pb-32 lg:pt-36 lg:pb-48 overflow-hidden z-10">
         <div class="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col items-center text-center animate-fade-in-up">
 
             @if (userName) {
-                <span class="inline-flex items-center gap-2 py-1.5 px-5 rounded-full bg-indigo-500/10 text-indigo-300 text-xs font-black uppercase tracking-widest mb-8 border border-indigo-500/20 backdrop-blur-md shadow-[0_0_30px_rgba(99,102,241,0.2)]">
-                    <span class="w-2 h-2 rounded-full bg-indigo-400 animate-ping absolute"></span>
-                    <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
-                    Bienvenido de nuevo
-                </span>
-                <h1 class="text-6xl md:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400 mb-6 drop-shadow-2xl">
-                    {{ userName }}
-                </h1>
-                <p class="text-xl md:text-2xl text-slate-400 max-w-2xl mx-auto font-medium">
-                    Tienes puntos acumulados en <span class="font-bold text-white">{{ loyaltyCards.length }}</span> tiendas.
-                </p>
+            <span
+                class="inline-flex items-center gap-2 py-1.5 px-5 rounded-full bg-indigo-500/10 text-indigo-300 text-xs font-black uppercase tracking-widest mb-8 border border-indigo-500/20 backdrop-blur-md shadow-[0_0_30px_rgba(99,102,241,0.2)]">
+                <span class="w-2 h-2 rounded-full bg-indigo-400 animate-ping absolute"></span>
+                <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+                Bienvenido de nuevo
+            </span>
+            <h1
+                class="text-6xl md:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400 mb-6 drop-shadow-2xl">
+                {{ userName }}
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-400 max-w-2xl mx-auto font-medium">
+                Tienes puntos acumulados en <span class="font-bold text-white">{{ loyaltyCards.length }}</span> tiendas.
+            </p>
             } @else {
-                <span class="inline-flex items-center gap-2 py-1.5 px-5 rounded-full bg-blue-500/10 text-blue-300 text-xs font-black uppercase tracking-widest mb-8 border border-blue-500/20 backdrop-blur-md">
-                    <i class="bi bi-stars"></i> Fidelización Inteligente
+            <span
+                class="inline-flex items-center gap-2 py-1.5 px-5 rounded-full bg-blue-500/10 text-blue-300 text-xs font-black uppercase tracking-widest mb-8 border border-blue-500/20 backdrop-blur-md">
+                <i class="bi bi-stars"></i> Fidelización Inteligente
+            </span>
+            <h1
+                class="text-7xl md:text-9xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-violet-400 mb-8 italic">
+                USA-dos
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-400 max-w-2xl mx-auto font-medium mb-12 leading-relaxed">
+                Gestiona todas tus tarjetas de fidelidad en una única cartera digital. <br class="hidden md:block">Gana
+                recompensas reales.
+            </p>
+            <button routerLink="/login"
+                class="group relative px-10 py-4 bg-white text-[#0B1120] font-black uppercase tracking-widest text-sm rounded-2xl transition-all hover:scale-105 shadow-[0_0_40px_rgba(255,255,255,0.3)] hover:shadow-[0_0_60px_rgba(255,255,255,0.5)] overflow-hidden">
+                <div
+                    class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]">
+                </div>
+                <span class="relative flex items-center gap-3">
+                    Entrar a mi Billetera <i
+                        class="bi bi-arrow-right text-lg transition-transform group-hover:translate-x-1"></i>
                 </span>
-                <h1 class="text-7xl md:text-9xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-violet-400 mb-8 italic">
-                    USA-dos
-                </h1>
-                <p class="text-xl md:text-2xl text-slate-400 max-w-2xl mx-auto font-medium mb-12 leading-relaxed">
-                    Gestiona todas tus tarjetas de fidelidad en una única cartera digital. <br class="hidden md:block">Gana recompensas reales.
-                </p>
-                <button routerLink="/login" class="group relative px-10 py-4 bg-white text-[#0B1120] font-black uppercase tracking-widest text-sm rounded-2xl transition-all hover:scale-105 shadow-[0_0_40px_rgba(255,255,255,0.3)] hover:shadow-[0_0_60px_rgba(255,255,255,0.5)] overflow-hidden">
-                    <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
-                    <span class="relative flex items-center gap-3">
-                        Entrar a mi Billetera <i class="bi bi-arrow-right text-lg transition-transform group-hover:translate-x-1"></i>
-                    </span>
-                </button>
+            </button>
             }
         </div>
     </header>
@@ -44,51 +60,61 @@
     <main class="max-w-7xl mx-auto px-6 lg:px-8 -mt-20 relative z-20 space-y-32">
 
         @if (loyaltyCards.length > 0) {
-            <section class="animate-fade-in-up" style="animation-delay: 0.2s;">
-                <div class="flex flex-col md:flex-row justify-between items-end mb-10 px-4">
-                    <div>
-                        <h2 class="text-3xl md:text-4xl font-black text-white tracking-tight mb-2">Tus Tarjetas</h2>
-                        <p class="text-sm font-bold uppercase tracking-widest text-indigo-400">Puntos disponibles para canjear</p>
-                    </div>
-                    <div class="hidden md:flex gap-3 mt-4 md:mt-0">
-                        <button (click)="scrollCards(-1)" class="w-12 h-12 flex items-center justify-center bg-slate-800/50 hover:bg-slate-700 rounded-2xl transition-all text-white border border-slate-700 backdrop-blur-sm">
-                            <i class="bi bi-chevron-left"></i>
-                        </button>
-                        <button (click)="scrollCards(1)" class="w-12 h-12 flex items-center justify-center bg-slate-800/50 hover:bg-slate-700 rounded-2xl transition-all text-white border border-slate-700 backdrop-blur-sm">
-                            <i class="bi bi-chevron-right"></i>
-                        </button>
-                    </div>
+        <section class="animate-fade-in-up" style="animation-delay: 0.2s;">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-10 px-4">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-black text-white tracking-tight mb-2">Tus Tarjetas</h2>
+                    <p class="text-sm font-bold uppercase tracking-widest text-indigo-400">Puntos disponibles para
+                        canjear</p>
                 </div>
+                <div class="hidden md:flex gap-3 mt-4 md:mt-0">
+                    <button (click)="scrollCards(-1)"
+                        class="w-12 h-12 flex items-center justify-center bg-slate-800/50 hover:bg-slate-700 rounded-2xl transition-all text-white border border-slate-700 backdrop-blur-sm">
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
+                    <button (click)="scrollCards(1)"
+                        class="w-12 h-12 flex items-center justify-center bg-slate-800/50 hover:bg-slate-700 rounded-2xl transition-all text-white border border-slate-700 backdrop-blur-sm">
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
 
-                <div #cardContainer class="flex gap-6 overflow-x-auto pb-12 pt-4 px-4 snap-x snap-mandatory hide-scrollbar">
-                    @for (card of loyaltyCards; track card.id) {
-                        <div class="w-[340px] h-[215px] shrink-0 snap-center p-8 rounded-[2rem] relative text-white bg-gradient-to-br from-indigo-500 via-indigo-600 to-violet-900 flex flex-col justify-between shadow-2xl shadow-indigo-900/50 border border-white/20 overflow-hidden group hover:-translate-y-2 transition-transform duration-300 cursor-pointer">
+            <div #cardContainer class="flex gap-6 overflow-x-auto pb-12 pt-4 px-4 snap-x snap-mandatory hide-scrollbar">
+                @for (card of loyaltyCards; track card.id) {
+                <button (click)="selectCard(card)"
+                    class="w-[340px] h-[215px] shrink-0 snap-center p-8 rounded-[2rem] relative text-white bg-gradient-to-br from-indigo-500 via-indigo-600 to-violet-900 flex flex-col justify-between shadow-2xl shadow-indigo-900/50 border border-white/20 overflow-hidden group hover:-translate-y-2 transition-transform duration-300 cursor-pointer">
 
-                            <div class="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                            <div class="absolute -top-24 -right-24 w-48 h-48 bg-white/10 rounded-full blur-3xl"></div>
+                    <div
+                        class="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    </div>
+                    <div class="absolute -top-24 -right-24 w-48 h-48 bg-white/10 rounded-full blur-3xl"></div>
 
-                            <div class="relative z-10 flex justify-between items-start">
-                                <p class="text-sm uppercase tracking-[0.2em] font-black text-white/90 drop-shadow-md">
-                                    {{ card.storeDTO?.name }}
-                                </p>
-                                <i class="bi bi-wifi text-white/50 text-xl rotate-90"></i> </div>
+                    <div class="relative z-10 flex justify-between items-start">
+                        <p class="text-sm uppercase tracking-[0.2em] font-black text-white/90 drop-shadow-md">
+                            {{ card.storeDTO.name }}
+                        </p>
+                        <i class="bi bi-wifi text-white/50 text-xl rotate-90"></i>
+                    </div>
 
-                            <div class="relative z-10">
-                                <p class="text-[10px] uppercase tracking-widest text-indigo-200 font-bold mb-1">Saldo Actual</p>
-                                <h3 class="text-6xl font-black italic tracking-tighter drop-shadow-lg">{{ card.currentBalance }}</h3>
-                            </div>
+                    <div class="relative z-10">
+                        <p class="text-[10px] uppercase tracking-widest text-indigo-200 font-bold mb-1">Saldo Actual</p>
+                        <h3 class="text-6xl font-black italic tracking-tighter drop-shadow-lg">{{ card.currentBalance }}
+                        </h3>
+                    </div>
 
-                            <div class="relative z-10 flex justify-between items-end">
-                                <p class="text-xs font-bold text-indigo-200 tracking-wider">Acumulados: {{ card.totalAccumulated }} pts</p>
-                                <div class="w-10 h-8 rounded-md border border-white/30 bg-gradient-to-br from-[#d4af37]/40 to-[#aa7c11]/20 flex items-center justify-center overflow-hidden backdrop-blur-sm">
-                                    <div class="w-full h-[1px] bg-white/30 absolute"></div>
-                                    <div class="w-[1px] h-full bg-white/30 absolute"></div>
-                                </div>
-                            </div>
+                    <div class="relative z-10 flex justify-between items-end">
+                        <p class="text-xs font-bold text-indigo-200 tracking-wider">Acumulados: {{ card.totalAccumulated
+                            }} pts</p>
+                        <div
+                            class="w-10 h-8 rounded-md border border-white/30 bg-gradient-to-br from-[#d4af37]/40 to-[#aa7c11]/20 flex items-center justify-center overflow-hidden backdrop-blur-sm">
+                            <div class="w-full h-[1px] bg-white/30 absolute"></div>
+                            <div class="w-[1px] h-full bg-white/30 absolute"></div>
                         </div>
-                    }
-                </div>
-            </section>
+                    </div>
+                </button>
+                }
+            </div>
+        </section>
         }
 
         <section class="animate-fade-in-up" style="animation-delay: 0.4s;">
@@ -100,57 +126,66 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
                 @if (isLoadingStores && stores.length === 0) {
-                    @for (i of [1,2,3]; track i) {
-                        <div class="p-8 rounded-[2.5rem] bg-slate-800/30 border border-slate-700/50 animate-pulse">
-                            <div class="flex items-center mb-8">
-                                <div class="w-16 h-16 rounded-2xl bg-slate-700 mr-5"></div>
-                                <div class="flex-1 space-y-3">
-                                    <div class="h-4 bg-slate-700 rounded-md w-3/4"></div>
-                                    <div class="h-3 bg-slate-800 rounded-md w-1/2"></div>
-                                </div>
-                            </div>
-                            <div class="flex justify-between items-center mt-4">
-                                <div class="h-6 bg-slate-700 rounded-full w-24"></div>
-                                <div class="h-12 bg-slate-700 rounded-2xl w-28"></div>
-                            </div>
+                @for (i of [1,2,3]; track i) {
+                <div class="p-8 rounded-[2.5rem] bg-slate-800/30 border border-slate-700/50 animate-pulse">
+                    <div class="flex items-center mb-8">
+                        <div class="w-16 h-16 rounded-2xl bg-slate-700 mr-5"></div>
+                        <div class="flex-1 space-y-3">
+                            <div class="h-4 bg-slate-700 rounded-md w-3/4"></div>
+                            <div class="h-3 bg-slate-800 rounded-md w-1/2"></div>
                         </div>
-                    }
+                    </div>
+                    <div class="flex justify-between items-center mt-4">
+                        <div class="h-6 bg-slate-700 rounded-full w-24"></div>
+                        <div class="h-12 bg-slate-700 rounded-2xl w-28"></div>
+                    </div>
+                </div>
+                }
                 }
 
                 @for (store of stores; track store.id) {
-                    <div class="group p-8 rounded-[2.5rem] flex flex-col justify-between bg-slate-800/40 backdrop-blur-xl border border-slate-700/50 transition-all duration-300 hover:-translate-y-2 hover:bg-slate-800/80 hover:border-indigo-500/50 hover:shadow-2xl hover:shadow-indigo-500/20">
-                        <div class="flex items-start mb-8">
-                            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-violet-500/10 flex items-center justify-center text-indigo-400 text-2xl mr-5 border border-indigo-500/20 group-hover:scale-110 transition-transform duration-300 shadow-inner">
-                                <i class="bi bi-shop"></i>
-                            </div>
-                            <div class="flex-1">
-                                <h3 class="text-xl font-black text-white mb-1 group-hover:text-indigo-300 transition-colors">{{ store.name }}</h3>
-                                <p class="text-xs font-bold uppercase tracking-widest text-slate-500">{{ store.category }}</p>
-                            </div>
+                <div
+                    class="group p-8 rounded-[2.5rem] flex flex-col justify-between bg-slate-800/40 backdrop-blur-xl border border-slate-700/50 transition-all duration-300 hover:-translate-y-2 hover:bg-slate-800/80 hover:border-indigo-500/50 hover:shadow-2xl hover:shadow-indigo-500/20">
+                    <div class="flex items-start mb-8">
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-violet-500/10 flex items-center justify-center text-indigo-400 text-2xl mr-5 border border-indigo-500/20 group-hover:scale-110 transition-transform duration-300 shadow-inner">
+                            <i class="bi bi-shop"></i>
                         </div>
-
-                        <div class="flex items-center justify-between mt-auto">
-                            <div class="flex flex-col">
-                                <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">Recompensa</span>
-                                <span class="text-sm font-black text-indigo-400">
-                                    {{ store.pointsRatio }} pts / 1€
-                                </span>
-                            </div>
-                            <button (click)="joinStore(store.id)" class="px-6 py-3 bg-slate-700/50 hover:bg-indigo-600 text-white text-xs font-black uppercase tracking-widest rounded-2xl transition-all border border-slate-600 hover:border-indigo-500 flex items-center gap-2">
-                                Unirme <i class="bi bi-arrow-right"></i>
-                            </button>
+                        <div class="flex-1">
+                            <h3
+                                class="text-xl font-black text-white mb-1 group-hover:text-indigo-300 transition-colors">
+                                {{ store.name }}</h3>
+                            <p class="text-xs font-bold uppercase tracking-widest text-slate-500">{{ store.category }}
+                            </p>
                         </div>
                     </div>
-                } @empty {
-                    @if (!isLoadingStores) {
-                        <div class="col-span-full flex flex-col items-center text-center py-24 bg-slate-800/20 rounded-[3rem] border border-dashed border-slate-700">
-                            <div class="w-24 h-24 bg-slate-800 rounded-full flex items-center justify-center mb-6 shadow-inner">
-                                <i class="bi bi-emoji-frown text-5xl text-slate-500"></i>
-                            </div>
-                            <h3 class="text-2xl font-black text-white mb-3">Aún no hay tiendas</h3>
-                            <p class="text-slate-400 max-w-sm mx-auto font-medium">Estamos trabajando para traer los mejores comercios a USA-dos. ¡Vuelve pronto!</p>
+
+                    <div class="flex items-center justify-between mt-auto">
+                        <div class="flex flex-col">
+                            <span
+                                class="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">Recompensa</span>
+                            <span class="text-sm font-black text-indigo-400">
+                                {{ store.pointsRatio }} pts / 1€
+                            </span>
                         </div>
-                    }
+                        <button (click)="joinStore(store.id)"
+                            class="px-6 py-3 bg-slate-700/50 hover:bg-indigo-600 text-white text-xs font-black uppercase tracking-widest rounded-2xl transition-all border border-slate-600 hover:border-indigo-500 flex items-center gap-2">
+                            Unirme <i class="bi bi-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                } @empty {
+                @if (!isLoadingStores) {
+                <div
+                    class="col-span-full flex flex-col items-center text-center py-24 bg-slate-800/20 rounded-[3rem] border border-dashed border-slate-700">
+                    <div class="w-24 h-24 bg-slate-800 rounded-full flex items-center justify-center mb-6 shadow-inner">
+                        <i class="bi bi-emoji-frown text-5xl text-slate-500"></i>
+                    </div>
+                    <h3 class="text-2xl font-black text-white mb-3">Aún no hay tiendas</h3>
+                    <p class="text-slate-400 max-w-sm mx-auto font-medium">Estamos trabajando para traer los mejores
+                        comercios a USA-dos. ¡Vuelve pronto!</p>
+                </div>
+                }
                 }
             </div>
         </section>

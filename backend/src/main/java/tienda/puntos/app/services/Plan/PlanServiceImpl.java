@@ -1,4 +1,4 @@
-package tienda.puntos.app.services.Plan;
+package tienda.puntos.app.services.plan;
 
 import java.util.List;
 

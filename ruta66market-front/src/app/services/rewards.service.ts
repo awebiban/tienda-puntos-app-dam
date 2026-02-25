@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { development } from '../models/environments/environment';
+import { Reward } from '../models/Reward';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,8 @@ export class RewardsService {
   constructor(private http: HttpClient) { }
 
   // Obtener todos los premios de una tienda en concreto
-  getRewardsByStoreId(storeId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.dev}/rewards/store/${storeId}`).pipe(
+  getRewardsByStoreId(storeId: number): Observable<Reward[]> {
+    return this.http.get<Reward[]>(`${this.dev}/rewards/store/${storeId}`).pipe(
       tap(data => console.log(`%c[GET] /rewards/store/${storeId} %cLista de premios:`, 'color: #8b5cf6; font-weight: bold', 'color: gray', data))
     );
   }
@@ -41,13 +42,12 @@ export class RewardsService {
         observer.error('Datos insuficientes para reclamar recompensa');
       });
     }
-    console.error('%c[RewardsService - redeemReward] %cBACKEND SIN IMPLEMENTAR', 'color: #ef4444; font-weight: bold', 'color: orange', { currentUserId, storeId, rewardId });
-    // const payload = {
-    //   userId: currentUserId,
-    //   storeId: storeId,
-    //   rewardId: rewardId
-    // };
+    const payload = {
+      userId: currentUserId,
+      storeId: storeId,
+      rewardId: rewardId
+    };
 
-    return this.http.post<any>(`${this.dev}/loyalty/redeem`, "payload");
+    return this.http.post<any>(`${this.dev}/loyalty/redeem`, payload);
   }
 }

@@ -1,4 +1,4 @@
-package tienda.puntos.app.services.Store;
+package tienda.puntos.app.services.store;
 
 import java.util.ArrayList;
 import java.util.List;

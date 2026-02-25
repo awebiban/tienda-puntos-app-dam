@@ -1,15 +1,15 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { TransactionsService } from '../../../services/transactions.service';
-import { LoyaltycardsService } from '../../../services/loyaltycards.service';
-import { Transaction } from '../../../models/Transaction';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { LoyaltyCard } from '../../../models/LoyaltyCard';
+import { Transaction } from '../../../models/Transaction';
+import { LoyaltycardsService } from '../../../services/loyaltycards.service';
+import { TransactionsService } from '../../../services/transactions.service';
 
 @Component({
   selector: 'app-points-history',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   templateUrl: './points-history.component.html',
   styleUrl: './points-history.component.scss'
 })
@@ -27,7 +27,7 @@ export class PointsHistoryComponent implements OnInit {
     private transactionsService: TransactionsService,
     private loyaltyCardService: LoyaltycardsService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {

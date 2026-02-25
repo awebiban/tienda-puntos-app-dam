@@ -103,7 +103,6 @@ public class LoyaltyCardServiceImpl implements LoyaltyCardService {
     }
 
     @Override
-    @Transactional
     public LoyaltyCardDTO redeemReward(Long userId, Long storeId, Long rewardId) {
         // 1. Buscamos la tarjeta y el premio
         LoyaltyCard card = loyaltyCardRepository.findByUserIdAndStoreId(userId, storeId)

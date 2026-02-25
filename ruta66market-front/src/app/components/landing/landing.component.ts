@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { LoyaltyCard } from '../../models/LoyaltyCard';
@@ -9,7 +10,7 @@ import { StoresService } from '../../services/stores.service';
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, CommonModule],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.scss'
 })
@@ -70,7 +71,10 @@ export class LandingComponent implements OnInit {
     if (!this.currentUserId) return;
 
     this.loyaltyCardService.getAllLoyaltyCardsByUserId(this.currentUserId).subscribe({
-      next: (data: any) => this.loyaltyCards = data,
+      next: (data: any) => {
+        this.loyaltyCards = data;
+        this.cdr.detectChanges(); // <--- Esto fuerza a la vista a refrescarse
+      },
       error: (err: any) => console.error('Error al cargar tarjetas en la landing', err)
     });
   }
@@ -88,6 +92,11 @@ export class LandingComponent implements OnInit {
       return;
     }
 
+    console.log(`Intentando unirse a la tienda con ID ${storeId}...`);
+    if (this.loyaltyCards.some(card => card.storeDTO.id === storeId)) {
+      alert('Ya tienes la tarjeta de esta tienda. ¡Explora tus puntos en el dashboard!');
+      return;
+    }
     // 3. Llamamos al servicio para crear la tarjeta
     this.loyaltyCardService.joinStore(this.currentUserId, storeId).subscribe({
       next: () => {
@@ -109,5 +118,10 @@ export class LandingComponent implements OnInit {
         behavior: 'smooth'
       });
     }
+  }
+
+  selectCard(card: LoyaltyCard) {
+    let trimedName = card.storeDTO.name?.trim().toLowerCase().replace(/\s+/g, '-');
+    this.router.navigate(['/customer/store', trimedName], { queryParams: { cardId: card.id } });
   }
 }

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import tienda.puntos.app.model.dto.StoreDTO;
-import tienda.puntos.app.services.Store.StoreService;
+import tienda.puntos.app.services.store.StoreService;
 import tienda.puntos.app.utils.Views;
 
 @RestController

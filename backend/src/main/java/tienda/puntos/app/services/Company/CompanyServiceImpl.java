@@ -1,4 +1,4 @@
-package tienda.puntos.app.services.Company;
+package tienda.puntos.app.services.company;
 
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
