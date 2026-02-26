@@ -11,6 +11,9 @@ import { LoyaltycardsService } from '../../../services/loyaltycards.service';
 import { StoresService } from '../../../services/stores.service';
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
