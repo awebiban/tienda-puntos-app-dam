@@ -45,12 +45,15 @@ public class LoyaltyController {
     public ResponseEntity<LoyaltyCardDTO> addPoints(@RequestBody Map<String, Object> payload) {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         Long userId = Long.valueOf(payload.get("userId").toString());
         Long storeId = Long.valueOf(payload.get("storeId").toString());
         int amount = Integer.parseInt(payload.get("amount").toString());
 
         return ResponseEntity.ok(loyaltyService.addPoints(userId, storeId, amount));
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         Long cardId = Long.valueOf(payload.get("c").toString());
@@ -60,6 +63,9 @@ public class LoyaltyController {
 
         return ResponseEntity.ok(loyaltyService.addPointsToCard(cardId, storeId, userId, points));
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
