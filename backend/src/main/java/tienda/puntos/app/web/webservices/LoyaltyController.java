@@ -43,11 +43,20 @@ public class LoyaltyController {
     @PreAuthorize("hasRole('ADMIN_NEGOCIO') or hasRole('ADMIN_PLATAFORMA')")
     @JsonView(Views.Detalle.class)
     public ResponseEntity<LoyaltyCardDTO> addPoints(@RequestBody Map<String, Object> payload) {
+<<<<<<< Updated upstream
         Long userId = Long.valueOf(payload.get("userId").toString());
         Long storeId = Long.valueOf(payload.get("storeId").toString());
         int amount = Integer.parseInt(payload.get("amount").toString());
 
         return ResponseEntity.ok(loyaltyService.addPoints(userId, storeId, amount));
+=======
+        Long cardId = Long.valueOf(payload.get("c").toString());
+        Long storeId = Long.valueOf(payload.get("s").toString());
+        Long userId = Long.valueOf(payload.get("u").toString());
+        int points = Integer.parseInt(payload.get("points").toString());
+
+        return ResponseEntity.ok(loyaltyService.addPointsToCard(cardId, storeId, userId, points));
+>>>>>>> Stashed changes
     }
 
     @PostMapping("/redeem")

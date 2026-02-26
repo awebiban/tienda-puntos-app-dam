@@ -38,7 +38,60 @@ public class LoyaltyCardServiceImpl implements LoyaltyCardService {
     private UserRepository userRepo;
 
     @Autowired
+<<<<<<< Updated upstream
     private RewardRepository rewardRepo;
+=======
+    private RewardRepository rewardRepository;
+
+    @Override
+    public LoyaltyCardDTO getCardById(Long cid) {
+        return loyaltyCardRepository.findById(cid)
+                .map(LoyaltyCardDTO::convertToDTO)
+                .orElseThrow(() -> new RuntimeException("Tarjeta no encontrada"));
+    }
+
+    @Override
+    public List<LoyaltyCardDTO> getCardsByStore(Long storeId) {
+        return loyaltyCardRepository.findByStoreId(storeId).stream()
+                .map(LoyaltyCardDTO::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public LoyaltyCardDTO addPointsToCard(Long cardId, Long storeId, Long userId, int points) {
+        LoyaltyCard card = loyaltyCardRepository.findById(cardId)
+                .orElseThrow(() -> new RuntimeException("Tarjeta no encontrada"));
+
+        card.setCurrentBalance(card.getCurrentBalance() + points);
+        card.setTotalAccumulated(card.getTotalAccumulated() + points);
+
+        // Registrar la transacción de acumulación
+        Transaction t = new Transaction();
+        t.setLoyaltyCard(card);
+        t.setAmount(points);
+        t.setType(TransactionType.EARN);
+        t.setCreatedAt(LocalDateTime.now());
+        transactionRepository.save(t);
+
+        return LoyaltyCardDTO.convertToDTO(loyaltyCardRepository.save(card));
+    }
+
+    @Override
+    @Transactional
+    public LoyaltyCardDTO createCard(Long userId, Long storeId) {
+        return loyaltyCardRepository.findByUserIdAndStoreId(userId, storeId)
+                .map(LoyaltyCardDTO::convertToDTO)
+                .orElseGet(() -> {
+                    LoyaltyCard newCard = new LoyaltyCard();
+                    newCard.setUser(userRepository.findById(userId).orElseThrow());
+                    newCard.setStore(storeRepository.findById(storeId).orElseThrow());
+                    newCard.setCurrentBalance(0);
+                    newCard.setTotalAccumulated(0);
+                    return LoyaltyCardDTO.convertToDTO(loyaltyCardRepository.save(newCard));
+                });
+    }
+>>>>>>> Stashed changes
 
     @Override
     public List<LoyaltyCardDTO> getCardsByUser(Long userId) {
