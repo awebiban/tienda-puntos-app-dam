@@ -24,5 +24,8 @@ export class CompaniesService {
       tap(data => console.log(`%c[GET] /company/from-user/${ownerId} %cEmpresa encontrada:`, 'color: #10b981; font-weight: bold', 'color: gray', data))
     );
   }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 }

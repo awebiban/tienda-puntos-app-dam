@@ -9,6 +9,9 @@ import { Store } from '../../../models/Store';
 import { AuthService } from '../../../services/auth.service';
 import { LoyaltycardsService } from '../../../services/loyaltycards.service';
 import { StoresService } from '../../../services/stores.service';
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 @Component({
