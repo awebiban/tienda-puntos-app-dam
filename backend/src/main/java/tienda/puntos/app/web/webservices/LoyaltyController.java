@@ -77,6 +77,7 @@ public class LoyaltyController {
     @PostMapping("/add-points")
     @JsonView(Views.Detalle.class)
     public ResponseEntity<LoyaltyCardDTO> addPoints(@RequestBody Map<String, Object> payload) {
+<<<<<<< Updated upstream
         // Si el frontend envía cardId directamente (más fácil para el Merchant
         // Dashboard)
         if (payload.containsKey("cardId")) {
@@ -86,6 +87,8 @@ public class LoyaltyController {
         }
 
         // Si el frontend envía userId y storeId (como tenías antes)
+=======
+>>>>>>> Stashed changes
         Long userId = Long.valueOf(payload.get("userId").toString());
         Long storeId = Long.valueOf(payload.get("storeId").toString());
         int amount = Integer.parseInt(payload.get("amount").toString());

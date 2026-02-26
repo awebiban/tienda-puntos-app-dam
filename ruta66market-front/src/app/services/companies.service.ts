@@ -9,6 +9,7 @@ import { development } from '../models/environments/environment';
 })
 export class CompaniesService {
 
+<<<<<<< Updated upstream
   private dev = development.url;
 
   constructor(private http: HttpClient) { }
@@ -19,4 +20,7 @@ export class CompaniesService {
       tap(data => console.log(`%c[POST] /company/create %cEmpresa registrada:`, 'color: #10b981; font-weight: bold', 'color: gray', data))
     )
   }
+=======
+  constructor() { }
+>>>>>>> Stashed changes
 }

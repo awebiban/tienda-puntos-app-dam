@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
@@ -5,6 +6,9 @@ import { LoyaltyCard } from '../../../models/LoyaltyCard';
 import { Store } from '../../../models/Store';
 import { AuthService } from '../../../services/auth.service';
 import { LoyaltycardsService } from '../../../services/loyaltycards.service';
+=======
+import { Component } from '@angular/core';
+>>>>>>> Stashed changes
 
 @Component({
   selector: 'app-dashboard',
@@ -15,6 +19,7 @@ import { LoyaltycardsService } from '../../../services/loyaltycards.service';
 })
 export class DashboardComponent implements OnInit {
 
+<<<<<<< Updated upstream
   loyaltyCards: LoyaltyCard[] = [];
   isLoading: boolean = true;
 
@@ -72,4 +77,6 @@ export class DashboardComponent implements OnInit {
     let trimedName = store?.name?.trim().toLowerCase().replace(/\s+/g, '-');
     this.router.navigate(['/customer/store', trimedName], { queryParams: { cardId: card.id } });
   }
+=======
+>>>>>>> Stashed changes
 }

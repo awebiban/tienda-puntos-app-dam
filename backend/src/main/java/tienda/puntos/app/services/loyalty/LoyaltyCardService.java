@@ -10,6 +10,7 @@ public interface LoyaltyCardService {
     LoyaltyCardDTO getCardById(Long cid);
 
     List<LoyaltyCardDTO> getCardsByUser(Long userId);
+<<<<<<< Updated upstream
 
     List<TransactionDTO> getHistory(Long cardId);
 
@@ -22,6 +23,8 @@ public interface LoyaltyCardService {
 
     LoyaltyCardDTO addPointsToCard(Long cardId, int points);
 
+=======
+>>>>>>> Stashed changes
     LoyaltyCardDTO addPoints(Long userId, Long storeId, int amountSpent);
 
     // Método para actualizar la fecha de último acceso (nuevo)

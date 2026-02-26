@@ -37,6 +37,7 @@ public class LoyaltyCardServiceImpl implements LoyaltyCardService {
     private TransactionRepository transactionRepository;
 
     @Autowired
+<<<<<<< Updated upstream
     private RewardRepository rewardRepository;
 
     @Override
@@ -87,6 +88,9 @@ public class LoyaltyCardServiceImpl implements LoyaltyCardService {
                     return LoyaltyCardDTO.convertToDTO(loyaltyCardRepository.save(newCard));
                 });
     }
+=======
+    private RewardRepository rewardRepo;
+>>>>>>> Stashed changes
 
     @Override
     public List<LoyaltyCardDTO> getCardsByUser(Long userId) {
