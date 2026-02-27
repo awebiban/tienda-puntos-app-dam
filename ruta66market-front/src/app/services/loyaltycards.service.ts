@@ -27,7 +27,6 @@ export class LoyaltycardsService {
     return this.http.get<LoyaltyCard[]>(`${this.dev}/loyalty/store/${storeId}`);
   }
 
-<<<<<<< Updated upstream
   // ACTUALIZADO: Sumar puntos directamente por ID de tarjeta
   addPoints(cardId: number, points: number): Observable<any> {
     console.log(`%c[POST] %cSumando ${points} puntos a la tarjeta ${cardId}`, 'color: #8b5cf6; font-weight: bold', 'color: gray');
@@ -42,9 +41,10 @@ export class LoyaltycardsService {
 
   updateLastAccess(cardId: number) {
     return this.http.put<any>(`${this.dev}/loyalty/update-last-access/${cardId}`, {});
-=======
+  }
+
   redeemPointsFromCard(payload: { userId: number, storeId: number, points: number }): Observable<LoyaltyCard> {
     return this.http.post<LoyaltyCard>(`${this.dev}/loyalty/redeem-points`, payload);
->>>>>>> Stashed changes
+
   }
 }
