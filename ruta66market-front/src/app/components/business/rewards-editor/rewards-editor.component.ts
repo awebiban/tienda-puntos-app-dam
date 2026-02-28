@@ -1,10 +1,10 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RewardsService } from '../../../services/rewards.service';
-import { StoresService } from '../../../services/stores.service';
 import { Reward } from '../../../models/Reward';
 import { Store } from '../../../models/Store';
+import { RewardsService } from '../../../services/rewards.service';
+import { StoresService } from '../../../services/stores.service';
 
 @Component({
   selector: 'app-rewards-editor',
@@ -44,9 +44,9 @@ export class RewardsEditorComponent implements OnInit {
 
   loadMerchantContext(ownerId: number): void {
     this.isLoading = true;
-    this.storesService.getStoreByOwnerId(ownerId).subscribe({
+    this.storesService.getStoresByCompanyId(ownerId).subscribe({
       next: (storeData) => {
-        this.store = storeData;
+        this.store = storeData[0]; // Asignamos el primer store del array
         if (this.store?.id) {
           this.loadRewards(this.store.id);
           this.newReward.storeId = this.store.id;

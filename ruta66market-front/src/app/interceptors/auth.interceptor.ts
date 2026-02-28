@@ -1,7 +1,7 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { AuthService } from '../services/auth.service';
 import { tap } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
@@ -16,9 +16,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       }
     });
     console.log(`%c[HTTP Interceptor] %cAñadiendo token a: %c${req.url}`,
-                'color: #6366f1; font-weight: bold',
-                'color: #94a3b8',
-                'color: #38bdf8');
+      'color: #6366f1; font-weight: bold',
+      'color: #94a3b8',
+      'color: #38bdf8');
   }
 
   // Pasamos la petición y usamos tap para ver la respuesta del Back
@@ -26,20 +26,20 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     tap({
       next: (event: any) => {
         if (event.type !== 0) { // Ignoramos eventos de carga (Sent)
-           console.log(`%c[Back-end Response] %cDatos recibidos de ${req.url.split('/').pop()}:`,
-                       'color: #10b981; font-weight: bold',
-                       'color: #94a3b8',
-                       event.body);
+          // console.log(`%c[Back-end Response] %cDatos recibidos de ${req.url.split('/').pop()}:`,
+          //   'color: #10b981; font-weight: bold',
+          //   'color: #94a3b8',
+          //   event.body);
         }
       },
       error: (err: any) => {
         console.error(`%c[HTTP Error] %cError en la petición a ${req.url}:`,
-                      'color: #ef4444; font-weight: bold',
-                      'color: #94a3b8',
-                      err);
-                      if (err.status === 401) {
-            console.warn("Token expirado o inválido. Cerrando sesión...");
-            authService.logout();
+          'color: #ef4444; font-weight: bold',
+          'color: #94a3b8',
+          err);
+        if (err.status === 401) {
+          console.warn("Token expirado o inválido. Cerrando sesión...");
+          authService.logout();
         }
       }
     })

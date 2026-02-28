@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { LoyaltyCard } from '../../../models/LoyaltyCard';
 import { Store } from '../../../models/Store';
 import { AuthService } from '../../../services/auth.service';
+import { CompaniesService } from '../../../services/companies.service';
 import { LoyaltycardsService } from '../../../services/loyaltycards.service';
 
 @Component({
@@ -15,6 +16,10 @@ import { LoyaltycardsService } from '../../../services/loyaltycards.service';
 })
 export class DashboardComponent implements OnInit {
 
+  // Variables de estado
+  hasCompany: boolean = false;
+  checkingCompany: boolean = true; // Para no mostrar nada hasta estar seguros
+
   loyaltyCards: LoyaltyCard[] = [];
   isLoading: boolean = true;
 
@@ -24,6 +29,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private loyaltycardsService: LoyaltycardsService,
+    private companyService: CompaniesService,
     private authService: AuthService,
     private router: Router,
     private cdr: ChangeDetectorRef // 👈 La herramienta para forzar el redibujado
@@ -39,6 +45,7 @@ export class DashboardComponent implements OnInit {
       this.userName = storedName || 'Cliente';
       this.userRole = storedRole || '';
       this.loadMyCards();
+      this.checkUserCompany();
     } else {
       this.logout();
     }
@@ -62,6 +69,25 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  checkUserCompany(): void {
+    if (!this.currentUserId) return;
+
+    // Llamamos al servicio de compañías buscando por el ID del usuario actual
+    this.companyService.getCompanyByOwnerId(this.currentUserId).subscribe({
+      next: (company) => {
+        // Si el objeto llega y tiene un ID, es que ya tiene empresa
+        this.hasCompany = !!(company && company.id);
+        this.checkingCompany = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.hasCompany = false;
+        this.checkingCompany = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
   logout(): void {
     localStorage.clear();
     this.authService.logout();
@@ -69,7 +95,15 @@ export class DashboardComponent implements OnInit {
   }
 
   goToStore(store: Store | null, card: LoyaltyCard) {
-    let trimedName = store?.name?.trim().toLowerCase().replace(/\s+/g, '-');
-    this.router.navigate(['/customer/store', trimedName], { queryParams: { cardId: card.id } });
+    const trimedName = store?.name?.trim().toLowerCase().replace(/\s+/g, '-');
+
+    this.router.navigate(['/customer/store', trimedName], {
+      state: { cardId: card.id }
+    });
+  }
+
+  goToMerchanPanel() {
+    localStorage.setItem('userRole', 'ADMIN_NEGOCIO');
+    this.router.navigate(['/business/dashboard']);
   }
 }

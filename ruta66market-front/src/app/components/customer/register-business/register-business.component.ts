@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Company } from '../../../models/Company';
@@ -36,6 +36,7 @@ export class RegisterBusinessComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private companyService: CompaniesService,
+    private cdr: ChangeDetectorRef,
   ) {
     this.registerForm = this.fb.group({
       legalName: ['', [Validators.required, Validators.minLength(3)]],
@@ -83,20 +84,34 @@ export class RegisterBusinessComponent implements OnInit {
       nextBillingDate: this.obtenerFechaEnFormatoISO() as any
     };
 
-    this.companyService.registerNewCompany(newCompany).subscribe({
-      next: (data) => {
-        console.log('Empresa registrada con éxito:', data);
+    if (this.currentUserData) {
+      // comprobamos si el usuario ya tiene una empresa registrada
+      this.companyService.getCompanyByOwnerId(this.currentUserData.id).subscribe({
+        next: (existingCompany) => {
+          if (existingCompany) {
+            this.isLoading = false;
+            this.errorMessage = 'Ya tienes una empresa registrada.';
+            return;
+          }
+        },
+      });
 
-        this.isLoading = false;
-        this.isSuccess = true;
+      this.companyService.registerNewCompany(newCompany).subscribe({
+        next: (data) => {
+          console.log('Empresa registrada con éxito:', data);
 
-      },
-      error: (err) => {
-        console.error('Error al registrar la empresa:', err);
-        this.isLoading = false;
-        this.errorMessage = 'Hubo un error al registrar la empresa.';
-      }
-    });
+          this.isLoading = false;
+          this.isSuccess = true;
+          this.cdr.detectChanges();
+
+        },
+        error: (err) => {
+          console.error('Error al registrar la empresa:', err);
+          this.isLoading = false;
+          this.errorMessage = 'Hubo un error al registrar la empresa.';
+        }
+      });
+    }
   }
 
   // Limpieza de sesión y redirección al login

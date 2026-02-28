@@ -1,188 +1,415 @@
 <div class="min-h-screen bg-[#020617] text-slate-200 pb-20 relative overflow-hidden selection:bg-emerald-500/30">
     <div class="absolute inset-0 z-0">
-        <div class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-emerald-600/10 rounded-full blur-[120px] animate-pulse"></div>
-        <div class="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[150px] animate-pulse" style="animation-delay: 2s"></div>
-        <div class="absolute inset-0 opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+        <div
+            class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-emerald-600/10 rounded-full blur-[120px] animate-pulse">
+        </div>
+        <div class="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[150px] animate-pulse"
+            style="animation-delay: 2s"></div>
+        <div class="absolute inset-0 opacity-[0.03]"
+            style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');">
+        </div>
     </div>
 
-    <nav class="sticky top-6 mx-4 lg:mx-auto max-w-7xl rounded-[2rem] z-50 px-8 py-5 flex justify-between items-center bg-slate-900/40 backdrop-blur-2xl border border-white/5 shadow-2xl">
+    <nav
+        class="sticky top-6 mx-4 lg:mx-auto max-w-7xl rounded-[2rem] z-50 px-8 py-5 flex justify-between items-center bg-slate-900/40 backdrop-blur-2xl border border-white/5 shadow-2xl">
         <div class="flex items-center gap-5">
-            <div class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-[0_0_40px_rgba(16,185,129,0.2)] group cursor-pointer">
-                <i class="bi bi-cpu-fill text-2xl text-white group-hover:rotate-90 transition-transform duration-700"></i>
+            <div
+                class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-[0_0_40px_rgba(16,185,129,0.2)] group cursor-pointer">
+                <i
+                    class="bi bi-cpu-fill text-2xl text-white group-hover:rotate-90 transition-transform duration-700"></i>
             </div>
             <div>
-                <h1 class="text-2xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-slate-400 uppercase italic leading-none">
+                <h1
+                    class="text-2xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-slate-400 uppercase italic leading-none">
                     Merchant Hub
                 </h1>
-                <p class="text-[10px] font-black text-emerald-400 uppercase tracking-[0.4em] mt-1">{{ store?.name || 'USA-dos Business' }}</p>
+                <p class="text-[10px] font-black text-emerald-400 uppercase tracking-[0.4em] mt-1">{{ company?.legalName
+                    ||
+                    'USA-dos Business' }}</p>
             </div>
         </div>
 
         <div class="flex items-center gap-8">
-            <div class="hidden lg:flex items-center gap-3 px-5 py-2.5 bg-emerald-500/5 rounded-2xl border border-emerald-500/10">
+            <div
+                class="hidden lg:flex items-center gap-3 px-5 py-2.5 bg-emerald-500/5 rounded-2xl border border-emerald-500/10">
                 <span class="relative flex h-2 w-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span
+                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                     <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                 </span>
-                <span class="text-[10px] font-black text-emerald-500 uppercase tracking-widest leading-none">Terminal Activo</span>
+                <span class="text-[10px] font-black text-emerald-500 uppercase tracking-widest leading-none">Terminal
+                    Activo</span>
             </div>
-            <button routerLink="/customer/dashboard" class="group relative px-6 py-3 bg-slate-800/50 hover:bg-white text-slate-400 hover:text-slate-900 rounded-xl text-[10px] font-black tracking-widest uppercase transition-all border border-white/5 flex items-center gap-3">
+            <button (click)="goToCustomerDashboard()"
+                class="group relative px-6 py-3 bg-slate-800/50 hover:bg-white text-slate-400 hover:text-slate-900 rounded-xl text-[10px] font-black tracking-widest uppercase transition-all border border-white/5 flex items-center gap-3">
                 Vista Cliente <i class="bi bi-arrow-right group-hover:translate-x-1 transition-transform"></i>
             </button>
         </div>
     </nav>
 
     @if (isLoading) {
-        <div class="flex flex-col justify-center items-center py-48 gap-6 animate-pulse">
-            <div class="w-16 h-16 border-4 border-emerald-500/10 border-t-emerald-500 rounded-full animate-spin"></div>
-            <p class="text-emerald-500/50 font-black uppercase tracking-[0.4em] text-[10px]">Sincronizando Datos Maestro...</p>
-        </div>
+    <div class="flex flex-col justify-center items-center py-48 gap-6 animate-pulse">
+        <div class="w-16 h-16 border-4 border-emerald-500/10 border-t-emerald-500 rounded-full animate-spin"></div>
+        <p class="text-emerald-500/50 font-black uppercase tracking-[0.4em] text-[10px]">Sincronizando Datos Maestro...
+        </p>
+    </div>
     } @else {
-        <main class="max-w-7xl mx-auto px-6 mt-12 space-y-12 relative z-10 animate-fade-in-up">
+    <main class="max-w-7xl mx-auto px-6 mt-12 space-y-12 relative z-10 animate-fade-in-up">
 
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div class="group bg-slate-900/40 backdrop-blur-xl border border-white/5 p-8 rounded-[3rem] hover:bg-slate-800/40 transition-all duration-500">
-                    <p class="text-slate-500 text-[10px] font-black uppercase tracking-widest mb-3">Fidelidad Total</p>
-                    <div class="flex items-end gap-3">
-                        <h3 class="text-5xl font-black text-white italic leading-none">{{ customers.length }}</h3>
-                        <span class="text-emerald-500 font-bold text-xs uppercase mb-1">Users</span>
-                    </div>
-                </div>
-
-                <div class="group bg-slate-900/40 backdrop-blur-xl border border-white/5 p-8 rounded-[3rem] hover:bg-slate-800/40 transition-all duration-500">
-                    <p class="text-slate-500 text-[10px] font-black uppercase tracking-widest mb-3">Economía Circular</p>
-                    <div class="flex items-end gap-3">
-                        <h3 class="text-5xl font-black text-emerald-400 italic leading-none">8.4k</h3>
-                        <span class="text-slate-500 font-bold text-xs uppercase mb-1">Pts</span>
-                    </div>
-                </div>
-
-                <div class="md:col-span-2 bg-gradient-to-br from-emerald-600 to-teal-800 p-10 rounded-[3rem] shadow-2xl flex items-center justify-between overflow-hidden relative group cursor-default">
-                    <div class="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                    <i class="bi bi-graph-up-arrow absolute -right-6 -bottom-6 text-[12rem] text-white/5 -rotate-12 transition-transform group-hover:scale-110 group-hover:-rotate-6 duration-1000"></i>
-
-                    <div class="relative z-10">
-                        <h4 class="text-white font-black text-3xl mb-2 tracking-tighter italic">Crecimiento Mensual</h4>
-                        <div class="flex items-center gap-3">
-                            <span class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-black text-white">+24 NUEVOS</span>
-                            <p class="text-emerald-100/60 text-sm font-medium italic">Fidelización optimizada</p>
-                        </div>
-                    </div>
-                    <div class="text-right relative z-10">
-                        <span class="text-6xl font-black text-white italic drop-shadow-2xl tracking-tighter">12%</span>
-                    </div>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div
+                class="group bg-slate-900/40 backdrop-blur-xl border border-white/5 p-8 rounded-[3rem] hover:bg-slate-800/40 transition-all duration-500">
+                <p class="text-slate-500 text-[10px] font-black uppercase tracking-widest mb-3">Infraestructura</p>
+                <div class="flex items-end gap-3">
+                    <h3 class="text-5xl font-black text-white italic leading-none">{{ stores.length }}</h3>
+                    <span class="text-emerald-500 font-bold text-xs uppercase mb-1">Locales</span>
                 </div>
             </div>
 
-            <div class="bg-slate-900/30 backdrop-blur-2xl border border-white/5 rounded-[4rem] overflow-hidden shadow-2xl">
-                <div class="p-12 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-                    <div>
-                        <h2 class="text-4xl font-black text-white tracking-tighter italic">Tarjetas de Fidelidad</h2>
-                        <p class="text-slate-500 text-sm italic font-medium mt-1 uppercase tracking-widest opacity-60">Terminal de emisión de puntos</p>
-                    </div>
+            <div
+                class="group bg-slate-900/40 backdrop-blur-xl border border-white/5 p-8 rounded-[3rem] hover:bg-slate-800/40 transition-all duration-500">
+                <p class="text-slate-500 text-[10px] font-black uppercase tracking-widest mb-3">Alcance Global</p>
+                <div class="flex items-end gap-3">
+                    <h3 class="text-5xl font-black text-emerald-400 italic leading-none">{{ customers.length }}</h3>
+                    <span class="text-slate-500 font-bold text-xs uppercase mb-1">Clientes</span>
+                </div>
+            </div>
 
-                    <div class="relative w-full lg:w-[450px] group">
-                        <i class="bi bi-search absolute left-6 top-1/2 -translate-y-1/2 text-emerald-500/50 group-focus-within:text-emerald-400 transition-colors"></i>
-                        <input type="text" [(ngModel)]="searchTerm" (input)="filterCustomers()"
-                               placeholder="Buscar por ID o Email..."
-                               class="w-full bg-slate-950/50 border border-white/5 rounded-2xl py-5 pl-16 pr-8 text-sm font-bold text-white focus:border-emerald-500/50 outline-none transition-all focus:ring-8 focus:ring-emerald-500/5 placeholder:text-slate-700">
+            <div
+                class="md:col-span-2 bg-gradient-to-br from-emerald-600 to-teal-800 p-10 rounded-[3rem] shadow-2xl flex items-center justify-between overflow-hidden relative group cursor-default">
+                <div
+                    class="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                </div>
+                <i
+                    class="bi bi-shop absolute -right-6 -bottom-6 text-[12rem] text-white/5 -rotate-12 transition-transform group-hover:scale-110 group-hover:-rotate-6 duration-1000"></i>
+                <div class="relative z-10">
+                    <h4 class="text-white font-black text-3xl mb-2 tracking-tighter italic">Gestión de Negocio</h4>
+                    <div class="flex items-center gap-3">
+                        <span
+                            class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-black text-white">PRO
+                            MODE</span>
+                        <p class="text-emerald-100/60 text-sm font-medium italic">Control total de sucursales</p>
                     </div>
                 </div>
+                <button (click)="createFirstStore()"
+                    class="relative z-10 bg-white text-slate-900 px-6 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-emerald-50 transition-colors shadow-xl">
+                    Añadir Local
+                </button>
+            </div>
+        </div>
 
-                <div class="overflow-x-auto px-6 pb-12">
-                    <table class="w-full border-separate border-spacing-y-3">
-                        <thead>
-                            <tr class="text-slate-500 text-[10px] font-black uppercase tracking-[0.3em]">
-                                <th class="px-10 py-4 text-left font-black">Titular / ID</th>
-                                <th class="px-10 py-4 text-left font-black">Estado</th>
-                                <th class="px-10 py-4 text-center font-black">Saldo</th>
-                                <th class="px-10 py-4 text-right font-black">Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @for (c of filteredCustomers; track c.id) {
-                                <tr class="group bg-slate-800/10 hover:bg-slate-800/40 transition-all duration-300">
-                                    <td class="px-10 py-6 rounded-l-[2rem] border-y border-l border-white/5">
-                                        <div class="flex items-center gap-5">
-                                            <div class="w-12 h-12 rounded-2xl bg-slate-950 border border-emerald-500/20 flex items-center justify-center font-black text-xs text-emerald-500 shadow-inner group-hover:border-emerald-500/50 transition-colors italic">
-                                                #{{ c.id }}
-                                            </div>
-                                            <div class="flex flex-col">
-                                                <span class="font-black text-white text-lg tracking-tighter">Usuario Registrado</span>
-                                                <span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Inscrito: {{ c.lastVisited | date:'MMMM yyyy' }}</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-10 py-6 border-y border-white/5">
-                                        <span class="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-500/5 text-emerald-400 text-[9px] font-black rounded-full border border-emerald-500/10 uppercase tracking-widest">
-                                            <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
-                                            Fidelizado
+        <div class="bg-slate-900/30 backdrop-blur-2xl border border-white/5 rounded-[4rem] overflow-hidden shadow-2xl">
+            <div class="p-12 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+                <div>
+                    <h2 class="text-4xl font-black text-white tracking-tighter italic">Mis Establecimientos</h2>
+                    <p class="text-slate-500 text-sm italic font-medium mt-1 uppercase tracking-widest opacity-60">
+                        Configuración y métricas por sucursal
+                    </p>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto px-6 pb-12">
+                <table class="w-full border-separate border-spacing-y-3">
+                    <thead>
+                        <tr class="text-slate-500 text-[10px] font-black uppercase tracking-[0.3em]">
+                            <th class="px-10 py-4 text-left">Tienda / Categoría</th>
+                            <th class="px-10 py-4 text-left">Estado</th>
+                            <th class="px-10 py-4 text-center">Ratio Puntos</th>
+                            <th class="px-10 py-4 text-right">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (s of stores; track s.id) {
+                        <tr class="group bg-slate-800/10 hover:bg-slate-800/40 transition-all duration-300">
+                            <td class="px-10 py-6 rounded-l-[2rem] border-y border-l border-white/5">
+                                <div class="flex items-center gap-5">
+                                    <div
+                                        class="w-14 h-14 rounded-2xl bg-slate-950 border border-emerald-500/20 overflow-hidden flex items-center justify-center shadow-inner group-hover:border-emerald-500/50 transition-colors">
+                                        <i class="bi bi-shop text-emerald-500 text-xl"></i>
+
+                                    </div>
+                                    <div class="flex flex-col">
+                                        <span class="font-black text-white text-lg tracking-tighter">{{ s.name }}</span>
+                                        <span
+                                            class="text-[10px] text-slate-500 font-bold uppercase tracking-widest italic">
+                                            {{ s.category || 'Sin categoría' }}
                                         </span>
-                                    </td>
-                                    <td class="px-10 py-6 text-center border-y border-white/5">
-                                        <div class="inline-flex items-baseline gap-1">
-                                            <span class="text-3xl font-mono font-black text-white tracking-tighter italic">{{ c.currentBalance }}</span>
-                                            <span class="text-[10px] text-emerald-500 font-black uppercase tracking-widest">pts</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-10 py-6 border-y border-white/5">
+                                @if (s.isVisible) {
+                                <span
+                                    class="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-500/5 text-emerald-400 text-[9px] font-black rounded-full border border-emerald-500/10 uppercase tracking-widest">
+                                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                                    Visible
+                                </span>
+                                } @else {
+                                <span
+                                    class="inline-flex items-center gap-2 px-4 py-1.5 bg-slate-500/5 text-slate-400 text-[9px] font-black rounded-full border border-slate-500/10 uppercase tracking-widest">
+                                    Privado
+                                </span>
+                                }
+                            </td>
+                            <td class="px-10 py-6 text-center border-y border-white/5">
+                                <div class="inline-flex items-baseline gap-1">
+                                    <span class="text-2xl font-mono font-black text-white tracking-tighter">1€</span>
+                                    <i class="bi bi-arrow-right text-emerald-500 text-xs mx-1"></i>
+                                    <span class="text-2xl font-mono font-black text-emerald-500 italic">{{ s.pointsRatio
+                                        }}</span>
+                                    <span
+                                        class="text-[10px] text-emerald-500 font-black uppercase tracking-widest">pts</span>
+                                </div>
+                            </td>
+                            <td class="px-10 py-6 rounded-r-[2rem] border-y border-r border-white/5 text-right">
+                                <div class="flex justify-end gap-3">
+                                    <button (click)="editarStore(s.id)"
+                                        class="group p-4 bg-amber-500/5 text-amber-500 hover:bg-amber-500 hover:text-white rounded-2xl transition-all duration-300 border border-amber-500/20 hover:border-amber-500 shadow-lg hover:shadow-amber-500/20 active:scale-90"
+                                        title="Editar Tienda">
+                                        <i class="bi bi-pencil-square transition-transform group-hover:rotate-12"></i>
+                                    </button>
+
+                                    <button (click)="verTarjetasDeFidelidad(s.id, s.name)"
+                                        class="group p-4 bg-indigo-500/5 text-indigo-400 hover:bg-indigo-600 hover:text-white rounded-2xl transition-all duration-300 border border-indigo-500/20 hover:border-indigo-500 shadow-lg hover:shadow-indigo-500/20 active:scale-90"
+                                        title="Gestionar Tarjetas de Fidelidad">
+                                        <i class="bi bi-card-list transition-transform group-hover:scale-110"></i>
+                                    </button>
+
+                                    <button (click)="verAnaliticas(s.id)"
+                                        class="group p-4 bg-emerald-500/10 text-emerald-500 hover:bg-emerald-600 hover:text-white rounded-2xl transition-all duration-500 border border-emerald-500/20 hover:border-emerald-500 shadow-xl hover:shadow-emerald-500/40 active:scale-95 relative overflow-hidden"
+                                        title="Ver Analíticas">
+                                        <div
+                                            class="absolute inset-0 bg-gradient-to-tr from-emerald-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
                                         </div>
-                                    </td>
-                                    <td class="px-10 py-6 rounded-r-[2rem] border-y border-r border-white/5 text-right">
-                                        <button (click)="openPointsModal(c)"
-                                                class="group/btn relative px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-black rounded-xl transition-all shadow-xl shadow-emerald-900/20 active:scale-95 uppercase tracking-[0.2em] overflow-hidden italic">
-                                            <span class="relative z-10 flex items-center gap-2">
-                                                Sumar Puntos <i class="bi bi-plus-lg group-hover/btn:rotate-90 transition-transform"></i>
-                                            </span>
-                                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_1s_infinite]"></div>
-                                        </button>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
+                                        <i
+                                            class="bi bi-bar-chart-fill relative z-10 transition-transform group-hover:-translate-y-1"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        } @empty {
+                        <tr>
+                            <td colspan="4" class="px-10 py-24 text-center">
+                                <div
+                                    class="w-20 h-20 bg-slate-800/50 rounded-[2rem] flex items-center justify-center mx-auto mb-6">
+                                    <i class="bi bi-plus-circle text-3xl text-slate-600"></i>
+                                </div>
+                                <h4 class="text-xl font-black text-white tracking-tighter italic">No hay locales
+                                    registrados</h4>
+                                <p class="text-slate-500 text-sm mt-2 max-w-xs mx-auto">Comienza tu imperio registrando
+                                    tu primera sucursal física.</p>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
-        </main>
+        </div>
+    </main>
     }
 
-    @if (selectedCard) {
-        <div class="fixed inset-0 z-[100] flex items-center justify-center p-6">
-            <div class="absolute inset-0 bg-[#020617]/90 backdrop-blur-xl" (click)="selectedCard = null"></div>
+    <!-- @if (selectedCard) {
+    <div class="fixed inset-0 z-[100] flex items-center justify-center p-6">
+        <div class="absolute inset-0 bg-[#020617]/90 backdrop-blur-xl" (click)="selectedCard = null"></div>
 
-            <div class="relative bg-slate-900 border border-white/10 w-full max-w-md rounded-[4rem] p-12 shadow-[0_0_100px_rgba(16,185,129,0.1)] animate-fade-in-up">
-                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-1 bg-gradient-to-r from-transparent via-emerald-500 to-transparent"></div>
+        <div
+            class="relative bg-slate-900 border border-white/10 w-full max-w-md rounded-[4rem] p-12 shadow-[0_0_100px_rgba(16,185,129,0.1)] animate-fade-in-up">
+            <div
+                class="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-1 bg-gradient-to-r from-transparent via-emerald-500 to-transparent">
+            </div>
 
-                <div class="text-center space-y-4 mb-12">
-                    <div class="w-24 h-24 bg-emerald-500/5 rounded-[2.5rem] flex items-center justify-center mx-auto text-emerald-500 border border-emerald-500/10 shadow-inner mb-6">
-                        <i class="bi bi-plus-circle-fill text-5xl"></i>
+            <div class="text-center space-y-4 mb-12">
+                <div
+                    class="w-24 h-24 bg-emerald-500/5 rounded-[2.5rem] flex items-center justify-center mx-auto text-emerald-500 border border-emerald-500/10 shadow-inner mb-6">
+                    <i class="bi bi-plus-circle-fill text-5xl"></i>
+                </div>
+                <h3 class="text-4xl font-black text-white italic tracking-tighter leading-none">Emitir Puntos</h3>
+                <p class="text-slate-500 text-xs font-bold uppercase tracking-widest">Asignando a tarjeta <span
+                        class="text-emerald-400">#{{ selectedCard.id }}</span></p>
+            </div>
+
+            <div class="space-y-10">
+                <div class="space-y-4 group">
+                    <label
+                        class="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-6 group-focus-within:text-emerald-400 transition-colors">Monto
+                        a cargar</label>
+                    <div class="relative">
+                        <input type="number" [(ngModel)]="pointsToAdd"
+                            class="w-full bg-slate-950/50 border border-white/5 rounded-[2.5rem] py-10 text-center text-6xl font-mono font-black text-white focus:border-emerald-500/50 outline-none transition-all shadow-inner tracking-tighter">
+                        <span
+                            class="absolute right-10 top-1/2 -translate-y-1/2 text-slate-700 font-black text-xl italic uppercase">Pts</span>
                     </div>
-                    <h3 class="text-4xl font-black text-white italic tracking-tighter leading-none">Emitir Puntos</h3>
-                    <p class="text-slate-500 text-xs font-bold uppercase tracking-widest">Asignando a tarjeta <span class="text-emerald-400">#{{ selectedCard.id }}</span></p>
                 </div>
 
-                <div class="space-y-10">
-                    <div class="space-y-4 group">
-                        <label class="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-6 group-focus-within:text-emerald-400 transition-colors">Monto a cargar</label>
-                        <div class="relative">
-                            <input type="number" [(ngModel)]="pointsToAdd"
-                                   class="w-full bg-slate-950/50 border border-white/5 rounded-[2.5rem] py-10 text-center text-6xl font-mono font-black text-white focus:border-emerald-500/50 outline-none transition-all shadow-inner tracking-tighter">
-                            <span class="absolute right-10 top-1/2 -translate-y-1/2 text-slate-700 font-black text-xl italic uppercase">Pts</span>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-3 gap-4">
-                        <button (click)="selectedCard = null"
-                                class="col-span-1 py-5 bg-slate-800/50 hover:bg-slate-800 text-slate-500 font-black rounded-3xl transition-all uppercase text-[10px] tracking-widest border border-white/5">
-                            Cerrar
-                        </button>
-                        <button (click)="confirmAddPoints()" [disabled]="isProcessing || pointsToAdd <= 0"
-                                class="col-span-2 py-5 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-3xl transition-all shadow-2xl shadow-emerald-900/40 uppercase text-[10px] tracking-widest disabled:opacity-30 disabled:grayscale flex items-center justify-center gap-3 italic">
-                            @if (isProcessing) {
-                                <div class="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
-                            }
-                            Confirmar Envío <i class="bi bi-send-fill"></i>
-                        </button>
-                    </div>
+                <div class="grid grid-cols-3 gap-4">
+                    <button (click)="selectedCard = null"
+                        class="col-span-1 py-5 bg-slate-800/50 hover:bg-slate-800 text-slate-500 font-black rounded-3xl transition-all uppercase text-[10px] tracking-widest border border-white/5">
+                        Cerrar
+                    </button>
+                    <button (click)="confirmAddPoints()" [disabled]="isProcessing || pointsToAdd <= 0"
+                        class="col-span-2 py-5 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-3xl transition-all shadow-2xl shadow-emerald-900/40 uppercase text-[10px] tracking-widest disabled:opacity-30 disabled:grayscale flex items-center justify-center gap-3 italic">
+                        @if (isProcessing) {
+                        <div class="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
+                        }
+                        Confirmar Envío <i class="bi bi-send-fill"></i>
+                    </button>
                 </div>
             </div>
         </div>
-    }
+    </div>
+    } -->
 </div>
+@if (showCreateStoreModal) {
+<div class="fixed inset-0 z-[110] flex items-center justify-center p-6">
+    <div class="absolute inset-0 bg-[#020617]/95 backdrop-blur-2xl"
+        (click)="!isCreatingStore && (showCreateStoreModal = false)"></div>
+
+    <div
+        class="relative bg-slate-900 border border-white/10 w-full max-w-2xl rounded-[4rem] p-12 shadow-[0_0_150px_rgba(16,185,129,0.15)] animate-fade-in-up overflow-hidden">
+
+        <div
+            class="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-1 bg-gradient-to-r from-transparent via-emerald-500 to-transparent">
+        </div>
+
+        <div class="text-center space-y-4 mb-10">
+            <div
+                class="w-20 h-20 bg-emerald-500/10 rounded-[2rem] flex items-center justify-center mx-auto text-emerald-500 border border-emerald-500/10 shadow-inner mb-4">
+                <i class="bi bi-shop text-4xl"></i>
+            </div>
+            <h3 class="text-4xl font-black text-white italic tracking-tighter leading-none">Configurar Tienda</h3>
+            <p class="text-slate-500 text-[10px] font-black uppercase tracking-[0.3em]">Establece los cimientos de tu
+                comercio</p>
+        </div>
+
+        <form [formGroup]="storeForm" (ngSubmit)="confirmCreateStore()" class="space-y-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <div class="space-y-2 group">
+                    <label
+                        class="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-4 group-focus-within:text-emerald-400 transition-colors">Nombre
+                        Comercial</label>
+                    <input type="text" formControlName="name" placeholder="Ej: USA-dos Central"
+                        class="w-full bg-slate-950/50 border border-white/5 rounded-2xl py-4 px-6 text-sm font-bold text-white focus:border-emerald-500/50 outline-none transition-all">
+                </div>
+
+                <div class="space-y-2 group">
+                    <label
+                        class="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-4 group-focus-within:text-emerald-400 transition-colors">Categoría</label>
+                    <select formControlName="category"
+                        class="w-full bg-slate-950/50 border border-white/5 rounded-2xl py-4 px-6 text-sm font-bold text-white focus:border-emerald-500/50 outline-none transition-all appearance-none">
+                        <option value="">Seleccionar...</option>
+                        <option value="Moda">Moda & Ropa</option>
+                        <option value="Restauración">Restauración</option>
+                        <option value="Tecnología">Tecnología</option>
+                        <option value="Otros">Otros</option>
+                    </select>
+                </div>
+
+                <div class="md:col-span-2 space-y-2 group">
+                    <label
+                        class="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-4 group-focus-within:text-emerald-400 transition-colors">Dirección
+                        Física</label>
+                    <input type="text" formControlName="address" placeholder="Calle Falsa 123, Ciudad"
+                        class="w-full bg-slate-950/50 border border-white/5 rounded-2xl py-4 px-6 text-sm font-bold text-white focus:border-emerald-500/50 outline-none transition-all">
+                </div>
+
+                <div class="space-y-2 group">
+                    <label
+                        class="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-4 group-focus-within:text-emerald-400 transition-colors">1€
+                        Gastado = X Puntos</label>
+                    <input type="number" formControlName="pointsRatio"
+                        class="w-full bg-slate-950/50 border border-white/5 rounded-2xl py-4 px-6 text-sm font-bold text-emerald-400 focus:border-emerald-500/50 outline-none transition-all">
+                </div>
+
+                <!-- <div class="space-y-2 group">
+                    <label
+                        class="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-4 group-focus-within:text-emerald-400 transition-colors">URL
+                        Logo/Imagen</label>
+                    <input type="text" formControlName="imageUrl" placeholder="https://..."
+                        class="w-full bg-slate-950/50 border border-white/5 rounded-2xl py-4 px-6 text-sm font-bold text-white focus:border-emerald-500/50 outline-none transition-all">
+                </div> -->
+            </div>
+
+            <div class="flex gap-4 pt-4">
+                <button type="button" (click)="showCreateStoreModal = false"
+                    class="flex-1 py-5 bg-slate-800/50 hover:bg-slate-800 text-slate-500 font-black rounded-3xl transition-all uppercase text-[10px] tracking-widest border border-white/5">
+                    Cancelar
+                </button>
+                <button type="submit" [disabled]="storeForm.invalid || isCreatingStore"
+                    class="flex-[2] py-5 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-3xl transition-all shadow-2xl shadow-emerald-900/40 uppercase text-[10px] tracking-widest disabled:opacity-30 flex items-center justify-center gap-3 italic">
+                    @if (isCreatingStore) {
+                    <div class="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
+                    }
+                    Lanzar Tienda <i class="bi bi-rocket-takeoff"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+}
+
+@if (showCardsModal) {
+<div class="fixed inset-0 z-[100] flex items-center justify-center p-6 animate-fade-in">
+    <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-xl" (click)="showCardsModal = false"></div>
+
+    <div
+        class="relative bg-slate-900 border border-white/10 w-full max-w-4xl max-h-[80vh] rounded-[3rem] shadow-2xl overflow-hidden flex flex-col animate-fade-in-up">
+
+        <div class="p-8 border-b border-white/5 flex justify-between items-center bg-white/[0.02]">
+            <div>
+                <h3 class="text-2xl font-black text-white italic tracking-tighter">Terminal de Fidelidad</h3>
+                <p class="text-emerald-500 text-[10px] font-black uppercase tracking-[0.3em]">{{ selectedStoreName }}
+                </p>
+            </div>
+            <button (click)="showCardsModal = false"
+                class="w-12 h-12 rounded-2xl bg-white/5 hover:bg-red-500/20 hover:text-red-500 text-slate-400 transition-all flex items-center justify-center">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-8 custom-scrollbar">
+            @if (isLoading) {
+            <div class="py-20 flex flex-col items-center gap-4">
+                <div class="w-10 h-10 border-2 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin">
+                </div>
+                <p class="text-slate-500 text-[10px] font-black uppercase tracking-widest">Consultando Ledger...</p>
+            </div>
+            } @else {
+            <div class="grid grid-cols-1 gap-4">
+                @for (card of customers; track card.id) {
+                <div
+                    class="group bg-slate-950/40 border border-white/5 p-6 rounded-[2rem] flex items-center justify-between hover:bg-slate-800/40 transition-all">
+                    <div class="flex items-center gap-6">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 font-black text-xs italic border border-emerald-500/20">
+                            #{{ $index + 1 }}
+                        </div>
+                        <div>
+                            <p class="text-white font-bold tracking-tight">{{ card.userDTO!.email }}</p>
+                            <p class="text-[10px] text-slate-500 font-black uppercase tracking-widest">Saldo Actual</p>
+                        </div>
+                    </div>
+
+                    <div class="text-right">
+                        <span class="text-3xl font-mono font-black text-white italic tracking-tighter">{{
+                            card.currentBalance }}</span>
+                        <span class="text-emerald-500 text-[10px] font-black ml-2 uppercase">Pts</span>
+                    </div>
+                </div>
+                } @empty {
+                <div class="text-center py-16">
+                    <i class="bi bi-person-x text-5xl text-slate-700 mb-4 inline-block"></i>
+                    <p class="text-slate-500 font-medium italic">Esta sucursal aún no tiene clientes fidelizados.</p>
+                </div>
+                }
+            </div>
+            }
+        </div>
+
+        <div class="p-6 bg-white/[0.01] border-t border-white/5 text-center">
+            <p class="text-[9px] text-slate-600 font-black uppercase tracking-[0.5em]">Sistema de Gestión de Activos
+                Digitales v1.0</p>
+        </div>
+    </div>
+</div>
+}

@@ -30,15 +30,18 @@ export class PointsHistoryComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      const cardId = Number(params['cardId']);
-      if (cardId) {
-        this.loadHistory(cardId);
-      } else {
-        this.isLoading = false;
-        this.cdr.detectChanges();
-      }
-    });
+    let cardId = history.state?.cardId;
+
+    if (cardId) {
+      console.log('Cargando historial para tarjeta:', cardId);
+      this.loadHistory(cardId);
+    } else {
+      console.warn('No se encontró cardId en el estado ni en la URL');
+      this.isLoading = false;
+      this.cdr.detectChanges();
+
+      // this.goBack();
+    }
   }
 
   loadHistory(cardId: number): void {

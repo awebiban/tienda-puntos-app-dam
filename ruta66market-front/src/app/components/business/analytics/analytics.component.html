@@ -11,51 +11,52 @@
   </div>
 
   @if (isLoading) {
-    <div class="flex justify-center py-40">
-      <div class="w-10 h-10 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin"></div>
-    </div>
+  <div class="flex justify-center py-40">
+    <div class="w-10 h-10 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin"></div>
+  </div>
   } @else {
-    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 animate-fade-in-up">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 animate-fade-in-up">
 
-      <div class="space-y-8">
-        <div class="bg-slate-900/50 border border-slate-800 p-8 rounded-[2.5rem] shadow-xl">
-          <p class="text-slate-500 text-[10px] font-black uppercase tracking-widest mb-4">Clientes Registrados</p>
-          <div class="flex items-end gap-4">
-            <h2 class="text-5xl font-black italic">{{ activeCustomers }}</h2>
-            <span class="text-green-400 text-sm font-bold mb-2">+12% vs mes ant.</span>
-          </div>
-        </div>
-
-        <div class="bg-slate-900/50 border border-slate-800 p-8 rounded-[2.5rem] shadow-xl">
-          <p class="text-slate-500 text-[10px] font-black uppercase tracking-widest mb-4">Total Puntos Emitidos</p>
-          <h2 class="text-5xl font-black italic text-indigo-400">{{ totalPointsGiven }}</h2>
+    <div class="space-y-8">
+      <div class="bg-slate-900/50 border border-slate-800 p-8 rounded-[2.5rem] shadow-xl">
+        <p class="text-slate-500 text-[10px] font-black uppercase tracking-widest mb-4">Clientes Registrados</p>
+        <div class="flex items-end gap-4">
+          <h2 class="text-5xl font-black italic">{{ activeCustomers }}</h2>
+          <span class="text-green-400 text-sm font-bold mb-2">+12% vs mes ant.</span>
         </div>
       </div>
 
-      <div class="lg:col-span-2 bg-slate-900/50 border border-slate-800 p-10 rounded-[3rem] relative overflow-hidden group">
-        <div class="relative z-10 flex flex-col md:flex-row items-center gap-12">
-          <div class="w-64 h-64">
-            <canvas #mainChart></canvas>
-          </div>
-          <div class="flex-1 space-y-6">
-            <h3 class="text-2xl font-black italic">Estado de Fidelización</h3>
-            <div class="space-y-4">
-              <div class="flex justify-between items-center p-4 bg-slate-950/50 rounded-2xl border border-slate-800">
-                <span class="text-xs font-bold text-slate-400">Puntos en Monederos</span>
-                <span class="font-black text-indigo-400">{{ totalPointsGiven - totalPointsRedeemed }} pts</span>
-              </div>
-              <div class="flex justify-between items-center p-4 bg-slate-950/50 rounded-2xl border border-slate-800">
-                <span class="text-xs font-bold text-slate-400">Puntos Canjeados</span>
-                <span class="font-black text-green-400">{{ totalPointsRedeemed }} pts</span>
-              </div>
-            </div>
-            <p class="text-[10px] text-slate-500 italic uppercase tracking-wider">
-              * Datos calculados en tiempo real desde la base de datos de USA-dos.
-            </p>
-          </div>
-        </div>
+      <div class="bg-slate-900/50 border border-slate-800 p-8 rounded-[2.5rem] shadow-xl">
+        <p class="text-slate-500 text-[10px] font-black uppercase tracking-widest mb-4">Total Puntos Emitidos</p>
+        <h2 class="text-5xl font-black italic text-indigo-400">{{ totalPointsGiven }}</h2>
       </div>
-
     </div>
+
+    <div
+      class="lg:col-span-2 bg-slate-900/50 border border-slate-800 p-10 rounded-[3rem] relative overflow-hidden group">
+      <div class="relative z-10 flex flex-col md:flex-row items-center gap-12">
+        <div class="w-64 h-64">
+          <canvas #mainChart></canvas>
+        </div>
+        <div class="flex-1 space-y-6">
+          <h3 class="text-2xl font-black italic">Estado de Fidelización</h3>
+          <div class="space-y-4">
+            <div class="flex justify-between items-center p-4 bg-slate-950/50 rounded-2xl border border-slate-800">
+              <span class="text-xs font-bold text-slate-400">Puntos en Monederos</span>
+              <span class="font-black text-indigo-400">{{ totalPointsGiven - totalPointsRedeemed }} pts</span>
+            </div>
+            <div class="flex justify-between items-center p-4 bg-slate-950/50 rounded-2xl border border-slate-800">
+              <span class="text-xs font-bold text-slate-400">Puntos Canjeados</span>
+              <span class="font-black text-green-400">{{ totalPointsRedeemed }} pts</span>
+            </div>
+          </div>
+          <p class="text-[10px] text-slate-500 italic uppercase tracking-wider">
+            * Datos calculados en tiempo real desde la base de datos de USA-dos.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
   }
 </div>

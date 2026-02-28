@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, switchMap, tap } from 'rxjs';
+import { Company } from '../models/Company';
 import { development } from '../models/environments/environment';
 import { Store } from '../models/Store';
-import { Company } from '../models/Company';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +31,10 @@ export class StoresService {
         );
       })
     );
+  }
+
+  getStoresByCompanyId(companyId: number): Observable<Store[]> {
+    return this.http.get<Store[]>(`${this.dev}/store/company/${companyId}`);
   }
 
   // MÉTODO AÑADIDO: Para actualizar la tienda en el backend

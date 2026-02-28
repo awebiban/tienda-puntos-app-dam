@@ -1,9 +1,11 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { StoresService } from '../../../services/stores.service';
 import { Store } from '../../../models/Store';
+import { User } from '../../../models/User';
+import { StoresService } from '../../../services/stores.service';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-store-config',
@@ -15,29 +17,36 @@ import { Store } from '../../../models/Store';
 export class StoreConfigComponent implements OnInit {
 
   store: Store | null = null;
+  owner: User | null = null;
   isLoading: boolean = true;
   isSaving: boolean = false;
   successMessage: boolean = false;
 
   constructor(
     private storesService: StoresService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private userService: UserService,
   ) { }
 
   ngOnInit(): void {
-    const ownerId = localStorage.getItem('userId');
-    if (ownerId) {
-      this.loadStoreData(Number(ownerId));
+    const storeId = history.state?.storeId;
+    const userId = history.state?.userId;
+    if (storeId || userId) {
+      this.loadStoreData(Number(storeId), Number(userId));
     }
+    console.warn('No se recibió el ID de la tienda para configurar');
+    this.isLoading = false;
+    this.cdr.detectChanges();
   }
 
-  loadStoreData(ownerId: number): void {
+  loadStoreData(storeId: number, userId: number): void {
     this.isLoading = true;
-    this.storesService.getStoreByOwnerId(ownerId).subscribe({
-      next: (data: Store) => {
+    this.storesService.getStoreById(storeId).subscribe({
+      next: (data) => {
         this.store = data;
         this.isLoading = false;
         this.cdr.detectChanges();
+        this.loadOwnerData(userId);
       },
       error: (err: Error) => {
         console.error('Error al cargar configuración de la tienda', err);
@@ -49,9 +58,12 @@ export class StoreConfigComponent implements OnInit {
 
   updateStore(): void {
     if (!this.store || !this.store.id) return;
-
+    if (this.store && this.store.companyDTO) {
+      //this.store!.companyDTO!.ownerDTO = this.owner;
+    }
+    console.log("tienda a actualiozar", this.store)
     this.isSaving = true;
-    this.storesService.updateStore(this.store.id, this.store).subscribe({
+    this.storesService.updateStore(this.store!.id, this.store).subscribe({
       next: (updated: Store) => {
         this.store = updated;
         this.isSaving = false;
@@ -65,5 +77,16 @@ export class StoreConfigComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+  loadOwnerData(userId: number) {
+    this.userService.getUserById(userId).subscribe({
+      next: (data) => {
+        this.owner = data;
+        console.log("Recibimos los datos del owner de la tienda", data);
+      },
+      error(err) {
+        console.error("Error en la solicitud de datos del usuario")
+      },
+    })
   }
 }

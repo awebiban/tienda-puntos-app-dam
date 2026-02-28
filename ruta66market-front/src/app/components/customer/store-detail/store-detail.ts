@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { QRCodeComponent } from 'angularx-qrcode';
 import { LoyaltyCard } from '../../../models/LoyaltyCard';
 import { Reward } from '../../../models/Reward';
 import { Store } from '../../../models/Store';
@@ -11,11 +12,14 @@ import { StoresService } from '../../../services/stores.service';
 @Component({
   selector: 'app-store-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, QRCodeComponent],
   templateUrl: './store-detail.html',
   styleUrl: './store-detail.scss'
 })
 export class StoreDetail implements OnInit {
+
+  qrPayload: string = '';
+  showQrModal: boolean = false;
 
   store: Store | null = null;
   rewards: Reward[] = [];
@@ -30,23 +34,23 @@ export class StoreDetail implements OnInit {
     private storesService: StoresService,
     private loyaltyService: LoyaltycardsService,
     private rewardsService: RewardsService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     const storedId = localStorage.getItem('userId');
     this.currentUserId = storedId ? Number(storedId) : null;
 
-    this.route.queryParams.subscribe(params => {
-      this.cardId = params['cardId'] ? Number(params['cardId']) : null;
-      if (this.cardId) {
-        this.loadFullContext(this.cardId);
-      }
-    });
+    const cardId = history.state?.cardId;
+    if (cardId) {
+      this.cardId = cardId;
+      this.loadFullContext(cardId);
+    }
 
     this.route.params.subscribe(params => {
       const storeName = params['storeName'];
-      if (storeName && !this.cardId) {
+      if (storeName && !cardId) {
         this.loadStoreOnly(storeName);
       }
     });
@@ -133,5 +137,30 @@ export class StoreDetail implements OnInit {
         }
       });
     }
+  }
+
+  viewPoinstHistory() {
+    this.router.navigate(['/customer/my-points'], {
+      state: { cardId: this.cardId }
+    });
+  }
+
+  openQrModal() {
+    // Generamos el JSON con los datos hardcoded
+    const data = {
+      cardId: this.cardId,
+      storeId: this.store?.id,
+      userId: this.currentUserId
+    };
+
+    this.qrPayload = btoa(JSON.stringify(data));
+
+    this.showQrModal = true;
+    document.body.style.overflow = 'hidden'; // Evita scroll de fondo
+  }
+
+  closeQrModal() {
+    this.showQrModal = false;
+    document.body.style.overflow = 'auto'; // Restaura scroll
   }
 }

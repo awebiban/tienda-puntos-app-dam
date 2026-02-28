@@ -1,10 +1,10 @@
-import { Component, OnInit, ElementRef, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
-import { StoresService } from '../../../services/stores.service';
-import { LoyaltycardsService } from '../../../services/loyaltycards.service';
 import { LoyaltyCard } from '../../../models/LoyaltyCard';
 import { Store } from '../../../models/Store';
+import { LoyaltycardsService } from '../../../services/loyaltycards.service';
+import { StoresService } from '../../../services/stores.service';
 
 Chart.register(...registerables);
 
@@ -31,22 +31,26 @@ export class AnalyticsComponent implements OnInit {
     private storesService: StoresService,
     private loyaltyService: LoyaltycardsService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    const ownerId = localStorage.getItem('userId');
-    if (ownerId) {
-      this.loadAnalyticsData(Number(ownerId));
+    const storeId = history.state?.storeId;
+    const userId = history.state?.userId;
+    if (storeId || userId) {
+      this.loadAnalyticsData(Number(storeId), Number(userId));
     }
+    console.warn('No se recibió el ID de la tienda para configurar');
+    this.isLoading = false;
+    this.cdr.detectChanges();
   }
 
-  loadAnalyticsData(ownerId: number): void {
+  loadAnalyticsData(storeId: number, userId: number): void {
     this.isLoading = true;
-    this.storesService.getStoreByOwnerId(ownerId).subscribe({
-      next: (storeData: Store) => {
+    this.storesService.getStoreById(storeId).subscribe({
+      next: (storeData) => {
         this.store = storeData;
-        if (this.store?.id) {
-          this.fetchStoreMetrics(this.store.id);
+        if (this.store) {
+          this.fetchStoreMetrics(this.store.id!);
         }
       },
       error: (err: Error) => {
