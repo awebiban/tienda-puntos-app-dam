@@ -34,11 +34,17 @@ public class LoyaltyController {
         return ResponseEntity.ok(loyaltyService.getCardById(cid));
     }
 
+    @PutMapping("/{cardId}")
+    public ResponseEntity<LoyaltyCardDTO> updateCard(@PathVariable Long cardId,
+            @RequestBody LoyaltyCardDTO cardDTO) {
+        return ResponseEntity.ok(this.loyaltyService.updateCard(cardId, cardDTO));
+    }
+
     /**
      * Devuelve las tarjetas de un cliente específico.
      */
     @GetMapping("/user/{userId}")
-    @JsonView(Views.Resumen.class)
+    @JsonView(Views.Detalle.class)
     public ResponseEntity<List<LoyaltyCardDTO>> getMyCards(@PathVariable("userId") Long uid) {
         return ResponseEntity.ok(loyaltyService.getCardsByUser(uid));
     }
@@ -48,7 +54,7 @@ public class LoyaltyController {
      * vendedor).
      */
     @GetMapping("/store/{storeId}")
-    @JsonView(Views.Resumen.class)
+    @JsonView(Views.Detalle.class)
     public ResponseEntity<List<LoyaltyCardDTO>> getCardsByStore(@PathVariable("storeId") Long sid) {
         return ResponseEntity.ok(loyaltyService.getCardsByStore(sid));
     }

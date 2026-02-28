@@ -23,7 +23,7 @@ public class StoreDTO {
     @JsonView(Views.Resumen.class)
     private Long id;
 
-    @JsonIgnoreProperties({ "id", "ownerDTO", "planDTO", "subscriptionStatus", "nextBillingDate" })
+    @JsonIgnoreProperties({ "ownerDTO", "planDTO", "subscriptionStatus", "nextBillingDate" })
     @JsonView(Views.Detalle.class)
     private CompanyDTO companyDTO;
 

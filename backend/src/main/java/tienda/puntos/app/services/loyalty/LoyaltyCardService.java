@@ -26,4 +26,6 @@ public interface LoyaltyCardService {
 
     // Método para actualizar la fecha de último acceso (nuevo)
     void updateLastAccess(Long cardId);
+
+    LoyaltyCardDTO updateCard(Long cid, LoyaltyCardDTO cardDTO);
 }

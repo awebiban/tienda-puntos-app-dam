@@ -117,6 +117,7 @@ export class MerchantDashboardComponent implements OnInit {
       next: (cards) => {
         this.customers = cards;
         this.filteredCustomers = cards;
+        console.log(cards)
         this.isLoading = false;
         this.cdr.detectChanges();
       },
@@ -126,6 +127,21 @@ export class MerchantDashboardComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  updatePointsDirectly(card: LoyaltyCard) {
+    if (!card) return
+    console.log(card)
+    card.storeDTO.isVisible = true
+    this.loyaltyService.updateCard(card.id, card).subscribe({
+      next: (data) => {
+        alert("Puntos actualizados correctamente")
+        console.log(data)
+      },
+      error(err) {
+        console.error(err)
+      },
+    })
   }
 
   // filterCustomers(): void {
@@ -219,7 +235,8 @@ export class MerchantDashboardComponent implements OnInit {
     this.router.navigate(['/business/setup-store'], {
       state: {
         storeId: sid,
-        userId: this.company?.ownerDTO.id
+        userId: this.company?.ownerDTO.id,
+        companyId: this.company?.id
       }
     });
   }

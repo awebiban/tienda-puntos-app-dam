@@ -127,4 +127,121 @@
         </div>
     </main>
     }
+    <section class="max-w-5xl mx-auto px-6 mt-12 animate-fade-in-up" style="animation-delay: 0.2s">
+        <div class="flex items-center gap-4 mb-8 ml-4">
+            <div
+                class="w-10 h-10 bg-indigo-600/20 rounded-xl flex items-center justify-center text-indigo-500 border border-indigo-500/20">
+                <i class="bi bi-gift-fill text-xl"></i>
+            </div>
+            <div>
+                <h3 class="text-2xl font-black text-white italic tracking-tighter uppercase">Editor de Recompensas</h3>
+                <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest">Gestiona el catálogo de canje
+                </p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+            <div
+                class="lg:col-span-5 bg-slate-900/60 backdrop-blur-3xl border border-slate-800 rounded-[3rem] p-10 shadow-2xl">
+                <h4 class="text-lg font-black text-white mb-8 italic">Nueva Recompensa</h4>
+
+                <div class="space-y-6">
+                    <div class="space-y-2">
+                        <label class="text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Título del
+                            Premio</label>
+                        <input type="text" [(ngModel)]="newReward.name" placeholder="Ej. 10% de Descuento"
+                            class="w-full bg-slate-950 border border-slate-800 rounded-2xl py-4 px-6 text-white font-bold outline-none focus:border-indigo-500 transition-all text-sm">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-2">
+                            <label class="text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Coste
+                                (Puntos)</label>
+                            <input type="number" [(ngModel)]="newReward.pointsCost"
+                                class="w-full bg-slate-950 border border-slate-800 rounded-2xl py-4 px-6 text-indigo-400 font-black outline-none focus:border-indigo-500 transition-all text-center">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Descripción
+                            corta</label>
+                        <textarea [(ngModel)]="newReward.description" rows="3"
+                            class="w-full bg-slate-950 border border-slate-800 rounded-2xl py-4 px-6 text-slate-400 text-xs outline-none focus:border-indigo-500 transition-all resize-none"></textarea>
+                    </div>
+
+                    <button (click)="createReward()" [disabled]="!newReward.name"
+                        class="w-full py-5 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-indigo-900/40 hover:scale-[1.02] active:scale-95 transition-all">
+                        <i class="bi bi-plus-circle-dotted mr-2"></i> Crear Recompensa
+                    </button>
+                </div>
+            </div>
+
+            <div class="lg:col-span-7 space-y-4">
+                <div class="flex items-center justify-between px-6 mb-4">
+                    <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Premios Activos ({{
+                        store?.rewardsList?.length || 0 }})</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    @for (reward of rewards; track reward.id) {
+                    <div
+                        class="group relative bg-slate-900 border border-white/5 p-7 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:shadow-indigo-500/10 hover:border-indigo-500/40 transition-all duration-500 overflow-hidden">
+
+                        <div
+                            class="absolute -right-10 -top-10 w-32 h-32 bg-indigo-600/10 rounded-full blur-3xl group-hover:bg-indigo-600/20 transition-all">
+                        </div>
+
+                        <div class="relative z-10">
+                            <div class="flex justify-between items-start mb-5">
+                                <span
+                                    class="px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 rounded-full text-[8px] font-black text-indigo-400 uppercase tracking-[0.2em]">
+                                    Premium
+                                </span>
+
+                                <button (click)="deleteReward(reward.id)"
+                                    class="w-8 h-8 rounded-full bg-slate-950/50 flex items-center justify-center text-slate-500 hover:bg-red-500/20 hover:text-red-500 transition-all border border-white/5">
+                                    <i class="bi bi-trash3 text-xs"></i>
+                                </button>
+                            </div>
+
+                            <h5
+                                class="text-white text-xl font-black italic tracking-tight mb-2 group-hover:text-indigo-300 transition-colors">
+                                {{ reward.name }}
+                            </h5>
+
+                            <p
+                                class="text-[11px] text-slate-400 font-medium line-clamp-2 mb-6 leading-relaxed group-hover:text-slate-300">
+                                {{ reward.description }}
+                            </p>
+
+                            <div class="flex items-center justify-between border-t border-white/10 pt-5">
+                                <div class="flex flex-col">
+                                    <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">
+                                        Inversión</p>
+                                    <div class="flex items-baseline gap-1">
+                                        <span class="text-3xl font-black text-indigo-400 italic tracking-tighter">{{
+                                            reward.pointsCost }}</span>
+                                        <span class="text-[10px] font-black text-indigo-500/50 uppercase">pts</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    } @empty {
+                    <div
+                        class="col-span-full py-24 bg-slate-900/20 border-2 border-dashed border-slate-800 rounded-[3.5rem] text-center flex flex-col items-center group">
+                        <div
+                            class="w-20 h-20 bg-slate-900 rounded-3xl flex items-center justify-center mb-6 border border-white/5 group-hover:border-indigo-500/30 transition-all">
+                            <i class="bi bi-gift text-4xl text-slate-700 group-hover:text-indigo-500"></i>
+                        </div>
+                        <p class="text-sm font-black text-slate-500 uppercase tracking-[0.3em]">Catálogo de premios
+                            vacío</p>
+                    </div>
+                    }
+                </div>
+            </div>
+
+        </div>
+    </section>
 </div>

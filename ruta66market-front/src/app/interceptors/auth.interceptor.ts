@@ -1,47 +1,44 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import { HttpErrorResponse, HttpInterceptorFn, HttpResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { tap } from 'rxjs';
+import { catchError, of, throwError } from 'rxjs'; // 👈 Importamos 'of' y 'catchError'
 import { AuthService } from '../services/auth.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const token = authService.getToken();
 
-  // Clonamos la petición para añadir el encabezado si el token existe
   let authReq = req;
   if (token) {
     authReq = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
+      setHeaders: { Authorization: `Bearer ${token}` }
     });
-    console.log(`%c[HTTP Interceptor] %cAñadiendo token a: %c${req.url}`,
-      'color: #6366f1; font-weight: bold',
-      'color: #94a3b8',
-      'color: #38bdf8');
   }
 
-  // Pasamos la petición y usamos tap para ver la respuesta del Back
   return next(authReq).pipe(
-    tap({
-      next: (event: any) => {
-        if (event.type !== 0) { // Ignoramos eventos de carga (Sent)
-          // console.log(`%c[Back-end Response] %cDatos recibidos de ${req.url.split('/').pop()}:`,
-          //   'color: #10b981; font-weight: bold',
-          //   'color: #94a3b8',
-          //   event.body);
-        }
-      },
-      error: (err: any) => {
-        console.error(`%c[HTTP Error] %cError en la petición a ${req.url}:`,
-          'color: #ef4444; font-weight: bold',
-          'color: #94a3b8',
-          err);
-        if (err.status === 401) {
-          console.warn("Token expirado o inválido. Cerrando sesión...");
-          authService.logout();
-        }
+    catchError((err: HttpErrorResponse) => {
+      // 🕵️ COMPROBACIÓN SILENCIOSA:
+      // Si es el error 403 de la compañía, lo tratamos como un éxito vacío
+      if (err.status === 403 && req.url.includes('/api/company/from-user/')) {
+        console.log(`%c[Merchant Info] %cUsuario sin empresa (Flujo planificado)`,
+          'color: #6366f1; font-weight: bold', 'color: #94a3b8');
+
+        // Devolvemos una respuesta 200 con cuerpo null para que no salte en rojo
+        return of(new HttpResponse({ body: null, status: 200 }));
       }
+
+      // 🚨 SÓLO AQUÍ imprimimos errores reales en rojo
+      // Al mover el console.error dentro de este bloque (fuera del IF anterior), 
+      // el error 403 de la compañía ya no se imprimirá como error.
+      console.error(`%c[HTTP Error] %cError en la petición a ${req.url}:`,
+        'color: #ef4444; font-weight: bold',
+        'color: #94a3b8',
+        err);
+
+      if (err.status === 401) {
+        authService.logout();
+      }
+
+      return throwError(() => err);
     })
   );
 };

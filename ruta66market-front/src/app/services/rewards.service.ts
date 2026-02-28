@@ -21,15 +21,15 @@ export class RewardsService {
   }
 
   // Crear una nueva recompensa
-  createReward(rewardData: any): Observable<any> {
-    return this.http.post<any>(`${this.dev}/rewards`, rewardData).pipe(
+  createReward(rewardData: Reward): Observable<Reward> {
+    return this.http.post<Reward>(`${this.dev}/rewards/create`, rewardData).pipe(
       tap(data => console.log('%c[POST] /rewards %cPremio creado:', 'color: #10b981; font-weight: bold', 'color: gray', data))
     );
   }
 
   // Eliminar una recompensa
   deleteReward(rewardId: number): Observable<any> {
-    return this.http.delete<any>(`${this.dev}/rewards/${rewardId}`).pipe(
+    return this.http.get<any>(`${this.dev}/rewards/disable/${rewardId}`).pipe(
       tap(() => console.log(`%c[DELETE] /rewards/${rewardId} %cPremio eliminado correctamente`, 'color: #ef4444; font-weight: bold', 'color: gray'))
     );
   }

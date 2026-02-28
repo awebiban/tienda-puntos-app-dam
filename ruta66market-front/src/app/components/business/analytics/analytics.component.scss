@@ -1,0 +1,15 @@
+h2,
+span.font-black {
+    // Asegura que todos los números tengan el mismo ancho
+    font-variant-numeric: tabular-nums;
+    // Transición suave para el cambio de color si hay alertas
+    transition: color 0.3s ease;
+}
+
+// Clase para el contenedor del gráfico para asegurar el tamaño
+.chart-container {
+    position: relative;
+    margin: auto;
+    height: 100%;
+    width: 100%;
+}

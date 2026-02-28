@@ -47,8 +47,38 @@ public class LoyaltyCardServiceImpl implements LoyaltyCardService {
     }
 
     @Override
+    public LoyaltyCardDTO updateCard(Long cid, LoyaltyCardDTO cardDTO) {
+        LoyaltyCard existingCard = loyaltyCardRepository.findById(cid)
+                .orElseThrow(() -> new RuntimeException("Error: Tarjeta de fidelidad no encontrada con ID: " + cid));
+
+        existingCard.setCurrentBalance(cardDTO.getCurrentBalance());
+
+        // Asignar puntos
+        existingCard.setTotalAccumulated(cardDTO.getTotalAccumulated());
+
+        // Actualizamos la fecha de última visita si el Merchant está realizando una
+        // acción ahora
+        existingCard.setLastVisited(java.time.LocalDateTime.now());
+
+        LoyaltyCard savedCard = loyaltyCardRepository.save(existingCard);
+        return LoyaltyCardDTO.convertToDTO(savedCard);
+    }
+
+    @Override
     public List<LoyaltyCardDTO> getCardsByStore(Long storeId) {
-        return loyaltyCardRepository.findByStoreId(storeId).stream()
+        System.out.println(">>> [Merchant Hub] Iniciando consulta para Store ID: " + storeId);
+
+        List<LoyaltyCard> cards = loyaltyCardRepository.findByStoreId(storeId);
+
+        if (cards.isEmpty()) {
+            System.out.println(">>> [Aviso] No se encontraron tarjetas para esta tienda.");
+        } else {
+            System.out.println(">>> [Listado de Tarjetas Encontradas]:");
+            // Imprimimos cada tarjeta con un formato legible
+            cards.forEach(card -> System.out.println(card.getUser()));
+        }
+
+        return cards.stream()
                 .map(LoyaltyCardDTO::convertToDTO)
                 .collect(Collectors.toList());
     }

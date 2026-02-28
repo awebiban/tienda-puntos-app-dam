@@ -45,6 +45,7 @@ export class StoreDetail implements OnInit {
     const cardId = history.state?.cardId;
     if (cardId) {
       this.cardId = cardId;
+      this.updateLastAccess(cardId)
       this.loadFullContext(cardId);
     }
 
@@ -162,5 +163,9 @@ export class StoreDetail implements OnInit {
   closeQrModal() {
     this.showQrModal = false;
     document.body.style.overflow = 'auto'; // Restaura scroll
+  }
+
+  updateLastAccess(cardId: number) {
+    this.loyaltyService.updateLastAccess(cardId);
   }
 }

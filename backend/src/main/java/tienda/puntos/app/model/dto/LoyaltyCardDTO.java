@@ -23,11 +23,13 @@ public class LoyaltyCardDTO {
 
     @JsonView(Views.Resumen.class)
     private Long id;
-    @JsonIgnore
+
+    @JsonView(Views.Detalle.class)
+    @JsonIgnoreProperties({ "loyaltyCards", "password", "active" })
     private UserDTO userDTO;
 
-    @JsonView(Views.Resumen.class)
-    @JsonIgnoreProperties({ "companyDTO", "rewardsList", "visible", "transactionList" })
+    @JsonView(Views.Detalle.class)
+    @JsonIgnoreProperties({ "companyDTO", "rewardsList", "isVisible" })
     private StoreDTO storeDTO;
 
     @JsonView(Views.Resumen.class)
@@ -40,6 +42,7 @@ public class LoyaltyCardDTO {
     private LocalDateTime lastVisited;
 
     @JsonView(Views.Detalle.class)
+    @JsonIgnore
     @JsonIgnoreProperties({ "transactionList" })
     private Set<TransactionDTO> transactionList;
 

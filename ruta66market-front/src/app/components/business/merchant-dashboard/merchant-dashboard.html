@@ -358,7 +358,7 @@
         <div class="p-8 border-b border-white/5 flex justify-between items-center bg-white/[0.02]">
             <div>
                 <h3 class="text-2xl font-black text-white italic tracking-tighter">Terminal de Fidelidad</h3>
-                <p class="text-emerald-500 text-[10px] font-black uppercase tracking-[0.3em]">{{ selectedStoreName }}
+                <p class="text-emerald-500 text-[25px] font-black uppercase tracking-[0.3em]">{{ selectedStoreName }}
                 </p>
             </div>
             <button (click)="showCardsModal = false"
@@ -378,22 +378,41 @@
             <div class="grid grid-cols-1 gap-4">
                 @for (card of customers; track card.id) {
                 <div
-                    class="group bg-slate-950/40 border border-white/5 p-6 rounded-[2rem] flex items-center justify-between hover:bg-slate-800/40 transition-all">
+                    class="group bg-slate-950/40 border border-white/5 p-6 rounded-[2rem] flex items-center justify-between hover:bg-slate-800/40 transition-all gap-4">
                     <div class="flex items-center gap-6">
                         <div
-                            class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 font-black text-xs italic border border-emerald-500/20">
+                            class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 font-black text-xs italic border border-emerald-500/20 shrink-0">
                             #{{ $index + 1 }}
                         </div>
-                        <div>
-                            <p class="text-white font-bold tracking-tight">{{ card.userDTO!.email }}</p>
-                            <p class="text-[10px] text-slate-500 font-black uppercase tracking-widest">Saldo Actual</p>
+
+                        <div class="min-w-0">
+                            <p class="text-white font-bold tracking-tight truncate">{{ card.userDTO?.email }}</p>
+                            <div class="flex items-center gap-3 mt-1">
+                                <p
+                                    class="text-[9px] text-slate-500 font-black uppercase tracking-widest bg-white/5 px-2 py-0.5 rounded-md">
+                                    Última visita: {{ card.lastVisited | date:'dd/MM/yyyy' }}
+                                </p>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="text-right">
-                        <span class="text-3xl font-mono font-black text-white italic tracking-tighter">{{
-                            card.currentBalance }}</span>
-                        <span class="text-emerald-500 text-[10px] font-black ml-2 uppercase">Pts</span>
+                    <div class="flex items-center gap-4">
+                        <div class="flex flex-col items-end">
+                            <label
+                                class="text-[9px] text-emerald-500/50 font-black uppercase tracking-[0.2em] mb-1 mr-2">Ajustar
+                                Saldo</label>
+                            <div class="relative group/input">
+                                <input type="number" [(ngModel)]="card.currentBalance"
+                                    (change)="updatePointsDirectly(card)"
+                                    class="w-28 bg-slate-900 border border-white/10 rounded-xl py-2 px-4 text-2xl font-mono font-black text-white text-right focus:border-emerald-500 outline-none transition-all shadow-inner group-hover/input:border-white/20">
+                                <span class="absolute -right-2 -top-2 flex h-3 w-3" title="Modificable">
+                                    <span
+                                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-20"></span>
+                                    <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500/50"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <span class="text-emerald-500 text-[10px] font-black uppercase self-end mb-3">Pts</span>
                     </div>
                 </div>
                 } @empty {

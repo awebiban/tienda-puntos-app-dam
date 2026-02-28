@@ -39,6 +39,10 @@ export class LoyaltycardsService {
     return this.http.post<any>(`${this.dev}/loyalty/join`, payload);
   }
 
+  updateCard(cardId: number, cardDTO: LoyaltyCard): Observable<LoyaltyCard> {
+    return this.http.put<LoyaltyCard>(`${this.dev}/loyalty/${cardId}`, cardDTO);
+  }
+
   updateLastAccess(cardId: number) {
     return this.http.put<any>(`${this.dev}/loyalty/update-last-access/${cardId}`, {});
   }

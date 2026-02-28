@@ -72,19 +72,23 @@ export class DashboardComponent implements OnInit {
   checkUserCompany(): void {
     if (!this.currentUserId) return;
 
-    // Llamamos al servicio de compañías buscando por el ID del usuario actual
+    this.checkingCompany = true;
+
     this.companyService.getCompanyByOwnerId(this.currentUserId).subscribe({
       next: (company) => {
-        // Si el objeto llega y tiene un ID, es que ya tiene empresa
-        this.hasCompany = !!(company && company.id);
-        this.checkingCompany = false;
-        this.cdr.detectChanges();
-      },
-      error: () => {
-        this.hasCompany = false;
+        // Si el interceptor devolvió null, company será falsy
+        if (company && company.id) {
+          this.hasCompany = true;
+        } else {
+          // Este es el flujo suavizado: no hay error, solo no hay datos
+          this.hasCompany = false;
+          console.log(">>> El usuario está listo para crear su primera empresa.");
+        }
+
         this.checkingCompany = false;
         this.cdr.detectChanges();
       }
+      // Eliminamos el bloque error: () => {} porque ya lo manejamos en el next
     });
   }
 
