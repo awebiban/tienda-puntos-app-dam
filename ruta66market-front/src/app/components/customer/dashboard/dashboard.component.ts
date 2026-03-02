@@ -16,9 +16,8 @@ import { LoyaltycardsService } from '../../../services/loyaltycards.service';
 })
 export class DashboardComponent implements OnInit {
 
-  // Variables de estado
   hasCompany: boolean = false;
-  checkingCompany: boolean = true; // Para no mostrar nada hasta estar seguros
+  checkingCompany: boolean = true;
 
   loyaltyCards: LoyaltyCard[] = [];
   isLoading: boolean = true;
@@ -32,7 +31,7 @@ export class DashboardComponent implements OnInit {
     private companyService: CompaniesService,
     private authService: AuthService,
     private router: Router,
-    private cdr: ChangeDetectorRef // 👈 La herramienta para forzar el redibujado
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -58,13 +57,11 @@ export class DashboardComponent implements OnInit {
       next: (data: any) => {
         this.loyaltyCards = data;
         this.isLoading = false;
-        this.cdr.detectChanges(); // 👈 ¡Obliga a Angular a quitar el spinner ahora mismo!
-        console.log('%c[Dashboard] %cTarjetas de ' + this.userName + ' cargadas:', 'color: #10b981; font-weight: bold', 'color: gray', data);
+        this.cdr.detectChanges();
       },
       error: (err: any) => {
         this.isLoading = false;
-        this.cdr.detectChanges(); // 👈 Obliga a Angular a actualizar aunque haya error
-        console.error('%c[Dashboard Error] %cFallo al cargar:', 'color: #ef4444; font-weight: bold', 'color: gray', err);
+        this.cdr.detectChanges();
       }
     });
   }
@@ -76,19 +73,15 @@ export class DashboardComponent implements OnInit {
 
     this.companyService.getCompanyByOwnerId(this.currentUserId).subscribe({
       next: (company) => {
-        // Si el interceptor devolvió null, company será falsy
         if (company && company.id) {
           this.hasCompany = true;
         } else {
-          // Este es el flujo suavizado: no hay error, solo no hay datos
           this.hasCompany = false;
-          console.log(">>> El usuario está listo para crear su primera empresa.");
         }
 
         this.checkingCompany = false;
         this.cdr.detectChanges();
       }
-      // Eliminamos el bloque error: () => {} porque ya lo manejamos en el next
     });
   }
 

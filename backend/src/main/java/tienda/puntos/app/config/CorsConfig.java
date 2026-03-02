@@ -15,7 +15,7 @@ public class CorsConfig implements WebMvcConfigurer {
                         "https://ruta66.synology.me")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
-                .allowCredentials(true) // Importante si manejas sesiones o cookies
-                .maxAge(3600); // Cachea la respuesta de CORS por 1 hora
+                .allowCredentials(true)
+                .maxAge(3600);
     }
 }

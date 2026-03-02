@@ -42,7 +42,7 @@ public class LoyaltyCard {
     private int currentBalance;
 
     @Column(name = "total_accumulated")
-    private int totalAccumulated; // Total earned historically
+    private int totalAccumulated;
 
     @Column(name = "last_visit")
     private LocalDateTime lastVisited;

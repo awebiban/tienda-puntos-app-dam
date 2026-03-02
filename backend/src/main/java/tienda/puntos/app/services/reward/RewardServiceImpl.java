@@ -57,19 +57,12 @@ public class RewardServiceImpl implements RewardService {
 
     @Override
     public RewardDTO saveReward(RewardDTO rewardDTO) {
-        // 1. Convertimos el DTO a Entidad
         Reward entity = RewardDTO.convertToEntity(rewardDTO);
 
-        // 2. Creamos el "objeto hueco" (Proxy) de la tienda usando el ID que viene de
-        // Angular
-        // Nota: 'entityManager' debe estar inyectado en tu servicio con
-        // @PersistenceContext
         Store storeProxy = entityManager.getReference(Store.class, rewardDTO.getStoreId());
 
-        // 3. Se lo asignamos a la entidad. Ahora 'entity.getStore()' ya no es NULL.
         entity.setStore(storeProxy);
 
-        // 4. Al guardar, Hibernate solo usará el ID del proxy para la columna store_id
         Reward saved = rewardRepository.save(entity);
 
         return RewardDTO.convertToDTO(saved);

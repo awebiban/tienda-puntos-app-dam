@@ -53,11 +53,9 @@ public class LoyaltyCardServiceImpl implements LoyaltyCardService {
 
         existingCard.setCurrentBalance(cardDTO.getCurrentBalance());
 
-        // Asignar puntos
         existingCard.setTotalAccumulated(cardDTO.getTotalAccumulated());
 
-        // Actualizamos la fecha de última visita si el Merchant está realizando una
-        // acción ahora
+
         existingCard.setLastVisited(java.time.LocalDateTime.now());
 
         LoyaltyCard savedCard = loyaltyCardRepository.save(existingCard);
@@ -74,7 +72,6 @@ public class LoyaltyCardServiceImpl implements LoyaltyCardService {
             System.out.println(">>> [Aviso] No se encontraron tarjetas para esta tienda.");
         } else {
             System.out.println(">>> [Listado de Tarjetas Encontradas]:");
-            // Imprimimos cada tarjeta con un formato legible
             cards.forEach(card -> System.out.println(card.getUser()));
         }
 
@@ -92,7 +89,6 @@ public class LoyaltyCardServiceImpl implements LoyaltyCardService {
         card.setCurrentBalance(card.getCurrentBalance() + points);
         card.setTotalAccumulated(card.getTotalAccumulated() + points);
 
-        // Registrar la transacción de acumulación
         Transaction t = new Transaction();
         t.setLoyaltyCard(card);
         t.setAmount(points);
@@ -134,22 +130,18 @@ public class LoyaltyCardServiceImpl implements LoyaltyCardService {
 
     @Override
     public LoyaltyCardDTO redeemReward(Long userId, Long storeId, Long rewardId) {
-        // 1. Buscamos la tarjeta y el premio
         LoyaltyCard card = loyaltyCardRepository.findByUserIdAndStoreId(userId, storeId)
                 .orElseThrow(() -> new RuntimeException("Tarjeta de fidelidad no encontrada"));
 
         Reward reward = rewardRepository.findById(rewardId)
                 .orElseThrow(() -> new RuntimeException("Premio no encontrado"));
 
-        // 2. Verificamos saldo
         if (card.getCurrentBalance() < reward.getPointsCost()) {
             throw new RuntimeException("Saldo insuficiente para canjear este premio");
         }
 
-        // 3. Restamos puntos
         card.setCurrentBalance(card.getCurrentBalance() - reward.getPointsCost());
 
-        // 4. Registramos la transacción de canje (negativa)
         Transaction t = new Transaction();
         t.setLoyaltyCard(card);
         t.setAmount(-reward.getPointsCost());

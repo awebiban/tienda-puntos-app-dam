@@ -47,7 +47,6 @@ public class Plan {
     @Column(nullable = false)
     private boolean active;
 
-    // Relación 1 Plan -> N Companies
     @OneToMany(mappedBy = "plan", fetch = FetchType.LAZY)
     private Set<Company> companiesList;
 }

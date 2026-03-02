@@ -22,10 +22,8 @@ export class AnalyticsComponent implements OnInit {
   isLoading: boolean = true;
   chart: any;
 
-  // Datos locales para reactividad instantánea
   cards: LoyaltyCard[] = [];
 
-  // Métricas reales
   totalPointsGiven: number = 0;
   totalPointsRedeemed: number = 0;
   activeCustomers: number = 0;
@@ -62,44 +60,34 @@ export class AnalyticsComponent implements OnInit {
     this.loyaltyService.getCardsByStoreId(storeId).subscribe({
       next: (cards: LoyaltyCard[]) => {
         this.cards = cards;
-        this.calculateMetrics(); // 👈 Lógica de cálculo separada
+        this.calculateMetrics();
         this.isLoading = false;
         this.cdr.detectChanges();
 
-        // Creamos el gráfico después de que el DOM esté listo
         setTimeout(() => this.createChart(), 0);
       },
       error: () => this.isLoading = false
     });
   }
 
-  /**
-   * RECALCULAR MÉTRICAS (Uso interno para tiempo real)
-   */
   calculateMetrics(): void {
     this.activeCustomers = this.cards.length;
 
-    // Suma de todos los puntos que alguna vez existieron
     this.totalPointsGiven = this.cards.reduce((acc, c) => acc + c.totalAccumulated, 0);
 
-    // Puntos que ya han sido gastados por los clientes
     this.totalPointsRedeemed = this.cards.reduce((acc, c) =>
       acc + (c.totalAccumulated - c.currentBalance), 0);
 
-    // Si el gráfico ya existe, lo actualizamos con animación
     if (this.chart) {
       this.updateChartAnimation();
     }
   }
 
-  /**
-   * ACTUALIZACIÓN FLUIDA DEL GRÁFICO
-   */
   updateChartAnimation(): void {
     const inCirculation = this.totalPointsGiven - this.totalPointsRedeemed;
 
     this.chart.data.datasets[0].data = [inCirculation, this.totalPointsRedeemed];
-    this.chart.update('active'); // 👈 Esto hace que el donut se mueva suavemente
+    this.chart.update('active');
   }
 
   createChart(): void {
@@ -115,18 +103,18 @@ export class AnalyticsComponent implements OnInit {
         labels: ['En Monederos', 'Canjeados'],
         datasets: [{
           data: [inCirculation, this.totalPointsRedeemed],
-          backgroundColor: ['#6366f1', '#10b981'], // Indigo y Emerald (Tu estilo Tailwind)
+          backgroundColor: ['#6366f1', '#10b981'],
           hoverBackgroundColor: ['#4f46e5', '#059669'],
           borderWidth: 0,
           weight: 0.5,
-          borderRadius: 20, // Bordes redondeados en los segmentos del donut
-          spacing: 10 // Separación entre quesitos para el look "premium"
+          borderRadius: 20,
+          spacing: 10
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        cutout: '82%', // Donut más fino
+        cutout: '82%',
         plugins: {
           legend: { display: false },
           tooltip: {
@@ -148,10 +136,6 @@ export class AnalyticsComponent implements OnInit {
     });
   }
 
-  /**
-   * FUNCIÓN PARA LLAMAR DESDE EL MODAL DE EDICIÓN
-   * Si editas un cliente, llamas a esto para que el gráfico se mueva solo.
-   */
   onCustomerPointsChanged(updatedCard: LoyaltyCard) {
     const index = this.cards.findIndex(c => c.id === updatedCard.id);
     if (index !== -1) {
@@ -160,6 +144,7 @@ export class AnalyticsComponent implements OnInit {
       this.cdr.detectChanges();
     }
   }
+
   goBack() {
     window.history.back()
   }

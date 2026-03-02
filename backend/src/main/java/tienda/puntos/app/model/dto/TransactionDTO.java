@@ -22,7 +22,7 @@ public class TransactionDTO {
     private Long id;
 
     @JsonView(Views.Detalle.class)
-    private Long loyaltyCardId; // Usamos ID para evitar bucles infinitos en el JSON
+    private Long loyaltyCardId;
 
     @JsonView(Views.Detalle.class)
     private int amount;
@@ -33,9 +33,7 @@ public class TransactionDTO {
     @JsonView(Views.Detalle.class)
     private LocalDateTime createdAt;
 
-    /**
-     * Convierte la Entidad a DTO
-     */
+
     public static TransactionDTO convertToDTO(Transaction entity) {
         if (entity == null)
             return null;
@@ -49,17 +47,13 @@ public class TransactionDTO {
                 .build();
     }
 
-    /**
-     * Convierte el DTO a Entidad
-     */
+
     public static Transaction convertToEntity(TransactionDTO dto) {
         if (dto == null)
             return null;
 
         Transaction entity = new Transaction();
         entity.setId(dto.getId());
-        // Nota: La carga de la LoyaltyCard completa normalmente se hace en el Service
-        // mediante el loyaltyCardId para asegurar que viene de la BD.
         entity.setAmount(dto.getAmount());
         entity.setType(dto.getType());
         entity.setCreatedAt(dto.getCreatedAt());

@@ -46,8 +46,7 @@ export class RegisterComponent {
         this.router.navigate(['/login']);
       },
       error: (err: any) => {
-        this.isLoading = false; // Detenemos el spinner en caso de error
-        console.error('Error en el registro:', err);
+        this.isLoading = false;
         this.errorMessage = err.error?.error || 'Error al conectar con el servidor.';
       }
     });

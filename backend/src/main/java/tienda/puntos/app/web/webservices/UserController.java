@@ -36,10 +36,8 @@ public class UserController {
     @PostMapping("/email")
     @JsonView(Views.Detalle.class)
     public ResponseEntity<UserDTO> findByEmail(@RequestBody Map<String, String> payload) {
-        // Extraemos el valor asociado a la clave "email" del JSON
         String email = payload.get("email");
 
-        // Si el email es nulo en el JSON, lanzamos un error controlado
         if (email == null) {
             return ResponseEntity.unprocessableContent().build();
         }
@@ -55,9 +53,7 @@ public class UserController {
 
     @PutMapping("/update")
     @JsonView(Views.Detalle.class)
-    public ResponseEntity<UserDTO> update(@RequestBody UserDTO user) { // Se pasa el id al JPA para que busque el
-                                                                       // registro necesario
-        // y sustituya
+    public ResponseEntity<UserDTO> update(@RequestBody UserDTO user) {
         return ResponseEntity.ok(this.userService.update(user));
     }
 }

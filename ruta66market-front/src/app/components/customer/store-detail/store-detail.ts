@@ -65,7 +65,6 @@ export class StoreDetail implements OnInit {
         this.store = card.storeDTO;
         this.isLoading = false;
 
-        // Una vez tenemos la store, cargamos sus recompensas frescas
         if (this.store?.id) {
           this.loadRewards(this.store.id);
         }
@@ -73,7 +72,6 @@ export class StoreDetail implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar contexto', err);
         this.isLoading = false;
         this.cdr.detectChanges();
       }
@@ -90,7 +88,6 @@ export class StoreDetail implements OnInit {
 
         this.isLoading = false;
 
-        // Si encontramos la tienda, cargamos sus recompensas
         if (this.store?.id) {
           this.loadRewards(this.store.id);
         }
@@ -100,7 +97,6 @@ export class StoreDetail implements OnInit {
     });
   }
 
-  // MÉTODO NUEVO: Carga independiente de recompensas
   loadRewards(storeId: number): void {
     this.isLoadingRewards = true;
     this.rewardsService.getRewardsByStoreId(storeId).subscribe({
@@ -110,7 +106,6 @@ export class StoreDetail implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar recompensas de la tienda', err);
         this.isLoadingRewards = false;
         this.cdr.detectChanges();
       }
@@ -128,12 +123,11 @@ export class StoreDetail implements OnInit {
     if (confirm(`¿Quieres canjear ${reward.name} por ${reward.pointsCost} puntos?`)) {
       this.rewardsService.redeemReward(this.currentUserId, this.store.id, reward.id).subscribe({
         next: (updatedCard) => {
-          this.loyaltyCard = updatedCard; // Actualiza el saldo en la vista automáticamente
+          this.loyaltyCard = updatedCard;
           alert('¡Premio canjeado con éxito!');
           this.cdr.detectChanges();
         },
         error: (err) => {
-          console.error('Error al canjear', err);
           alert('Hubo un error al procesar el canje');
         }
       });
@@ -147,7 +141,6 @@ export class StoreDetail implements OnInit {
   }
 
   openQrModal() {
-    // Generamos el JSON con los datos hardcoded
     const data = {
       cardId: this.cardId,
       storeId: this.store?.id,
@@ -155,14 +148,13 @@ export class StoreDetail implements OnInit {
     };
 
     this.qrPayload = btoa(JSON.stringify(data));
-
     this.showQrModal = true;
-    document.body.style.overflow = 'hidden'; // Evita scroll de fondo
+    document.body.style.overflow = 'hidden';
   }
 
   closeQrModal() {
     this.showQrModal = false;
-    document.body.style.overflow = 'auto'; // Restaura scroll
+    document.body.style.overflow = 'auto';
   }
 
   updateLastAccess(cardId: number) {

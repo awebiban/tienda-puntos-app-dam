@@ -46,9 +46,7 @@ public class LoyaltyCardDTO {
     @JsonIgnoreProperties({ "transactionList" })
     private Set<TransactionDTO> transactionList;
 
-    /**
-     * Convierte la Entidad a DTO
-     */
+
     public static LoyaltyCardDTO convertToDTO(LoyaltyCard entity) {
         if (entity == null)
             return null;
@@ -67,9 +65,7 @@ public class LoyaltyCardDTO {
                 .build();
     }
 
-    /**
-     * Convierte el DTO a Entidad
-     */
+
     public static LoyaltyCard convertToEntity(LoyaltyCardDTO dto) {
         if (dto == null)
             return null;
@@ -82,8 +78,6 @@ public class LoyaltyCardDTO {
         entity.setTotalAccumulated(dto.getTotalAccumulated());
         entity.setLastVisited(dto.getLastVisited());
 
-        // Las transacciones normalmente se gestionan a través de su propio servicio,
-        // pero las mapeamos si es necesario.
         if (dto.getTransactionList() != null) {
             entity.setTransactionList(dto.getTransactionList().stream()
                     .map(TransactionDTO::convertToEntity)

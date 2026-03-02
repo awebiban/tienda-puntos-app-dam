@@ -35,13 +35,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String authHeader = request.getHeader("Authorization");
         final String path = request.getRequestURI();
 
-        // 💡 EXCEPCIÓN: Si la ruta es de autenticación, dejamos pasar directamente
         if (path.contains("/api/auth/")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // Si no hay cabecera Bearer, pasamos al siguiente filtro
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -49,7 +47,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         final String jwt = authHeader.substring(7);
         try {
-            // 💡 Usamos extractEmail que es el método que tienes en tu JwtService
             final String userEmail = jwtService.extractEmail(jwt);
 
             if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -63,7 +60,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         } catch (Exception e) {
-            // Si el token falla, no hacemos nada, dejamos que la configuración de seguridad responda
         }
 
         filterChain.doFilter(request, response);

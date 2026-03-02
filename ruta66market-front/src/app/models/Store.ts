@@ -8,7 +8,7 @@ export interface Store {
     address?: string;
     pointsRatio?: number;
     imageUrl?: string;
-    companyDTO?: Company; // Alineado con el DTO del backend
+    companyDTO?: Company;
     isVisible: boolean;
-    rewardsList?: Reward[]; // ✅ Añadido para solucionar el error
+    rewardsList?: Reward[];
 }

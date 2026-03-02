@@ -22,8 +22,8 @@ export const routes: Routes = [
     // 3. Área del CLIENTE (PROTEGIDA)
     {
         path: 'customer',
-        canActivate: [authGuard, roleGuard], // <-- Aplicamos los vigilantes
-        data: { expectedRole: 'CLIENTE' },   // <-- Exigimos rol de Cliente
+        canActivate: [authGuard, roleGuard],
+        data: { expectedRole: 'CLIENTE' },
         children: [
             {
                 path: 'dashboard',
@@ -47,11 +47,10 @@ export const routes: Routes = [
     // 4. Área de la EMPRESA (PROTEGIDA)
     {
         path: 'business',
-        canActivate: [authGuard, roleGuard],    // <-- Aplicamos los vigilantes
-        data: { expectedRole: 'ADMIN_NEGOCIO' }, // <-- Exigimos rol de Negocio
+        canActivate: [authGuard, roleGuard],
+        data: { expectedRole: 'ADMIN_NEGOCIO' },
         children: [
             {
-                // NUEVA RUTA: Panel principal para sumar puntos
                 path: 'dashboard',
                 loadComponent: () => import('./components/business/merchant-dashboard/merchant-dashboard').then(m => m.MerchantDashboardComponent),
             },

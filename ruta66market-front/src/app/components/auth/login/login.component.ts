@@ -42,20 +42,14 @@ export class LoginComponent {
 
     this.authService.login(email, password).subscribe({
       next: (res: any) => {
-        console.log('Login exitoso, procesando redirección...');
-
-        // 1. Guardar datos (asegurándonos de que no sean null)
         localStorage.setItem('token', res.token || '');
         localStorage.setItem('userId', String(res.id || ''));
         localStorage.setItem('userName', res.nickname || '');
-        //localStorage.setItem('userMail', res.email || '');
         localStorage.setItem('userRole', res.role || '');
 
-        // 2. Apagar loader y forzar UI
         this.isLoading = false;
         this.cdr.detectChanges();
 
-        // 3. Navegación con pequeña pausa para que el Guard vea el LocalStorage actualizado
         setTimeout(() => {
           const targetRoute = res.role === 'ADMIN_NEGOCIO'
             ? '/business/dashboard'
@@ -63,7 +57,6 @@ export class LoginComponent {
 
           this.router.navigate([targetRoute]).then(success => {
             if (!success) {
-              console.error('La navegación falló. ¿Está la ruta bien definida?');
               this.errorMessage = 'Error al redirigir al panel de control.';
             }
           });
@@ -73,7 +66,6 @@ export class LoginComponent {
         this.isLoading = false;
         this.errorMessage = 'Credenciales incorrectas o error en el servidor';
         this.cdr.detectChanges();
-        console.error('Error Login:', err);
       }
     });
   }

@@ -33,21 +33,16 @@ export class PointsHistoryComponent implements OnInit {
     let cardId = history.state?.cardId;
 
     if (cardId) {
-      console.log('Cargando historial para tarjeta:', cardId);
       this.loadHistory(cardId);
     } else {
-      console.warn('No se encontró cardId en el estado ni en la URL');
       this.isLoading = false;
       this.cdr.detectChanges();
-
-      // this.goBack();
     }
   }
 
   loadHistory(cardId: number): void {
     this.isLoading = true;
 
-    // Carga de info de tarjeta
     this.loyaltyCardService.findByCardId(cardId).subscribe({
       next: (card) => {
         this.loyaltyCard = card;
@@ -55,7 +50,6 @@ export class PointsHistoryComponent implements OnInit {
       }
     });
 
-    // Carga de historial
     this.transactionsService.getTransactionsByUserId(cardId).subscribe({
       next: (data) => {
         this.transactions = data;
@@ -64,7 +58,6 @@ export class PointsHistoryComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar historial:', err);
         this.isLoading = false;
         this.cdr.detectChanges();
       }

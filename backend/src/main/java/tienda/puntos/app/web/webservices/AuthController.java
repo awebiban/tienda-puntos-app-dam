@@ -49,7 +49,6 @@ public class AuthController {
             UserDTO userDTO = userService.findByEmail(springUser.getUsername());
             String token = jwtService.generateToken(email);
 
-            // Usamos HashMap en lugar de Map.of para evitar NullPointerExceptions
             Map<String, String> response = new HashMap<>();
             response.put("token", token);
             response.put("id", userDTO.getId().toString());
@@ -68,31 +67,24 @@ public class AuthController {
     public ResponseEntity<?> signup(@RequestBody Map<String, String> signupRequest) {
         String email = signupRequest.get("email");
         String password = signupRequest.get("password");
-        // CORRECCIÓN: Capturamos "nickname" que es la clave que manda el Frontend
         String name = signupRequest.get("nickname");
 
-        // 1. Verificación de existencia
         try {
             userService.findByEmail(email);
             return ResponseEntity.badRequest().body(Map.of("error", "El email ya está registrado"));
         } catch (RuntimeException e) {
-            // Usuario no existe, procedemos...
         }
 
-        // 2. Mapeo al DTO
         UserDTO newUser = new UserDTO();
         newUser.setEmail(email);
-        newUser.setNickname(name != null ? name : "Nuevo Usuario"); // Protección extra
+        newUser.setNickname(name != null ? name : "Nuevo Usuario");
         newUser.setPassword(password);
         newUser.setRole(Role.CLIENTE);
 
-        // 3. Persistencia
         UserDTO savedUser = userService.save(newUser);
 
-        // 4. Token
         String token = jwtService.generateToken(email);
 
-        // 5. Respuesta segura con HashMap (Tolera nulos si los hubiera)
         Map<String, String> response = new HashMap<>();
         response.put("token", token);
         response.put("id", savedUser.getId().toString());

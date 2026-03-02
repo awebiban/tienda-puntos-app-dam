@@ -46,7 +46,6 @@ public class UserDTO {
         u2.setNickname(u1.getNickname());
         u2.setRole(u1.getRole());
         u2.setCreatedAt(u1.getCreatedAt());
-        // u2.setCompanyDTO(CompanyDTO.convertToDTO(u1.getCompany()));
 
         return u2;
     }
@@ -59,7 +58,6 @@ public class UserDTO {
         u2.setNickname(u1.getNickname());
         u2.setRole(u1.getRole());
         u2.setCreatedAt(u1.getCreatedAt());
-        // u2.setCompany(CompanyDTO.convertToEntity(u1.getCompanyDTO()));
 
         return u2;
     }

@@ -20,7 +20,6 @@ export class RewardsEditorComponent implements OnInit {
   isLoading: boolean = true;
   isSaving: boolean = false;
 
-  // Inicializamos con un objeto que cumpla con la interfaz Reward
   newReward: Reward = {
     name: '',
     description: '',
@@ -46,7 +45,7 @@ export class RewardsEditorComponent implements OnInit {
     this.isLoading = true;
     this.storesService.getStoresByCompanyId(ownerId).subscribe({
       next: (storeData) => {
-        this.store = storeData[0]; // Asignamos el primer store del array
+        this.store = storeData[0];
         if (this.store?.id) {
           this.loadRewards(this.store.id);
           this.newReward.storeId = this.store.id;
@@ -84,7 +83,6 @@ export class RewardsEditorComponent implements OnInit {
     this.isSaving = true;
     this.rewardsService.createReward(this.newReward).subscribe({
       next: (savedReward) => {
-        // Al recibir el objeto del back, ya trae su ID real
         this.rewards.push(savedReward);
         this.resetForm();
         this.isSaving = false;

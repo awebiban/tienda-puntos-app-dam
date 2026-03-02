@@ -22,12 +22,10 @@ export class LoyaltycardsService {
     return this.http.get<LoyaltyCard[]>(`${this.dev}/loyalty/user/${userId}`);
   }
 
-  // NUEVO: Obtener todas las tarjetas de una tienda (Para el Merchant Dashboard)
   getCardsByStoreId(storeId: number): Observable<LoyaltyCard[]> {
     return this.http.get<LoyaltyCard[]>(`${this.dev}/loyalty/store/${storeId}`);
   }
 
-  // ACTUALIZADO: Sumar puntos directamente por ID de tarjeta
   addPoints(cardId: number, points: number): Observable<any> {
     console.log(`%c[POST] %cSumando ${points} puntos a la tarjeta ${cardId}`, 'color: #8b5cf6; font-weight: bold', 'color: gray');
     return this.http.post<any>(`${this.dev}/loyalty/add-points`, { cardId, points });

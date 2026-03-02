@@ -37,7 +37,6 @@ export class StoresService {
     return this.http.get<Store[]>(`${this.dev}/store/company/${companyId}`);
   }
 
-  // MÉTODO AÑADIDO: Para actualizar la tienda en el backend
   updateStore(id: number, store: Store): Observable<Store> {
     return this.http.put<Store>(`${this.dev}/store/update/${id}`, store);
   }

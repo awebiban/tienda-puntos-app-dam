@@ -50,10 +50,6 @@ public class User {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    /**
-     * Relación 1 a 1:
-     * Un usuario dueño tiene UNA única empresa fiscal
-     */
     @OneToOne(mappedBy = "owner", fetch = FetchType.LAZY)
     @JsonIgnore
     private Company company;

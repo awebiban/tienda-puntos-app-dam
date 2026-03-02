@@ -45,14 +45,11 @@ public class StoreDTO {
     @JsonView(Views.Resumen.class)
     private boolean isVisible;
 
-    // Incluimos las recompensas para que el cliente sepa qué puede canjear
     @JsonView(Views.Detalle.class)
     @JsonIgnore
     private Set<RewardDTO> rewardsList;
 
-    /**
-     * Convierte la Entidad a DTO
-     */
+
     public static StoreDTO convertToDTO(Store entity) {
         if (entity == null)
             return null;
@@ -72,9 +69,7 @@ public class StoreDTO {
                 .build();
     }
 
-    /**
-     * Convierte el DTO a Entidad
-     */
+
     public static Store convertToEntity(StoreDTO dto) {
         if (dto == null)
             return null;

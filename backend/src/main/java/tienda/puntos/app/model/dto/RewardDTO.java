@@ -19,7 +19,7 @@ public class RewardDTO {
     private Long id;
 
     @JsonView(Views.Detalle.class)
-    private Long storeId; // Usamos el ID para evitar redundancia y ciclos
+    private Long storeId;
 
     @JsonView(Views.Resumen.class)
     private String name;
@@ -36,9 +36,7 @@ public class RewardDTO {
     @JsonView(Views.Resumen.class)
     private boolean isVisible;
 
-    /**
-     * Convierte la Entidad a DTO
-     */
+
     public static RewardDTO convertToDTO(Reward entity) {
         if (entity == null)
             return null;
@@ -54,17 +52,13 @@ public class RewardDTO {
                 .build();
     }
 
-    /**
-     * Convierte el DTO a Entidad
-     */
+
     public static Reward convertToEntity(RewardDTO dto) {
         if (dto == null)
             return null;
 
         Reward entity = new Reward();
         entity.setId(dto.getId());
-        // El setStore(Store) se suele manejar en el Service buscando por
-        // dto.getStoreId()
         entity.setName(dto.getName());
         entity.setDescription(dto.getDescription());
         entity.setPointsCost(dto.getPointsCost());

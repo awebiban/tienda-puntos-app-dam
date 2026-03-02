@@ -40,17 +40,11 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /**
-     * Dueño de la empresa fiscal (1 a 1)
-     */
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 
-    /**
-     * Plan contratado
-     * N Companies -> 1 Plan
-     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "plan_id", nullable = false)
     private Plan plan;
@@ -68,9 +62,6 @@ public class Company {
     @Column(name = "next_billing_date")
     private LocalDateTime nextBillingDate;
 
-    /**
-     * 1 Company -> N Stores
-     */
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Store> stores = new HashSet<>();

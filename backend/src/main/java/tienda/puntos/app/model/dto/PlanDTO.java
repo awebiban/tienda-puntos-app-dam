@@ -36,9 +36,7 @@ public class PlanDTO {
     @JsonView(Views.Resumen.class)
     private boolean active;
 
-    /**
-     * Convierte la Entidad a DTO
-     */
+
     public static PlanDTO convertToDTO(Plan entity) {
         if (entity == null)
             return null;
@@ -53,9 +51,7 @@ public class PlanDTO {
                 .build();
     }
 
-    /**
-     * Convierte el DTO a Entidad
-     */
+
     public static Plan convertToEntity(PlanDTO dto) {
         if (dto == null)
             return null;
@@ -68,7 +64,6 @@ public class PlanDTO {
         entity.setMaxUsers(dto.getMaxUsers());
         entity.setActive(dto.isActive());
 
-        // No mapeamos la lista de compañías aquí por rendimiento y seguridad
         return entity;
     }
 }

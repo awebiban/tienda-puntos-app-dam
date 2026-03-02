@@ -20,8 +20,6 @@ import { StoresService } from '../../../services/stores.service';
 export class MerchantDashboardComponent implements OnInit {
 
   company: Company | null = null;
-
-  // Estados para el nuevo modal
   showCreateStoreModal = false;
   storeForm: FormGroup;
   isCreatingStore = false;
@@ -48,7 +46,6 @@ export class MerchantDashboardComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
   ) {
-    // Inicializamos el formulario con los campos del modelo Store
     this.storeForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       category: ['', Validators.required],
@@ -63,10 +60,10 @@ export class MerchantDashboardComponent implements OnInit {
     if (ownerId) {
       this.loadCompanyData(Number(ownerId));
     } else {
-      console.error('No se encontró el ID del usuario en el localStorage');
       this.isLoading = false;
     }
   }
+
   loadCompanyData(arg0: number) {
     this.isLoading = true;
     this.companiesService.getCompanyByOwnerId(arg0).subscribe({
@@ -80,7 +77,6 @@ export class MerchantDashboardComponent implements OnInit {
         }
       },
       error: (err) => {
-        console.error('Error crítico al cargar datos de la empresa:', err);
         this.isLoading = false;
         this.cdr.detectChanges();
       }
@@ -89,24 +85,19 @@ export class MerchantDashboardComponent implements OnInit {
 
   loadMerchantData(companyId: number): void {
     this.isLoading = true;
-    console.log('Cargando tiendas para la empresa con ID:', companyId);
     this.storesService.getStoresByCompanyId(companyId).subscribe({
       next: (storeData) => {
         if (storeData && storeData.length > 0) {
           this.stores = storeData;
-          console.log('Tiendas cargadas para la empresa:', this.stores);
           this.isLoading = false;
           this.cdr.detectChanges();
-          // this.loadStoreCustomers(storeData[0].id!);  IMPLEMENTAR EN MODAL POPUP - Línea 220
         } else {
-          console.warn('El usuario es admin pero no tiene tiendas asociadas');
           this.isLoading = false;
           this.cdr.detectChanges();
           this.createFirstStore();
         }
       },
       error: (err) => {
-        console.error('Error crítico al cargar datos del comerciante:', err);
         this.isLoading = false;
         this.cdr.detectChanges();
       }
@@ -118,12 +109,10 @@ export class MerchantDashboardComponent implements OnInit {
       next: (cards) => {
         this.customers = cards;
         this.filteredCustomers = cards;
-        console.log(cards)
         this.isLoading = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar la lista de clientes:', err);
         this.isLoading = false;
         this.cdr.detectChanges();
       }
@@ -132,12 +121,10 @@ export class MerchantDashboardComponent implements OnInit {
 
   updatePointsDirectly(card: LoyaltyCard) {
     if (!card) return
-    console.log(card)
     card.storeDTO.isVisible = true
     this.loyaltyService.updateCard(card.id, card).subscribe({
       next: (data) => {
         alert("Puntos actualizados correctamente")
-        console.log(data)
       },
       error(err) {
         console.error(err)
@@ -145,48 +132,12 @@ export class MerchantDashboardComponent implements OnInit {
     })
   }
 
-  // filterCustomers(): void {
-  //   const term = this.searchTerm.toLowerCase();
-  //   this.filteredCustomers = this.customers.filter(c =>
-  //     c.id.toString().includes(term) ||
-  //     c.storeDTO.name.toLowerCase().includes(term)
-  //   );
-  // }
-
-  // openPointsModal(card: LoyaltyCard): void {
-  //   this.selectedCard = card;
-  //   this.pointsToAdd = 0;
-  // }
-
-  // confirmAddPoints(): void {
-  //   if (!this.selectedCard || this.pointsToAdd <= 0) return;
-  //   this.isProcessing = true;
-  //   this.loyaltyService.addPoints(this.selectedCard.id, this.pointsToAdd).subscribe({
-  //     next: (updatedCard) => {
-  //       const index = this.customers.findIndex(c => c.id === updatedCard.id);
-  //       if (index !== -1) {
-  //         this.customers[index] = updatedCard;
-  //         this.filterCustomers();
-  //       }
-  //       this.selectedCard = null;
-  //       this.isProcessing = false;
-  //       this.cdr.detectChanges();
-  //     },
-  //     error: (err) => {
-  //       console.error('Error al sumar puntos:', err);
-  //       this.isProcessing = false;
-  //       this.cdr.detectChanges();
-  //     }
-  //   });
-  // }
-
   createFirstStore() {
     if (this.company?.planDTO?.maxStores! === this.stores.length) {
       this.fireInfoSwalAlert("Limite alcanzado", `Has alcanzado el límite de tiendas permitido por tu plan.
         Por favor, actualiza tu plan para crear más tiendas.`, true, "Ver Planes", "No Gracias");
     }
     else {
-      console.log('Mostrando modal para crear nueva tienda. Tiendas actuales:', this.stores.length, 'Límite del plan:', this.company?.planDTO?.maxStores);
       this.showCreateStoreModal = true;
     }
   }
@@ -199,24 +150,20 @@ export class MerchantDashboardComponent implements OnInit {
     const newStore: Store = {
       ...this.storeForm.value,
       companyDTO: this.company!,
-      imageUrl: 'default-store.jpg', // Imagen por defecto
+      imageUrl: 'default-store.jpg',
       rewardsList: [],
     };
 
     if (newStore) {
       this.storesService.saveStore(newStore).subscribe({
         next: (createdStore) => {
-          console.log('Tienda creada con éxito:', createdStore);
           setTimeout(() => {
             this.isCreatingStore = false;
             this.showCreateStoreModal = false;
             this.storeForm.reset({ pointsRatio: 1, isVisible: true });
-
           }, 500);
-
         },
         error: (err) => {
-          console.error('Error al crear la tienda:', err);
           this.isCreatingStore = false;
           this.cdr.detectChanges();
         }
@@ -229,7 +176,6 @@ export class MerchantDashboardComponent implements OnInit {
     localStorage.setItem('userRole', 'CLIENTE');
     this.router.navigate(['/customer/dashboard']);
   }
-
 
   editarStore(sid: number | undefined) {
     if (!sid) return;
@@ -249,7 +195,7 @@ export class MerchantDashboardComponent implements OnInit {
     this.selectedStoreName = storeName;
     this.showCardsModal = true;
     this.isLoading = true;
-    this.customers = []; // Limpiamos datos anteriores
+    this.customers = [];
 
     this.loadStoreCustomers(sid);
     this.isLoading = false;
@@ -269,11 +215,11 @@ export class MerchantDashboardComponent implements OnInit {
       text: txt,
       icon: 'info',
       showCancelButton: showCancelButton,
-      confirmButtonColor: '#6366f1', // Indigo-600 (Tu color principal)
-      cancelButtonColor: '#1e293b',  // Slate-800
+      confirmButtonColor: '#6366f1',
+      cancelButtonColor: '#1e293b',
       confirmButtonText: confirmText,
       cancelButtonText: cancelText,
-      background: '#0f172a',         // Fondo oscuro a juego con tu UI
+      background: '#0f172a',
       color: '#ffffff'
     }).then((result) => {
       if (result.isConfirmed) {
@@ -281,8 +227,7 @@ export class MerchantDashboardComponent implements OnInit {
           state: {
             ownerId: this.company?.ownerDTO?.id
           }
-        }
-        )
+        })
       }
     });
   }

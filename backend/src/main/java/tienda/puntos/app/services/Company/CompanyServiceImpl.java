@@ -51,29 +51,22 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    @Transactional // Importante: Si falla la compañía, el rol del usuario no cambia
+    @Transactional
     public CompanyDTO save(CompanyDTO companyDTO) {
 
-        // 1. Buscamos al usuario REAL que ya está en la BD (este tiene el password)
         User ownerEntity = userRepository.findById(companyDTO.getOwnerDTO().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Error: El usuario dueño no existe en la BD"));
 
-        // 2. Solo actualizamos el campo que nos interesa (el Rol)
-        // El password de 'ownerEntity' permanece intacto y seguro
         ownerEntity.setRole(Role.ADMIN_NEGOCIO);
         userRepository.save(ownerEntity);
 
-        // 3. Buscamos el Plan (mismo concepto: evitar transient value)
         Plan planEntity = planRepository.findById(companyDTO.getPlanDTO().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Error: El plan seleccionado no existe"));
 
-        // 4. Creamos la entidad Compañía y le pasamos las entidades que ya "viven" en
-        // la BD
         Company companyToSave = CompanyDTO.convertToEntity(companyDTO);
         companyToSave.setOwner(ownerEntity);
         companyToSave.setPlan(planEntity);
 
-        // 5. Guardamos la compañía
         Company savedCompany = companyRepository.save(companyToSave);
 
         return CompanyDTO.convertToDTO(savedCompany);
@@ -84,7 +77,6 @@ public class CompanyServiceImpl implements CompanyService {
         Company companyToUpdate = this.companyRepository.findById(companyId)
                 .orElseThrow(() -> new EntityNotFoundException("Error la compañia no existe"));
 
-        // Solo se pueden actualizar estos campos (no el owner)
         companyToUpdate.setPlan(PlanDTO.convertToEntity(companyDTO.getPlanDTO()));
         companyToUpdate.setLegalName(companyDTO.getLegalName());
         companyToUpdate.setCif(companyDTO.getCif());

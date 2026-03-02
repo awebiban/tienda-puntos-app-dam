@@ -15,7 +15,7 @@ import tienda.puntos.app.utils.Views;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder // Util para crear objetos rapidamente
+@Builder
 public class CompanyDTO {
 
     @JsonView(Views.Detalle.class)
@@ -67,8 +67,7 @@ public class CompanyDTO {
         entity.setSubscriptionStatus(dto.getSubscriptionStatus());
         entity.setNextBillingDate(dto.getNextBillingDate());
 
-        // Nota: El Set<Store> no se suele pasar en el DTO de creación para evitar
-        // ciclos
+
         return entity;
     }
 }

@@ -17,7 +17,7 @@ import { UserService } from '../../../services/user.service';
 export class RegisterBusinessComponent implements OnInit {
   registerForm: FormGroup;
   isLoading = false;
-  isSuccess = false; // Estado para mostrar la vista de éxito
+  isSuccess = false;
   errorMessage = '';
   currentUserId: number | null = null;
   currentUserData: User | null = null;
@@ -40,7 +40,6 @@ export class RegisterBusinessComponent implements OnInit {
   ) {
     this.registerForm = this.fb.group({
       legalName: ['', [Validators.required, Validators.minLength(3)]],
-      // Validación mejorada: 8 números y 1 letra (RegEx estándar CIF/NIF básico)
       cif: ['', [Validators.required, Validators.pattern('^[0-9]{8}[A-Z]$|^[A-Z][0-9]{8}$')]],
     });
   }
@@ -57,7 +56,6 @@ export class RegisterBusinessComponent implements OnInit {
     this.userService.getUserById(this.currentUserId).subscribe({
       next: (user) => {
         this.currentUserData = user;
-        console.log('Usuario actual cargado:', this.currentUserData);
       },
       error: (err) => {
         console.error('Error al obtener el usuario:', err);
@@ -72,20 +70,19 @@ export class RegisterBusinessComponent implements OnInit {
   onSubmit(): void {
     if (this.registerForm.invalid || !this.currentUserData) return;
 
-    this.isLoading = true; // Aquí empieza el "Procesando..."
+    this.isLoading = true;
     this.errorMessage = '';
 
     const newCompany: Company = {
       legalName: this.registerForm.value.legalName,
       cif: this.registerForm.value.cif,
-      ownerDTO: this.currentUserData, // Usamos los nombres que espera tu DTO
+      ownerDTO: this.currentUserData,
       planDTO: this.freePlan,
       subscriptionStatus: 'ACTIVE',
       nextBillingDate: this.obtenerFechaEnFormatoISO() as any
     };
 
     if (this.currentUserData) {
-      // comprobamos si el usuario ya tiene una empresa registrada
       this.companyService.getCompanyByOwnerId(this.currentUserData.id).subscribe({
         next: (existingCompany) => {
           if (existingCompany) {
@@ -98,15 +95,11 @@ export class RegisterBusinessComponent implements OnInit {
 
       this.companyService.registerNewCompany(newCompany).subscribe({
         next: (data) => {
-          console.log('Empresa registrada con éxito:', data);
-
           this.isLoading = false;
           this.isSuccess = true;
           this.cdr.detectChanges();
-
         },
         error: (err) => {
-          console.error('Error al registrar la empresa:', err);
           this.isLoading = false;
           this.errorMessage = 'Hubo un error al registrar la empresa.';
         }
@@ -114,7 +107,6 @@ export class RegisterBusinessComponent implements OnInit {
     }
   }
 
-  // Limpieza de sesión y redirección al login
   goToLogin(): void {
     localStorage.clear();
     this.router.navigate(['/login']);

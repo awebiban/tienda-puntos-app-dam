@@ -13,28 +13,24 @@ export class RewardsService {
 
   constructor(private http: HttpClient) { }
 
-  // Obtener todos los premios de una tienda en concreto
   getRewardsByStoreId(storeId: number): Observable<Reward[]> {
     return this.http.get<Reward[]>(`${this.dev}/rewards/store/${storeId}`).pipe(
       tap(data => console.log(`%c[GET] /rewards/store/${storeId} %cLista de premios:`, 'color: #8b5cf6; font-weight: bold', 'color: gray', data))
     );
   }
 
-  // Crear una nueva recompensa
   createReward(rewardData: Reward): Observable<Reward> {
     return this.http.post<Reward>(`${this.dev}/rewards/create`, rewardData).pipe(
       tap(data => console.log('%c[POST] /rewards %cPremio creado:', 'color: #10b981; font-weight: bold', 'color: gray', data))
     );
   }
 
-  // Eliminar una recompensa
   deleteReward(rewardId: number): Observable<any> {
     return this.http.get<any>(`${this.dev}/rewards/disable/${rewardId}`).pipe(
       tap(() => console.log(`%c[DELETE] /rewards/${rewardId} %cPremio eliminado correctamente`, 'color: #ef4444; font-weight: bold', 'color: gray'))
     );
   }
 
-  // Método para reclamar una recompensa
   redeemReward(currentUserId: number, storeId: number | undefined, rewardId: number) {
     if (!currentUserId || !storeId || !rewardId) {
       console.warn('%c[RewardsService - redeemReward] %cDatos insuficientes para reclamar recompensa', 'color: #f59e0b; font-weight: bold', 'color: gray', { currentUserId, storeId, rewardId });

@@ -37,7 +37,6 @@ export class LandingComponent implements OnInit {
   ngOnInit(): void {
     this.loadStores();
 
-    // Comprobamos si el usuario está logueado leyendo la memoria
     if (this.authService.isLoggedIn()) {
       const storedId = localStorage.getItem('userId');
       const storedName = localStorage.getItem('userName');
@@ -45,24 +44,22 @@ export class LandingComponent implements OnInit {
       if (storedId) {
         this.currentUserId = Number(storedId);
         this.userName = storedName;
-        this.loadMyCards(); // Cargamos las tarjetas para el carrusel
+        this.loadMyCards();
       }
     }
   }
 
   loadStores(): void {
-    console.log('1. Iniciando carga de tiendas...');
     this.isLoadingStores = true;
 
     this.storesService.getAllStores().subscribe({
       next: (data: any[]) => {
-        this.stores = data; // Prueba sin filtrar primero
+        this.stores = data;
         this.isLoadingStores = false;
-        this.cdr.detectChanges(); // <--- Esto fuerza a la vista a refrescarse
+        this.cdr.detectChanges();
       },
       error: (error) => {
-        console.error('ERROR CRÍTICO:', error);
-        this.isLoadingStores = false; // Si falla, también debemos quitar el skeleton
+        this.isLoadingStores = false;
       }
     });
   }
@@ -73,38 +70,32 @@ export class LandingComponent implements OnInit {
     this.loyaltyCardService.getAllLoyaltyCardsByUserId(this.currentUserId).subscribe({
       next: (data: any) => {
         this.loyaltyCards = data;
-        this.cdr.detectChanges(); // <--- Esto fuerza a la vista a refrescarse
+        this.cdr.detectChanges();
       },
-      error: (err: any) => console.error('Error al cargar tarjetas en la landing', err)
+      error: (err: any) => console.error(err)
     });
   }
 
   joinStore(storeId?: number): void {
-    // 1. Si el usuario no ha iniciado sesión, lo mandamos al login
     if (!this.currentUserId) {
       this.router.navigate(['/login']);
       return;
     }
 
-    // 2. Si por algún motivo la tienda no tiene ID, cancelamos
     if (!storeId) {
-      console.error('La tienda no tiene un ID válido.');
       return;
     }
 
-    console.log(`Intentando unirse a la tienda con ID ${storeId}...`);
     if (this.loyaltyCards.some(card => card.storeDTO.id === storeId)) {
       alert('Ya tienes la tarjeta de esta tienda. ¡Explora tus puntos en el dashboard!');
       return;
     }
-    // 3. Llamamos al servicio para crear la tarjeta
+
     this.loyaltyCardService.joinStore(this.currentUserId, storeId).subscribe({
       next: () => {
-        console.log('%c[Éxito] %c¡Bienvenido a la tienda!', 'color: #10b981; font-weight: bold', 'color: gray');
         this.router.navigate(['/customer/dashboard']);
       },
       error: (err) => {
-        console.error('Error al unirse', err);
         alert('Hubo un error o ya tienes la tarjeta de esta tienda.');
       }
     });

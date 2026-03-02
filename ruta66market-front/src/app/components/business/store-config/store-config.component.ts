@@ -141,19 +141,16 @@ export class StoreConfigComponent implements OnInit {
     if (!this.store) return;
     this.newReward.storeId = this.store.id;
 
-    // Clonamos el store para enviarlo actualizado con la nueva recompensa
     const rewardToAdd = { ...this.newReward };
 
     if (!this.store.rewardsList) {
       this.rewards = [];
     }
 
-    // this.rewards.push(rewardToAdd as Reward);
 
     console.log(rewardToAdd)
     this.saveReward(rewardToAdd);
 
-    // Limpiamos el formulario
     this.newReward = { name: '', pointsCost: 100, description: '', imageUrl: '', isVisible: true };
   }
 

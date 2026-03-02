@@ -43,7 +43,6 @@ public class StoreController {
     @GetMapping("/company/{companyId}")
     @JsonView(Views.Detalle.class)
     public ResponseEntity<List<StoreDTO>> findAllByCompanyId(@PathVariable("companyId") Long c) {
-        // Utilizaremos company ID como representante del owner
 
         return ResponseEntity.ok(this.storeService.findAllByCompanyId(c));
     }
