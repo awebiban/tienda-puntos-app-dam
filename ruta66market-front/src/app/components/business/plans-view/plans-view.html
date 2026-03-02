@@ -1,0 +1,124 @@
+<div class="min-h-screen bg-[#0f172a] text-white p-8 pb-20 relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px] -z-10"></div>
+    <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-violet-600/5 rounded-full blur-[120px] -z-10"></div>
+
+    <header class="max-w-7xl mx-auto mb-16 text-center animate-fade-in-up">
+        <span
+            class="inline-flex items-center gap-2 py-1.5 px-4 rounded-full bg-indigo-500/10 text-indigo-400 text-[10px] font-black uppercase tracking-[0.3em] border border-indigo-500/20 mb-6">
+            <i class="bi bi-rocket-takeoff"></i> Escala tu negocio
+        </span>
+        <h1 class="text-5xl md:text-6xl font-black italic tracking-tighter uppercase mb-4">Planes de Expansión</h1>
+        <p class="text-slate-400 max-w-2xl mx-auto font-medium">
+            Selecciona la infraestructura que mejor se adapte al volumen de tu comunidad.
+        </p>
+    </header>
+
+    <div class="max-w-7xl mx-auto">
+        @if (isLoading) {
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+            @for (i of [1,2,3]; track i) {
+            <div
+                class="h-[500px] bg-slate-900/50 rounded-[3.5rem] border border-slate-800 animate-pulse p-10 flex flex-col">
+                <div class="w-24 h-6 bg-slate-800 rounded mb-4"></div>
+                <div class="w-40 h-12 bg-slate-800 rounded mb-8"></div>
+                <div class="space-y-6 flex-1">
+                    <div class="w-full h-4 bg-slate-800 rounded"></div>
+                    <div class="w-full h-4 bg-slate-800 rounded"></div>
+                    <div class="w-full h-4 bg-slate-800 rounded"></div>
+                </div>
+                <div class="w-full h-14 bg-slate-800 rounded-2xl mt-auto"></div>
+            </div>
+            }
+        </div>
+        }
+
+        @else {
+        <main class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center transition-all duration-1000 ease-out"
+            [ngClass]="{'opacity-0 translate-y-12': isLoading, 'opacity-100 translate-y-0': !isLoading}">
+
+            @for (plan of plans; track plan.id; let i = $index) {
+            <div class="relative group rounded-[3.5rem] p-10 transition-all duration-500 border flex flex-col h-full shadow-2xl"
+                [style.transition-delay]="(i * 150) + 'ms'" [ngClass]="{
+                    'bg-slate-900/40 border-slate-800 hover:border-indigo-500/30': !isRecommended(plan.planName),
+                    'bg-gradient-to-b from-indigo-600/20 to-slate-900/80 border-indigo-500/50 md:scale-105 z-10': isRecommended(plan.planName)
+                }">
+
+                @if (isRecommended(plan.planName)) {
+                <div
+                    class="absolute -top-4 left-1/2 -translate-x-1/2 bg-indigo-500 text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg shadow-indigo-500/40">
+                    Más Popular
+                </div>
+                }
+
+                <div class="mb-8">
+                    <h3 class="text-2xl font-black italic uppercase tracking-tight mb-2">{{ plan.planName }}</h3>
+                    <div class="flex items-baseline gap-1">
+                        <span class="text-5xl font-black italic tracking-tighter">{{ plan.price }}€</span>
+                        <span class="text-slate-500 text-xs font-bold uppercase tracking-widest">/mes</span>
+                    </div>
+                </div>
+
+                <div class="space-y-6 mb-12 flex-1">
+                    <div class="flex items-center gap-4 group/item">
+                        <div
+                            class="w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-indigo-400 group-hover/item:bg-indigo-500 group-hover/item:text-white transition-all">
+                            <i class="bi bi-shop"></i>
+                        </div>
+                        <span class="text-sm font-bold text-slate-300">Hasta <b>{{ plan.maxStores }}</b> Tiendas</span>
+                    </div>
+
+                    <div class="flex items-center gap-4 group/item">
+                        <div
+                            class="w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-indigo-400 group-hover/item:bg-indigo-500 group-hover/item:text-white transition-all">
+                            <i class="bi bi-people"></i>
+                        </div>
+                        <span class="text-sm font-bold text-slate-300">Hasta <b>{{ plan.maxUsers }}</b> Usuarios</span>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-8 h-8 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center justify-center text-green-400">
+                            <i class="bi bi-check2"></i>
+                        </div>
+                        <span class="text-sm font-bold text-slate-300 italic">Soporte 24/7 Premium</span>
+                    </div>
+                </div>
+
+                <button (click)="selectPlan(plan)"
+                    class="w-full py-5 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] transition-all active:scale-95 shadow-xl"
+                    [ngClass]="{
+                        'bg-slate-800 hover:bg-slate-700 text-white': !isRecommended(plan.planName),
+                        'bg-indigo-500 hover:bg-indigo-400 text-white shadow-indigo-500/20': isRecommended(plan.planName)
+                    }">
+                    Seleccionar Plan <i class="bi bi-chevron-right ml-2"></i>
+                </button>
+            </div>
+            } @empty {
+            <div
+                class="col-span-full text-center py-20 bg-slate-900/20 rounded-[3rem] border border-dashed border-slate-800">
+                <p class="text-slate-500 uppercase tracking-widest font-black text-xs">No hay planes disponibles en este
+                    momento</p>
+            </div>
+            }
+        </main>
+        }
+    </div>
+</div>
+
+<div *ngIf="selectedPlan"
+    class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-6">
+    <div class="bg-slate-900 border border-slate-800 p-10 rounded-[3rem] max-w-md w-full shadow-2xl animate-fade-in-up">
+        <div class="text-center mb-8">
+            <h3 class="text-2xl font-black italic uppercase text-white mb-2">Finalizar Compra</h3>
+            <p class="text-slate-400 text-sm">Has seleccionado el plan <b
+                    class="text-indigo-400">{{selectedPlan.planName}}</b></p>
+        </div>
+
+        <div id="paypal-button-container" class="min-h-[150px]"></div>
+
+        <button (click)="selectedPlan = null"
+            class="w-full mt-6 text-slate-500 hover:text-white text-[10px] font-black uppercase tracking-widest transition-colors">
+            Cancelar y volver
+        </button>
+    </div>
+</div>

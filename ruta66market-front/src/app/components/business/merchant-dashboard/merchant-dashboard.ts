@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 import { Company } from '../../../models/Company';
 import { LoyaltyCard } from '../../../models/LoyaltyCard';
 import { Store } from '../../../models/Store';
@@ -181,7 +182,8 @@ export class MerchantDashboardComponent implements OnInit {
 
   createFirstStore() {
     if (this.company?.planDTO?.maxStores! === this.stores.length) {
-      alert('Has alcanzado el límite de tiendas permitido por tu plan. Por favor, actualiza tu plan para crear más tiendas.');
+      this.fireInfoSwalAlert("Limite alcanzado", `Has alcanzado el límite de tiendas permitido por tu plan.
+        Por favor, actualiza tu plan para crear más tiendas.`, true, "Ver Planes", "No Gracias");
     }
     else {
       console.log('Mostrando modal para crear nueva tienda. Tiendas actuales:', this.stores.length, 'Límite del plan:', this.company?.planDTO?.maxStores);
@@ -258,6 +260,30 @@ export class MerchantDashboardComponent implements OnInit {
 
     this.router.navigate(['/business/analytics'], {
       state: { storeId: sid }
+    });
+  }
+
+  fireInfoSwalAlert(tit: string, txt: string, showCancelButton: boolean, confirmText: string, cancelText: string) {
+    Swal.fire({
+      title: tit,
+      text: txt,
+      icon: 'info',
+      showCancelButton: showCancelButton,
+      confirmButtonColor: '#6366f1', // Indigo-600 (Tu color principal)
+      cancelButtonColor: '#1e293b',  // Slate-800
+      confirmButtonText: confirmText,
+      cancelButtonText: cancelText,
+      background: '#0f172a',         // Fondo oscuro a juego con tu UI
+      color: '#ffffff'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.router.navigate(["/business/view-plans"], {
+          state: {
+            ownerId: this.company?.ownerDTO?.id
+          }
+        }
+        )
+      }
     });
   }
 }

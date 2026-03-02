@@ -139,6 +139,7 @@ export class StoreConfigComponent implements OnInit {
 
   createReward(): void {
     if (!this.store) return;
+    this.newReward.storeId = this.store.id;
 
     // Clonamos el store para enviarlo actualizado con la nueva recompensa
     const rewardToAdd = { ...this.newReward };
@@ -149,7 +150,7 @@ export class StoreConfigComponent implements OnInit {
 
     // this.rewards.push(rewardToAdd as Reward);
 
-
+    console.log(rewardToAdd)
     this.saveReward(rewardToAdd);
 
     // Limpiamos el formulario
@@ -159,27 +160,37 @@ export class StoreConfigComponent implements OnInit {
   saveReward(reward: Reward) {
     this.rewardsService.createReward(reward).subscribe({
       next: (data) => {
-        console.log("Recomensa creada", data)
+        this.rewards.push(data);
+
+        if (this.store) {
+          this.store.rewardsList = [...this.rewards];
+        }
+
         this.cdr.detectChanges();
       },
-      error(err) {
-        console.error(err)
+      error: (err) => {
+        console.error("Error al guardar:", err);
       },
-    })
+    });
   }
 
   deleteReward(id: number | undefined): void {
-    if (!this.store || !id) return;
-    this.store.rewardsList = this.store.rewardsList?.filter(r => r.id !== id);
+    if (!id) return;
+
     this.rewardsService.deleteReward(id).subscribe({
-      next: (data) => {
-        console.log("Recomensa borrada", data)
+      next: () => {
+        this.rewards = this.rewards.filter(reward => reward.id !== id);
+
+        if (this.store) {
+          this.store.rewardsList = [...this.rewards];
+        }
+
         this.cdr.detectChanges();
       },
-      error(err) {
-        console.error(err)
-      },
-    })
+      error: (err) => {
+        console.error("No se pudo borrar la recompensa de la base de datos", err);
+      }
+    });
   }
 
 }

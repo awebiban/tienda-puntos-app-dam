@@ -67,6 +67,10 @@ export const routes: Routes = [
                 path: 'analytics',
                 loadComponent: () => import('./components/business/analytics/analytics.component').then(m => m.AnalyticsComponent),
             },
+            {
+                path: 'view-plans',
+                loadComponent: () => import('./components/business/plans-view/plans-view').then(m => m.PlansView),
+            },
         ]
     },
 

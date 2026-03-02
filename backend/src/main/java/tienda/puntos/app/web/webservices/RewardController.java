@@ -64,6 +64,7 @@ public class RewardController {
     @PostMapping("/create")
     @JsonView(Views.Detalle.class)
     public ResponseEntity<RewardDTO> save(@RequestBody RewardDTO rewardDTO) {
+        System.out.println("store id: " + rewardDTO.getStoreId());
         return ResponseEntity.ok(this.rewardService.saveReward(rewardDTO));
     }
 
